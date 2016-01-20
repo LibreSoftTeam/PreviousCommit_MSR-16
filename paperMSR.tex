@@ -1,0 +1,395 @@
+% This is "sig-alternate.tex" V2.1 April 2013
+% This file should be compiled with V2.5 of "sig-alternate.cls" May 2012
+%
+% This example file demonstrates the use of the 'sig-alternate.cls'
+% V2.5 LaTeX2e document class file. It is for those submitting
+% articles to ACM Conference Proceedings WHO DO NOT WISH TO
+% STRICTLY ADHERE TO THE SIGS (PUBS-BOARD-ENDORSED) STYLE.
+% The 'sig-alternate.cls' file will produce a similar-looking,
+% albeit, 'tighter' paper resulting in, invariably, fewer pages.
+%
+% ----------------------------------------------------------------------------------------------------------------
+% This .tex file (and associated .cls V2.5) produces:
+%       1) The Permission Statement
+%       2) The Conference (location) Info information
+%       3) The Copyright Line with ACM data
+%       4) NO page numbers
+%
+% as against the acm_proc_article-sp.cls file which
+% DOES NOT produce 1) thru' 3) above.
+%
+% Using 'sig-alternate.cls' you have control, however, from within
+% the source .tex file, over both the CopyrightYear
+% (defaulted to 200X) and the ACM Copyright Data
+% (defaulted to X-XXXXX-XX-X/XX/XX).
+% e.g.
+% \CopyrightYear{2007} will cause 2007 to appear in the copyright line.
+% \crdata{0-12345-67-8/90/12} will cause 0-12345-67-8/90/12 to appear in the copyright line.
+%
+% ---------------------------------------------------------------------------------------------------------------
+% This .tex source is an example which *does* use
+% the .bib file (from which the .bbl file % is produced).
+% REMEMBER HOWEVER: After having produced the .bbl file,
+% and prior to final submission, you *NEED* to 'insert'
+% your .bbl file into your source .tex file so as to provide
+% ONE 'self-contained' source file.
+%
+% ================= IF YOU HAVE QUESTIONS =======================
+% Questions regarding the SIGS styles, SIGS policies and
+% procedures, Conferences etc. should be sent to
+% Adrienne Griscti (griscti@acm.org)
+%
+% Technical questions _only_ to
+% Gerald Murray (murray@hq.acm.org)
+% ===============================================================
+%
+% For tracking purposes - this is V2.0 - May 2012
+
+\documentclass{sig-alternate-05-2015}
+\usepackage{url}
+\usepackage{epsfig}
+\usepackage{makeidx}         % allows index generation
+\usepackage{graphicx}        % standard LaTeX graphics tool
+                             % when including figure files
+\usepackage{multicol}        % used for the two-column index
+\usepackage[bottom]{footmisc}% places footnotes at page bottom
+\usepackage{float}           % H para posicionar figuras
+\usepackage{booktabs}
+\begin{document}
+
+% Copyright
+\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\setcopyright{usgov}
+%\setcopyright{usgovmixed}
+%\setcopyright{cagov}
+%\setcopyright{cagovmixed}
+
+
+% DOI
+\doi{10.475/123_4}
+
+% ISBN
+\isbn{123-4567-24-567/08/06}
+
+%Conference
+\conferenceinfo{MSR '16}{May 14-15, 2016, Austin, Texas, USA}
+
+\acmPrice{\$15.00}
+
+%
+% --- Author Metadata here ---
+\conferenceinfo{MSR}{'16 Austin, Texas USA}
+%\CopyrightYear{2007} % Allows default copyright year (20XX) to be over-ridden - IF NEED BE.
+%\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
+% --- End of Author Metadata ---
+
+\title{{\ttlit Bug Seeding}, On the importance of Previous Commit}
+%\subtitle{[Extended Abstract]
+%\titlenote{A full version of this paper is available as
+%\textit{Author's Guide to Preparing ACM SIG Proceedings Using
+%\LaTeX$2_\epsilon$\ and BibTeX} at
+%\texttt{www.acm.org/eaddress.htm}}}
+%
+% You need the command \numberofauthors to handle the 'placement
+% and alignment' of the authors beneath the title.
+%
+% For aesthetic reasons, we recommend 'three authors at a time'
+% i.e. three 'name/affiliation blocks' be placed beneath the title.
+%
+% NOTE: You are NOT restricted in how many 'rows' of
+% "name/affiliations" may appear. We just ask that you restrict
+% the number of 'columns' to three.
+%
+% Because of the available 'opening page real-estate'
+% we ask you to refrain from putting more than six authors
+% (two rows with three columns) beneath the article title.
+% More than six makes the first-page appear very cluttered indeed.
+%
+% Use the \alignauthor commands to handle the names
+% and affiliations for an 'aesthetic maximum' of six authors.
+% Add names, affiliations, addresses for
+% the seventh etc. author(s) as the argument for the
+% \additionalauthors command.
+% These 'additional authors' will be output/set for you
+% without further effort on your part as the last section in
+% the body of your article BEFORE References or any Appendices.
+
+\numberofauthors{3} %  in this sample file, there are a *total*
+% of EIGHT authors. SIX appear on the 'first-page' (for formatting
+% reasons) and the remaining two appear in the \additionalauthors section.
+%
+\author{
+% You can go ahead and credit any number of authors here,
+% e.g. one 'row of three' or two rows (consisting of one row of three
+% and a second row of one, two or three).
+%
+% The command \alignauthor (no curly braces needed) should
+% precede each author name, affiliation/snail-mail address and
+% e-mail address. Additionally, tag each line of
+% affiliation/address with \affaddr, and tag the
+% e-mail address with \email.
+%
+% 1st. author
+\alignauthor
+Gema Rodriguez\\
+       \affaddr{University King Juan Carlos}\\
+       %\affaddr{1932 Wallamaloo Lane}\\
+       \affaddr{Madrid, Spain}\\
+       \email{gerope@libresoft.es}
+% 2nd. author
+\alignauthor
+Jesus M. Gonzalez-Barahon\\
+      \affaddr{University King Juan Carlos}\\
+       %\affaddr{1932 Wallamaloo Lane}\\
+       \affaddr{Madrid, Spain}\\
+       \email{jgb@gsyc.es}
+% 3rd. author
+\alignauthor Gregorio Robles\\
+       \affaddr{University King Juan Carlos}\\
+       %\affaddr{1932 Wallamaloo Lane}\\
+       \affaddr{Madrid, Spain}\\
+       \email{grex@gsyc.es}
+\and  % use '\and' if you need 'another row' of author names
+}
+% There's nothing stopping you putting the seventh, eighth, etc.
+% author on the opening page (as the 'third row') but we ask,
+% for aesthetic reasons that you place these 'additional authors'
+% in the \additional authors block, viz.
+%\additionalauthors{Additional authors: John Smith (The Th{\o}rv{\"a}ld Group,
+%email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
+%(The Kumquat Consortium, email: {\texttt{jpkumquat@consortium.net}}).}
+\date{29 January 2016}
+% Just remember to make sure that the TOTAL number of authors
+% is the number that will appear on the first page PLUS the
+% number that will appear in the \additionalauthors section.
+
+\maketitle
+\begin{abstract}
+\textbf{Algorithms such as SZZ have been proposed to identify the cause of a \textit{fixed} bug some , these algorithms rely on the fact that bugs in source code have been originated in the previous commit, understanding previous commit as the fix-inducing commit. However, there has been no enough empirical evidences to prove this assumption, and taking into account that exist projects with different nature, ones more active that others, might happen that this assumption is not fulfilled in projects with present this characteristic.} 
+
+\textbf{In this paper, in order to ascertain the validity of such a claim, we have conducted an observational study that involved bug notifications from a very active project such as OpenStack, in which their source code is continuously evolving. Our results are promising in indicating that exists bug fixed which were not introduced in the previous commit.}
+\end{abstract}
+
+
+%
+% The code below should be generated by the tool at
+% http://dl.acm.org/ccs.cfm
+% Please copy and paste the code instead of the example below. 
+%
+%\begin{CCSXML}
+%<ccs2012>
+% <concept>
+%  <concept_id>10010520.10010553.10010562</concept_id>
+%  <concept_desc>Computer systems organization~Embedded systems</concept_desc>
+%  <concept_significance>500</concept_significance>
+% </concept>
+% <concept>
+%  <concept_id>10010520.10010575.10010755</concept_id>
+%  <concept_desc>Computer systems organization~Redundancy</concept_desc>
+%  <concept_significance>300</concept_significance>
+% </concept>
+% <concept>
+%  <concept_id>10010520.10010553.10010554</concept_id>
+%  <concept_desc>Computer systems organization~Robotics</concept_desc>
+%  <concept_significance>100</concept_significance>
+% </concept>
+% <concept>
+%  <concept_id>10003033.10003083.10003095</concept_id>
+%  <concept_desc>Networks~Network reliability</concept_desc>
+%  <concept_significance>100</concept_significance>
+% </concept>
+%</ccs2012>  
+%\end{CCSXML}
+
+%\ccsdesc[500]{Computer systems organization~Embedded systems}
+%\ccsdesc[300]{Computer systems organization~Redundancy}
+%\ccsdesc{Computer systems organization~Robotics}
+%\ccsdesc[100]{Networks~Network reliability}
+
+
+%
+% End generated code
+%
+
+%
+%  Use this command to print the description
+%
+%\printccsdesc
+
+% We no longer use \terms command
+%\terms{Theory}
+
+\keywords{Bug-introduction, SZZ algoritm, Fix-inducing}
+
+\section{Introduction}
+\label{sec:introduction}
+In order to investigate if this assumption is valid, we formulate following research questions:
+\begin{itemize}
+    \item RQ1 : How can tickets which are bug reports be differentiated from those that are not? 
+    \item RQ2:  How often is the bug caused in the previous commit? 
+\end{itemize}
+
+%The remainder of this paper is structured as follows; first, we discuss how to extract and classify data from specific repository of OpenStack in Section~\ref{}. In this repository we can find tickets that describe bugs; however, in order to obtain a successful results, we need know how many of them are bug reports. This problem is solved in Subsection~\ref{}, answering in this way RQ1. After having discriminated bug reports from those that are not, to answer the RQ2 we have calculated how many times the cause of the bug could be attributed to the previous commit (see Subsection~\ref{subsec:second}). Results are then shown in Section~\ref{}. Finally, we present a discussion, including the threats to validity, in Section~\ref{}.
+
+\section{The Case of Study}
+\label{sec:caseStudy}
+\subsection{Fist Stage: The Filtering}
+\label{sec:firstStage}
+%OpenStack was particularly of interest because of its highest scope and heterogeneous nature with hundreds of developers contributing, furthermore due to its short life, only 5 years, all history is saved and available in a version control system. The issues are called tickets in OpenStack and available in the Launchpad, a web interface of ticket tracking system, classifying them as bug report or not.
+
+We use the tool to analyze 500 randomly tickets from the four principal repositories in OpenStack. This tickets could be tagged as either "Fix Commited" or "Fix Released", to be able to localize the patch implemented into de source code in the version repository. They are generally tracked in Launchpad \texttt{Nova},\texttt{Cinder},\texttt{Horizon} and \texttt{Neutron}\footnote{\url{https://bugs.launchpad.net/NameOfRepository}}
+
+The parameters analyzed for each ticket were the title and the description of the report and the description of the fix commit. Also, the code changes if neither the descriptions and the comments clarified the underlying ticket. Each ticket was then categorized into one of three following groups.
+\begin{enumerate}
+  \item The ticket describes a bug report.
+  \item The ticket describes a feature, an optimization code, changes in test files or other not bug reports.
+  \item The ticket presents a vague description and cannot be classified without doubts.
+\end{enumerate}
+
+Henceforth, we will refer to Group 1 as \textit{Bug Report}, Group 2 as \textit{not Bug Report} and Group 3 as \textit{Undecided}.
+
+\subsubsection{The Tool}
+\label{sec:tool}
+%A tool designed exactly to solve this problem of providing the researcher with all the relevant information needed to decide if an issue corresponds to a bug report or not. The tool uses information extracted automatically from the project repositories, and offers a web-based interface which allows for collaboration, traceability and transparency of the identification of bug reports, making the process easier, faster, and more reliable.
+
+\subsection{Second Stage: Responsability of Previous Commit}
+\label{sec:secondStage}
+In the second stage, we only focused on the analysis of \textit{Error} group, because this group contained the tickets that were bug reports. Discarding the \textit{Undecided} group in favour of the \textit{Error} group reduces the accuracy of the experiment due to the fact that some errors are being lost in \textit{Undecided} group. However the \textit{Undecided} group being only 16\% of the bugs under consideration makes us think that this fact does not 
+affect the validity of the final results. 
+
+We focused on analyzing characteristics of the commit such as the type of code, the number of previous commits involved, and the number of folders modified by the fixing commit to classify the bug report into one of three groups according to the responsibility of the previous commit:
+
+\begin{enumerate}
+  \item It is responsible, 
+  \item It is not responsible,
+  \item Undecided.
+\end{enumerate}
+ We use therefore the \texttt{diff} command to display line\-by\-line difference between two files. \texttt{diff} is well-known algorithm, extensively explained in the research literature~\cite{ukkonen1985algorithms,myers1986ano}, which is included in any source code management system. \texttt{diff} examines both files and returns the differences found between them, showing the line number.% the necessary modifications which should be done in order to the files match. the differences found between them,showing the line number. %FIXME: de aqui en adelante no entiendo la frase. need to be made for first file and second file to match, that is, returns the differences found between them.
+
+At this stage, we got a list with all the previous commits, which could be where the bug was introduced. We have to identify those previous commits responsible for inserting the line with the bug. When there are more than one commit implicated in the same file is because the bug was inserted in different lines of different commits, but not everyone has to be responsible for the commit, after the analysis the responsible can be only one of them or maybe two, in fact sometimes all of them were responsible. Therefore, comparing the status of the file, before and after the commit, we are be able to identify those previous commits that are responsible and those that are not, answering the RQ2.
+
+\section{Results}
+\label{sec:results}
+
+\subsection{Fist Stage}
+\label{sec:resultsFS}
+%We have manually analyzed 459 different tickets with support of the present tool, 125 from Cinder, 125 fron Nova, 125 from Horizon and 84 from Neutron. The table \ref{tab:1} show the percentage of each developer after analyzing the tickets, 417 tickets were analyzed by two different developers, 
+\begin{table*}
+\centering
+%\begin{center} {\footnotesize
+\caption{ Classification statistics of each developer}
+\label{tab:1}
+\begin{tabular}{lllll}
+\toprule[0.3mm]%{\smallskip}
+  & Bug Report\kern 1pc & Not Bug Report\kern 1pc & Undecided\kern 1pc & Total \\\hline
+Developer 1 \kern 1pc & (184) 55\% & (115) 34\% & (35) 11\% & 334 \\
+Developer 2 \kern 1pc & (188) 76\% & (54) 22 \% & (7) 3\% & 249 \\
+Developer 3 \kern 1pc & (188) 56\% & (116) 35\% & (30) 9\% & 334 \\
+\bottomrule[0.3mm]
+\end{tabular} %}
+%\end{center}
+\end{table*}
+
+
+\begin{table*}
+\begin{center} {\footnotesize
+\caption{ Concordance between each developer in each repository}
+\label{tab:2}
+\begin{tabular}{llllll}
+\toprule[0.3mm]%{\smallskip}
+  & Nova\kern 1pc & Cinder\kern 1pc & Horizon\kern 1pc & Neutron\kern 1pc & Total\\\hline
+D1 and D2  \kern 1pc & (44/63) 70\%\kern 1pc & (40/52) 77\%\kern 1pc & (37/62) 60\%\kern 1pc & - \kern 1pc& 68\% \\
+D1 and D3  \kern 1pc &  -\kern 1pc & (46/63) 73\%\kern 1pc & (48/63) 76\%\kern 1pc & (26/42) 62\%\kern 1pc & 71 \% \\
+D2 and D3  \kern 1pc & (41/62) 66\%\kern 1pc & (10/10) 100\%\kern 1pc  & - \kern 1pc& -\kern 1pc  &  71\% \\
+\bottomrule[0.3mm]
+\end{tabular} }
+\end{center}
+\end{table*}
+
+
+\subsection{Second Stage}
+\label{sec:resultsSS}
+
+%\begin{table}[htb]
+%\begin{center} {\footnotesize
+%\caption{ Probability of cause the bug depending on how many previous commits had the bug report}
+%\label{secondStage}
+%\begin{tabular}{lcc}
+%\toprule[0.3mm]
+%  & \multicolumn{1}{c}{One previous } & \multicolumn{1}{c}{More than one previous} \\
+%  & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit} \\\hline
+%\raisebox{1ex}{Responsible} & 75.86\% & 46.32\% \\[0ex]
+%\raisebox{1ex}{Not responsible} & 6.9\% & 44.21\%\\[0ex]
+%\raisebox{1ex}{Undecided} & 17.24\% & 9.47\%\\[0ex]
+%\bottomrule[0.3mm]
+%\end{tabular} }
+%\end{center}
+%\end{table}
+
+\section{Discussion}
+\label{sec:discussion}
+%This section presents first the threats to the validity of our study. Then, it discusses the possible applications and introduces the work that still has to be done. 
+
+\subsection{Threats to validity}
+\label{sec:threats}
+The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
+
+In addition our model has threats, external and internal, that make our model not 100\% valid. The internal threats are following:
+
+\begin{itemize}
+    \item We have not taken into account errors that have been classified into \textit{Undecided}.
+    \item There could be some lax criteria involving the subjective opinion of the reviewers.
+    \item We are not experts in analyzing and classifying tickets, and our inexperience may have influenced the results of the analysis.
+    \item We are only using part of the information that the ticket provides, like comments and text. There could be a recognized pattern, unknown at first sight, that involves other parts of the information, or the whole information.
+\end{itemize}
+
+The external threats, related to the researchers that have conducted the classification, are following:
+
+\begin{itemize}
+    \item The word \textit{bug} is continuously mentioned in the description and commit of a ticket even when we found it is not an error. This could lead to the incorrect classification during the reviewing process.
+    \item Some tickets are not explicitly described, which could increase the percentage of \textit{Undecided}. This is especially true if the reviewers are not from OpenStack.
+\end{itemize}
+
+Once we have all the tickets analyzed by diferents developers who have used a double blind, how to proceed if there are discordances between them:
+\begin{enumerate}
+\item Should they discuss after their analysis to reach a better classification?, Should the tool provide this?
+\item Does the Bug report only the same ticket classified as Bug report for all the developers?
+\end{enumerate}
+
+\section{Conclusions and Future Work}
+\label{sec:conclusions}
+
+%In the preliminary results we have observed that the current premise, based on the SZZ algorithm, does not hold in all cases. Around half of the previous commits analyzed have been identified as responsible for inserting the line with the bug. Thus, the articles based on SZZ algorithm may be based on a wrong assumption. However, a larger number of tickets has to be studied to ascertain that our findings can be generalized. Our idea is contribute with this study in the knowledge about the responsibility practiced by the previous commit in a bug, helping to the software engineering community in the code review process. FIXME: aclarar esta frase que no me queda clara: Our idea is propose a reinterpretation in the responsibility practiced by the previous commit in a bug.
+
+%In the next months, we will carry out another empirical study with a larger sample size to prove that our results can be generalized. In this way, with a larger population we may be able to find certain patterns that we are now omitting. Furthermore, we extend this study to other projects to ascertain that what we have found occurs regardless of the project analyzed, because the OpenStack may be a special project, where the code is evolving continuously. In fact, we can access a huge database of other projects such as Eclipse or Mozilla that will allow us analyze this assumption, and where we will use statistical analysis to compare the results obtained in the different projects.
+
+%In addition, we have developed a tool that automatizes the first stage, displaying all the information used in the analysis in a web page\footnote{\url{http://bugtracking.libresoft.es}}, decreasing the time used in the analysis for the first stage. The future work with the tool will focus on improving and automating the second stage. 
+
+
+%ACKNOWLEDGMENTS are optional
+\section{Acknowledgments}
+This section is optional; it is a location for you
+to acknowledge grants, funding, editing assistance and
+what have you.  In the present case, for example, the
+authors would like to thank Gerald Murray of ACM for
+his help in codifying this \textit{Author's Guide}
+and the \textbf{.cls} and \textbf{.tex} files that it describes.
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+\bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+%
+% ACM needs 'a single self-contained file'!
+%
+%APPENDICES are optional
+%\balancecolumns
+\end{document}
