@@ -278,15 +278,17 @@ The remainder of this paper is structured as follows. First, we present the moti
 
 \section{Related Work}
 \label{sec:related}
-First SZZ, the first algorithm to identifying bug-introducing code changes automatically was described in \cite{sliwerski2005changes}. Currently, is a well-known algorithm called SZZ, which is based on text diferencing to discover modified, added and delete lines between the bug-fix and its previous version. SZZ uses CVS annotate command to identify the last commit that touched these lines.
+The first algorithm to identifying bug-introducing code changes automatically was described in \cite{sliwerski2005changes}. Currently, is a well-known algorithm called SZZ, which is based on text diferencing to discover modified, added and delete lines between the bug-fix and its previous version. SZZ uses CVS annotate command to identify the last commit that touched these lines.
 
-Second, a improvement on SZZ algorithm is described in \cite{kim2006automatic}, the authors used annotation graphs instead of CVS annotation to locate, in previous versions, the affected lines by modification and deletion. Also, they deleting some false positives as blank spaces, changes in the format or changes in the comments.
-Then SZZ revisited\\
+An improvement on SZZ algorithm is described in \cite{kim2006automatic}, the authors used annotation graphs instead of CVS annotation to locate, in previous versions, the affected lines by modification and deletion. Also, they deleting some false positives as blank spaces, changes in the format or changes in the comments.
 
-Then Buginnings \cite{sinha2010buginnings} is not a text-based technique as SZZ, the authors analized the effects of bug-fix changes on program dependences. Taking into account the semantic of the source code they achieved more accuracy identifying the origins of a bug.
+Other methodology to identify the origins of a bug is describes in \cite{sinha2010buginnings}, this work doesn't present a text-based technique as SZZ, the authors analized the effects of bug-fix changes on program dependences. Taking into account the semantic of the source code they achieved more accuracy identifying the origins of a bug.
 
 These two approach have the similar ideas: (1) find the differences between the bug-fix version of and the previous version of the file to recognize those changes done by bug-fix commit. (2) look back in the code revision history until identify which version touched the lines affected in the bug-fix for the last time.
 
+Exists several articles based on SZZ such as \cite{williams2008szz} revisied SZZ algorithm, tracking bug-inducing changes and identify change types of them. Also, in \cite{yangbug} the authors applyed this algorithm to find out what kind of bug-inducing changes are likely to become in a great threat after being marked as bug-fix changes.In addition, new techniques in bug prediction are based in this algotimh such as \cite{kim2008classifying} which was the first work classifying file changes as buggy or clean using change information features and source code terms.
+
+In addition some tools are based on SZZ too such as \cite{} 
 Finally our idea.
 
 \section{Methodology}
@@ -347,7 +349,7 @@ Finally we need to discard some noise presents in our final resulst according to
 
 We validate our methodology anlayzing 459 tickets in OpenStack. OpenStack was particularly of interest because of its continuously evolving due to its very active community. Although its short life, only five years, more than 5 thousand of resarchers and more than 233 thousand of commits with more than 2 Million of lines of code have contributed in the development of the project \footnote{\url{http://activity.openstack.org/dash/browser/}}. Futhermore, all history is saved and available in a version control system, being able to access to its issue tracking system \footnote{\url{https://launchpad.net/openstack}} and the source code review \footnote{\url{https://review.openstack.org/}}
 
-OpenStack is composed by 10 projects, but we only focused in the four more actives in the 2015, Nova, Cinder, Neutron and Horizon as we can see in table \ref{tab:OpenStack}
+OpenStack is composed by 9 projects, but we only focused in the four of them, Nova, Cinder, Neutron and Horizon as we can see in table \ref{tab:OpenStack} these projects are really actives during all their history and in the last year.
 \begin{table}[htb]
 \centering
 %\begin{center} {\footnotesize
@@ -356,16 +358,15 @@ OpenStack is composed by 10 projects, but we only focused in the four more activ
 \begin{tabular}{lll}
 \toprule[0.3mm]%{\smallskip}
   & All History \kern 1pc & Last Year (2015) \\\hline
-Nova    \kern 1pc & - & - \\
-Fuel    \kern 1pc & - & -  \\
-Netron  \kern 1pc & - & - \\
-Openstack-manuals \kern 1pc & - & -  \\
-Horizon \kern 1pc & - & -  \\
-Cinder  \kern 1pc & - & - \\
-Keystone\kern 1pc & - & -  \\
-Heat    \kern 1pc & - & -  \\
-Glance  \kern 1pc & - & - \\
-Tempest \kern 1pc & - & - \\
+Nova    \kern 1pc & 14,558 & 3,283 \\
+Fuel    \kern 1pc & 9,139 & 5,123 \\
+Netron  \kern 1pc & 8,452 & 3,855 \\
+Horizon \kern 1pc & 4,871 & 1,994 \\
+Cinder  \kern 1pc & 4,556 & 1,832 \\
+Keystone\kern 1pc & 4,874 & 1,795  \\
+Heat    \kern 1pc & 6,395 & 2,372  \\
+Glance  \kern 1pc & 2,651 & 723 \\
+Tempest \kern 1pc & 4,141 & 1,312 \\
 \bottomrule[0.3mm]
 \end{tabular} %}
 %\end{center}
