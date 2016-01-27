@@ -226,7 +226,7 @@ This paper tries to shed some light on this area, by analyzing the relationship 
 \section{Introduction}
 \label{sec:introduction}
 
-When a failure is found in the behavoir of a software, the developers try to fix it locating and modifiying the line/s that contains the bug in the source code. It seems reasonable to assign the responsability to insert the bug to the previous modification of this/those lines, \textit{The previous commit}. But in fact, find when and where a bug was injected into the souce code is not a trivial task. 
+When a failure is found in the behavoir of a software, the developers try to fix it locating and modifiying the line/s that contains the bug in the source code. It seems reasonable to assign the previous modification of this/those lines, \textit{The previous commit}, as the cause of the bug. But in fact, find when and where a bug was injected into the souce code is not a trivial task which has largely been ignored due to the data related about the origin of a bug is embedded in the evolution of the software \cite{sinha2010buginnings}. 
 
 In spite of some studies in bug seeding start with this implicit assumption, \textit{"This earlier change is the one that caused the later fixed"} \cite{williams2008szz} or even we can find this assumption in tools that prevent for future bugs; \textit{" We assume that a change/commit is buggy if its modifications has been later altered by a bug-fix commit"} \cite{fejzer2015supporting}. We think that there is not empirical evidence supporting this assumption and we conducted an observational study on fix-bugs, expend significantly effort locating the bug origins into the source code.
 
@@ -278,10 +278,15 @@ The remainder of this paper is structured as follows. First, we present the moti
 
 \section{Related Work}
 \label{sec:related}
-First SZZ\\
-Second Improvement of SZZ\\
+First SZZ, the first algorithm to identifying bug-introducing code changes automatically was described in \cite{sliwerski2005changes}. Currently, is a well-known algorithm called SZZ, which is based on text diferencing to discover modified, added and delete lines between the bug-fix and its previous version. SZZ uses CVS annotate command to identify the last commit that touched these lines.
+
+Second, a improvement on SZZ algorithm is described in \cite{kim2006automatic}, the authors used annotation graphs instead of CVS annotation to locate, in previous versions, the affected lines by modification and deletion. Also, they deleting some false positives as blank spaces, changes in the format or changes in the comments.
 Then SZZ revisited\\
-Then Buginnings\\
+
+Then Buginnings \cite{sinha2010buginnings} is not a text-based technique as SZZ, the authors analized the effects of bug-fix changes on program dependences. Taking into account the semantic of the source code they achieved more accuracy identifying the origins of a bug.
+
+These two approach have the similar ideas: (1) find the differences between the bug-fix version of and the previous version of the file to recognize those changes done by bug-fix commit. (2) look back in the code revision history until identify which version touched the lines affected in the bug-fix for the last time.
+
 Finally our idea.
 
 \section{Methodology}
