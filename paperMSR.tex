@@ -225,10 +225,19 @@ This paper tries to shed some light on this area, by analyzing the relationship 
 
 \section{Introduction}
 \label{sec:introduction}
-- Codigo que era correcto deja de serlo
-- En el momento en el que se introdujo fue un error
-- ¿Código erroneo o hubo otro cambio?
-- Díficil conocer el codigo en todo el contexto 
+
+When a failure is found in the behavoir of a software, the developers try to fix it locating and modifiying the line/s that contains the bug in the source code. It seems reasonable to assign the responsability to insert the bug to the previous moodification of this/those lines, \textit{The previous commit}. But in fact, find when and where a bug was injected into the souce code is not a trivial task. 
+
+In spite of some studies in bug seeding start with this implicit assumption, \textit{"This earlier change is the one that caused the later fixed"} \cite{williams2008szz} or even we can find this assumption in tools that prevent dor future bugs; \textit{" We assume that a change/commit is buggy if its modifications has been later altered by a bug-fix commit"} \cite{fejzer2015supporting}. We think that there is not empirical evidence supporting this assumption and we conducted an observational study on fix-bugs, expend significantly effort locating when the line containing the bug was inserted into the code.
+
+We based on some reasons to suppose that the previous commit doesn't insert the bug. Our main reason is that in a project wich is evolving continuously and where many different developers are working on, the code that before was correct, now can be buggy. Thinking in called APIs, in the moment that this called was written there wasn't any bug and the software works fine, but in the addition of a new feauture or an enhancement the called API should be changed to support this new characteristic, but it didn't it. As a result, the software fails at this line. But in fact, the previous commit which wrote the called API is not responsible, due to the line did't contain any bug at the moment in which was written. 
+
+%- Codigo que era correcto deja de serlo
+%- En el momento en el que se introdujo fue un error
+%- ¿Código erroneo o hubo otro cambio?
+%- Díficil conocer el codigo en todo el contexto 
+
+With our appproach we can identify which are the changes that introduced a bug, and this coul be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improve their methodology.
 %How to plan to apply the knowledge in a way that can benefit software engineers.
 %What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
 
