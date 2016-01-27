@@ -226,20 +226,17 @@ This paper tries to shed some light on this area, by analyzing the relationship 
 \section{Introduction}
 \label{sec:introduction}
 
-When a failure is found in the behavoir of a software, the developers try to fix it locating and modifiying the line/s that contains the bug in the source code. It seems reasonable to assign the responsability to insert the bug to the previous moodification of this/those lines, \textit{The previous commit}. But in fact, find when and where a bug was injected into the souce code is not a trivial task. 
+When a failure is found in the behavoir of a software, the developers try to fix it locating and modifiying the line/s that contains the bug in the source code. It seems reasonable to assign the responsability to insert the bug to the previous modification of this/those lines, \textit{The previous commit}. But in fact, find when and where a bug was injected into the souce code is not a trivial task. 
 
-In spite of some studies in bug seeding start with this implicit assumption, \textit{"This earlier change is the one that caused the later fixed"} \cite{williams2008szz} or even we can find this assumption in tools that prevent dor future bugs; \textit{" We assume that a change/commit is buggy if its modifications has been later altered by a bug-fix commit"} \cite{fejzer2015supporting}. We think that there is not empirical evidence supporting this assumption and we conducted an observational study on fix-bugs, expend significantly effort locating when the line containing the bug was inserted into the code.
+In spite of some studies in bug seeding start with this implicit assumption, \textit{"This earlier change is the one that caused the later fixed"} \cite{williams2008szz} or even we can find this assumption in tools that prevent for future bugs; \textit{" We assume that a change/commit is buggy if its modifications has been later altered by a bug-fix commit"} \cite{fejzer2015supporting}. We think that there is not empirical evidence supporting this assumption and we conducted an observational study on fix-bugs, expend significantly effort locating the bug origins into the source code.
 
-We based on some reasons to suppose that the previous commit doesn't insert the bug. Our main reason is that in a project wich is evolving continuously and where many different developers are working on, the code that before was correct, now can be buggy. Thinking in called APIs, in the moment that this called was written there wasn't any bug and the software works fine, but in the addition of a new feauture or an enhancement the called API should be changed to support this new characteristic, but it didn't it. As a result, the software fails at this line. But in fact, the previous commit which wrote the called API is not responsible, due to the line did't contain any bug at the moment in which was written. 
+The image \ref{fig:1} shows a clear example of we understand as responsible to cause the bug. In the image we can see three different versions of the same file in the history of the control version used in the project. The left code \textit{(1)} was written to fix the bug inserted in the middle code \textit{(2)} and with the \textit{31f08423} as the id of change,the previous commit. The code in the right \textit{(3)} is to ensure that in previous versions of the file did't exist the bug. In this example, the commit \textit{31f08423} inserted for first time the line in where the bug was. And, according to the description of the commit log that fix the bug  \ref{fig:2}, this previous commit is responsible due to used the variable as string when had to be used as in the rest of the code, like as boolean.
 
-%- Codigo que era correcto deja de serlo
-%- En el momento en el que se introdujo fue un error
-%- ¿Código erroneo o hubo otro cambio?
-%- Díficil conocer el codigo en todo el contexto 
+Whereas the image \ref{fig:3} shows a clear example of we understand as no responsible to cause the bug. The bug fix commit log, \ref{fig:4}, describes that in the update of the version, the name of an argument changed causing the failure in the sofware. This change done because of the new requirements in the version doesn't implicate that the previous commit was who inserted the bug.
 
-With our appproach we can identify which are the changes that introduced a bug, and this coul be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improve their methodology.
-%How to plan to apply the knowledge in a way that can benefit software engineers.
-%What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
+We based on some reasons to suppose that the previous commit didn't insert the bug. But, our main idea to support this is that in a project which is evolving continuously and where many different developers are working on, the code that before was correct, now could be buggy. Thinking in called APIs, in the moment that this called was written there wasn't any bug and the software works fine, but in the addition of a new feauture or an enhancement the called API should be changed to support this new characteristic, but it didn't it. As a result, the software fails at this line. But in fact, the previous commit which wrote the called API is not responsible, due to the line did't contain any bug at the moment in which was written. 
+
+Unfortunately, not all times the code analyzed was so easy as the code showed in figures \ref{fig:1} and \ref{fig:3}. So the principal aim of this paper to find the responsible of the bug is to know if the previous commits contained buggy code at the moment in which were added/modifyed or, another change in the software, related to the update of the software and its evolution, caused the bug.
 
 In this paper, we attempt to address the following research question regarding who introduced the bug in the source code.
 \begin{itemize}
@@ -252,22 +249,29 @@ In this paper, we attempt to address the following research question regarding w
 \begin{figure*}
 \centering
 \includegraphics[height=2in, width=7in]{responsible.png}
-\caption{Example of previous commit. The 31f208423 is the previous commit in the line involved in the bug-fix}
-\label{fig:2}       % Give a unique label
+\caption{Example of when the previous commit,31f208423, inserted the bug}
+\label{fig:1}       % Give a unique label
 \end{figure*}
 
 \begin{figure}[htb]
 \centering
 \includegraphics[height=2.4cm]{gerritPrevCommit.png}
 \caption{Description of the bug-fix commit when the previous commit caused the bug}
-\label{fig:3}       % Give a unique label
+\label{fig:2}       % Give a unique label
 \end{figure}
+
+\begin{figure*}[htb]
+\centering
+\includegraphics[height=2in, width=7in]{noResponsible.png}
+\caption{Example of when the previous commit,0dc91bed, did not inserted the bug}
+\label{fig:3}       % Give a unique label
+\end{figure*}
 
 \begin{figure}[htb]
 \centering
 \includegraphics[height=2.4cm]{UpdateFixBug.png}
 \caption{Description of the bug-fix commit when the previous commit dind't cause the bug}
-\label{fig:5}       % Give a unique label
+\label{fig:4}       % Give a unique label
 \end{figure}
 
 The remainder of this paper is structured as follows. First, we present the motivations that support our study,  explaining the current body of knowleadge in section~\ref{sec:related}. Then, Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was inserted in the source code, followed by the results obtained after applaying our approach to OpenStack in Section~\ref{sec:results}. Section~\ref{sec:discussion} discusses potential applications and improvements of our approach. Section~\ref{sec:threats} reports threats to validity. Finally, Section~\ref{sec:conclusions} concludes the article.
@@ -315,19 +319,13 @@ The next part is focusing on analyzing the previous commit in the \textit{Bug Re
 
 The analisys was done manually, and we used \textit{git blame} to see all the previos commit in each line of a involved file. Also, we used \textit{diff} to see all the differences between two files, in our case, the file is going to be the same but in different moment inside the control version system used.
 
-Te procedure following in each file involved in a fix bug is show in the figure \ref{fig:4}, and describes below;
+Te procedure following in each file involved in a fix bug is describing below;
 \begin{enumerate}
   \item git checkout \textit{commmit that fix the bug}, git blame \textit{file involved}. In this step we can see the lines added, modified or deleted by the commit that fix the bug.
   \item git checkout \textit{parent of commmit that fix the bug}, git blame \textit{file involved}. In this step we can see all the previous commits involved in the different lines touched in the fix bug.
   \item git checkout \textit{parent of previous commit}, git blame \textit{file involved}. In this step we can esure that the previous commit inserted these lines.
 \end{enumerate}
 
-\begin{figure*}[htb]
-\centering
-\includegraphics[height=2in, width=7in]{noResponsible.png}
-\caption{Process to discover the commit that caused the bug }
-\label{fig:4}       % Give a unique label
-\end{figure*}
 
 Finally we need to discard some noise presents in our final resulst according to the responsability of the previous commit inserting the bug in the code source. Due to they were not responsibles for cause the bug, we delete those previous commit which presents the following criteria;
 \begin{itemize}
@@ -410,9 +408,9 @@ Also we had measured the concordance in the classification of each developer acc
 \begin{tabular}{llllll}
 \toprule[0.3mm]%{\smallskip}
   & Nova & Cinder & Horizon & Neutron & Total\\\hline
-R1 and R2   & (44) 70\% & (40) 77\%  & (37) 60\% & -        & 68\% \\
-R1 and R3   &  -        & (46) 73\%  & (48) 76\% & (26)62\% & 71 \% \\
-R2 and R3   & (41) 66\% & (10) 100\% & -         & -        &  71\% \\
+R1\&R2   & (44)70\% & (40)77\%  & (37)60\% & -        & 68\% \\
+R1\&R3   &  -        & (46)73\%  & (48)76\% & (26)62\% & 71 \% \\
+R2\&R3   & (41)66\% & (10)100\% & -         & -        &  71\% \\
 \bottomrule[0.3mm]
 \end{tabular} }
 \end{center}
@@ -543,7 +541,10 @@ The external threats, related to the researchers that have conducted the classif
 
 \section{Conclusions}
 \label{sec:conclusions}
-
+The empirical experiment carried out in OpenStack, supported that the current premisse assumed does not hold for a large fraction of the analyzed bugs, because around the half of the previous commits were not responsibles inserting the bug.
+With our results we can identify which ones are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improve their methodology.
+%How to plan to apply the knowledge in a way that can benefit software engineers.
+%What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
 
 
 %ACKNOWLEDGMENTS are optional
