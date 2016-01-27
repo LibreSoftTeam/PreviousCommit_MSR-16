@@ -232,17 +232,6 @@ This paper tries to shed some light on this area, by analyzing the relationship 
 %How to plan to apply the knowledge in a way that can benefit software engineers.
 %What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
 
-%Many efforts on how and why bugs are introduced in the software source code are underway in the software engineering research community. Software source code is affected by many changes, many of them due to failure of the software because of emergent bugs. Concepts such as bug seeding help us to find how and where a bug was inserted in the source code, and which is the responsible line for a bug~\cite{zimmermann2005mining}.
-
-%The current body of knowledge presents a wide collection of tools~\cite{kim2006automatic,fejzer2015supporting} that analyzes the code, and suggest where a potential bug can be found. Other publications describe how to find an error in the source code~\cite{yin2011fixes,zimmermann2006mining}. 
-
-%These articles are based on an implicit assumption: that the line that contains the error was caused by the immediately previous commit as in~\cite{kim2008classifying}, where the authors introduce a new technique to classify changes into two main categories, buggy or clean. In fact they assume the last commit contains the line with the bug. Other authors~\cite{sliwerski2005changes} do not even mention who is the responsible, because they (implicitly) assume the fixed bugs were introduced in the previous commits.
-
-We refer to such \textit{previous commit} that the commit immediately before the bug fix.
-
-%While performing research on the topic, we did not find any empirical evidence that supported this assumption, so we decided to investigate its validity in the case of a large project, such as the OpenStack free/open source cloud computing infrastructure software.
-
-%In order to investigate if this assumption is valid, we formulate following research questions:
 In this paper, we attempt to address the following research question regarding who introduced the bug in the source code.
 \begin{itemize}
     %\item RQ1 : How can tickets which are bug reports be differentiated from those that are not?
@@ -339,13 +328,7 @@ Finally we need to discard some noise presents in our final resulst according to
     \item Changes in the comment.
     \item Updatings in the version of a file. 
 \end{itemize}
-%- Que utilizo 
-%- Donde se encuentra
-%- Como los analizo (Tool)
-%- Que tengo en cuenta en el análisis de los tickets....
-%- Como resultado de analizar los tickets encuentro ...
-%- Despues me interesa los commits anteriores
-%- Que realizo un análisis manual
+
 
 \section{Evaluation}
 \label{sec:evaluation}
@@ -425,66 +408,6 @@ R2 and R3   & (41) 66\% & (10) 100\% & -         & -        &  71\% \\
 \end{tabular} }
 \end{center}
 \end{table}
-
-%The table \ref{tab:1} show the percentage of each researcher after analyzing the tickets, and the number of
-%\subsection{Fist Stage: The Filtering}
-%\label{sec:firstStage}
-%At this stage and with a tool's support developed to classify bug reports from other issues we distinguished the real bug reports in which afterwards analyzed the relation of the bug fixes with their previous commit.
-
-%We use the tool to analyze 459 randomly tickets from the four principal repositories in OpenStack. This tickets could be tagged as either "Fix Commited" or "Fix Released", to be able to localize the patch implemented into de source code in the version repository. They are generally tracked in Launchpad \texttt{Nova},\texttt{Cinder},\texttt{Horizon} and \texttt{Neutron}\footnote{\url{https://bugs.launchpad.net/NameOfRepository}}
-
-%Each ticket has an id unique in Launchpad, which will be referred as \textit{n\_ticket}. Given its id, all information about the bug is publicly available in the issues tracking system\footnote{\url{https://bugs.launchpad.net/cinder/+bug/n_ticket}}. OpenStack uses Gerrit as code review system to see the evolution of each bug report\footnote{\url{https://review.openstack.org/ }}. Specifically we found the code review for each \textit{'n\_ticket'}\footnote{\url{https://review.openstack.org/#/c/n_review}}, where \textit{'n\_review'} is the review unique id for each \textit{'n\_ticket'}. In the code review all the information about the patchset that fixed the bug is shown.
-
-
-
-%Furthermore, due to tool allows carry out a double bind analysis, three researchers, included me, used the tool to classify the 459 tickets. In 417 of the ticktes we used double bind analysis, and only those tickets classified as bug report by two of us, were considered in the next stage to analyze the relevance of their previous commits.
-
-%The table ~\ref{tab:3} shows that the concordance of the developers is high but, also demonstrate the difficulty to classify tickets as bug report or as not bug report, because each developer can have different ideas about a specific ticket. The concordance between the developers could be higer if they were expert in the project.
- 
-%With the methodology at this stage, the researchers obtained a concordance of 70\% in their classification, being able to distinguish 209 bug reports from 292 issues report using the tool.
-
-%\subsubsection{BugTracking: The tool used}
-%\label{sec:tool}
-%The tool was designed to solve the problem of missclassified, providing the researcher with all the relevant information needed to decide if an issue belongs to a bug report or not. The tool is available at\footnote{\url{bugtracking.libresoft.es}} and extracts automatically tickets from the project's repository, and offers a web-based interface which allows for collaboration, traceability and transparency of the identification of bug reports.
-%The webpage provide us different functionalities depend on in which tab we are, next we explain these functionalities.
-
-%\begin{figure*}
-%\centering
-%\includegraphics[height=15cm]{index.png}
-%\caption{Screenshot of Analyze Tab}
-%\label{fig:1}       % Give a unique label
-%\end{figure*}
-
-%\subsection{Second Stage: Responsability of Previous Commit}
-%\label{sec:secondStage}
-%In the second stage, we only focused on the analysis of \textit{Bug Report} group, because this group contained the tickets that we are sure were bug reports. Discarding the \textit{Undecided} group in favour of the \textit{Bug Report} group reduces the accuracy of the experiment due to the fact that some errors are being lost in \textit{Undecided} group. However the \textit{Undecided} group being only 6\% of the bugs under consideration makes us think that this fact does not affect the validity of the final results.
-
-%We focused on analyzing the previous commits involved in a bug fix, understanding previous commit as the last commit that touched the line that has been fixed in the bug fix commit. The image \ref{fig:2} shows a real example in which the commit 31f208423 injected the lines 715, 716 and 717 in the file. But in the line 716, this commit inserted a bug. According to the description of the commmit that fixed the bug, image \ref{fig:3}, the value in the variable of the line 716 had to be boolean, obtaining that the previous commit is responsible to cause the bug.
-
-
-
-%At this stage, we got a list with all the previous commits, which could be where the bug was introduced. We  identifyed a total of 348 previous commits which can be responsible for inserting the line with the bug. When there are more than one commit implicated in the same file is because the bug was inserted in different lines of different commits, but not everyone has to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. After the analysis the responsible can be only one of them, more than one or none. 
-
-%We analyzed a total of 209 tickets in which there were 348 previous commit, which we had to classify into one of the following groups, according to the responsability of the previous commit in the bug fix:
-%\begin{enumerate}
-%  \item It is responsible, when we are sure that the commit inserted the line with the bug.
-%  \item It is not responsible, when we are sure that the commit dind't insert the line with the bug.
-%  \item Undecided, when we cannot be sure if the commit is responsible due to our few knowleadge about the project or when the bug fix only added lines, complicating the analysis.
-%\end{enumerate}
-
-
-%To analyze the lines of the files involved, we used therefore the \texttt{diff} command to display line-by-line difference between the file before and after the bug fix commit. \texttt{diff} is well-known algorithm, extensively explained in the research literature~\cite{ukkonen1985algorithms,myers1986ano}, which is included in any source code management system. \texttt{diff} examines both files and returns the differences found between them, showing the line number.% the necessary modifications which should be done in order to the files match. the differences found between them,showing the line number. %FIXME: de aqui en adelante no entiendo la frase. need to be made for first file and second file to match, that is, returns the differences found between them.
-
-%After analayzed all the previous commit involved in the 209 Bug reports, we have discovered that not all the previous commits inserted the bug. This expecific project, which is continuosly evolving, presents some cases in which the bug was introduced by other actions. A clear example is the changes in called APIs, after the addition of a new feauture the called API fails, due to it requires an extra argument, but in the API there is not any bug.
-
-%Other example is shows in the commit log of a bug fix \ref{fig:5}, the name of a variable changed in the new version causing a failure. This change due to the new requirements in the version doesn't implicate that the previous commit was who inserted the bug, because until the new version the system doesn't fail.
-
-%\section{Results}
-%\label{sec:results}
-
-%\subsection{Fist Stage}
-%\label{sec:resultsFS}
-%We have manually analyzed 459 different tickets with support of the present tool, 125 from Cinder, 125 fron Nova, 125 from Horizon and 84 from Neutron. The table \ref{tab:1} show the percentage of each researcher after analyzing the tickets, 417 tickets were analyzed by two different researchers, 
 
 
 
