@@ -288,7 +288,7 @@ These two approach have the similar ideas: (1) find the differences between the 
 
 Exists several articles based on SZZ such as \cite{williams2008szz} revisied SZZ algorithm, tracking bug-inducing changes and identify change types of them. Also, in \cite{yangbug} the authors applyed this algorithm to find out what kind of bug-inducing changes are likely to become in a great threat after being marked as bug-fix changes.In addition, new techniques in bug prediction are based in this algotimh such as \cite{kim2008classifying} which was the first work classifying file changes as buggy or clean using change information features and source code terms.
 
-In addition some tools are based on SZZ too such as \cite{} 
+%In addition some tools are based on SZZ too such as \cite{} 
 Finally our idea.
 
 \section{Methodology}
@@ -554,13 +554,14 @@ The external threats, related to the case of the project, are following:
 \end{itemize}
 
 
-\section{Conclusions}
+\section{Conclusions and Future Work}
 \label{sec:conclusions}
 The empirical experiment carried out in OpenStack, supported that the current premisse assumed does not hold for a large fraction of the analyzed bugs, because around the 40\% of the previous commits were not responsibles inserting the bug.
 With our results we can identify which ones are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improve their methodology.
 %How to plan to apply the knowledge in a way that can benefit software engineers.
 %What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
 
+A final field in our future work concerns the full automatization on the methodology could developer an automatic classifier base on the idea that not all the previous commit injected the bug. Another interesting investigation could leadge the same empirical study in a project with a community less active, to can prove if our idea is fullfil in other projects.
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
