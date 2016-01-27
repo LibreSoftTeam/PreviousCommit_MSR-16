@@ -385,15 +385,15 @@ Finally, the researchers identifyed in the same way 292 tickets, that is, their 
 \begin{table}
 \centering
 %\begin{center} {\footnotesize
-\caption{ Classification statistics of each researcher}
+\caption{ Statistics of each researcher in the classification}
 \label{tab:2}
 \begin{tabular}{lllll}
 \toprule[0.3mm]%{\smallskip}
-  & Bug Report\kern 1pc & Not Bug Report & Undecided & Total \\\hline
-R1  & (184) 55\% & (115) 34\% & (35) 11\% & 334 \\
-R2  & (188) 76\% & (54) 22 \% & (7) 3\% & 249 \\
-R3 & (188) 56\% & (116) 35\% & (30) 9\% & 334 \\
-Finally & (209) 72\% & (74) 25\% & (9) 3\% & 292 \\
+  & Bug Report & Not Bug Report & Undecided & Total \\\hline
+R1  & (184)55\% & (115)34\% & (35)11\% & 334 \\
+R2  & (188)76\% & (54)22 \% & (7)3\% & 249 \\
+R3 & (188)56\% & (116)35\% & (30)9\% & 334 \\
+Finally & (209)72\% & (74)25\% & (9)3\% & 292 \\
 \bottomrule[0.3mm]
 \end{tabular} %}
 %\end{center}
@@ -499,7 +499,12 @@ Finally we wanted to know the responsability preactised by each previous commit 
 
 \section{Discussion}
 \label{sec:discussion}
-
+\fbox{\begin{minipage}{25em}
+\textbf{RQ1:} asdasdasdasdasdasdsaddasdadasdasd
+\end{minipage}}
+\fbox{\begin{minipage}{25em}
+\textbf{RQ2:} asdasdasdasdasdasdsaddasdadasdasd
+\end{minipage}}
 - Como se responden las RQ1 y RQ2
 - No todos los casos son tan claros como los mostrados en los ejemplos ....
 - Casuistica del common juidment
@@ -520,28 +525,32 @@ How to proceed if looking for the responsability of a bug when only added lines 
 
 \section{Threats to validity}
 \label{sec:threats}
-The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
+%The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
+The size of the tickets extracted form the Launcpad is medium, but doing the analisys manually we are sure that the results present in this paper are valid, being sure that the previous commits classifyed as not responsible, they are. 
 
-In addition our model has threats, external and internal, that make our model not 100\% valid. The internal threats are following:
+Although, we understand that the model presented has some threats, external and internal, that make our model not 100\% valid. The internal threats related to the researchers that have conducted the study are following:
 
 \begin{itemize}
-    \item We have not taken into account errors that have been classified into \textit{Undecided}.
-    \item There could be some lax criteria involving the subjective opinion of the reviewers.
-    \item We are not experts in analyzing and classifying tickets, and our inexperience may have influenced the results of the analysis.
-    \item We are only using part of the information that the ticket provides, like comments and text. There could be a recognized pattern, unknown at first sight, that involves other parts of the information, or the whole information.
+    \item We have not taken into account errors that have been classified into \textit{Undecided}, and probably we are lost some real bug reports belonging this group .
+    \item There could be some lax criteria involving the subjective opinion of the researchers.
+    \item The researchers are not experts in OpenStack, and our inexperience may have influenced the results of the analysis.
+    \item We are only using part of the information that the ticket provides, like comments and text. There could be a recognized pattern in teh data, unknown at first sight, that involves other parts of the information.
+    \item Although we use a random script to extract the tickets reported in during the last year, 2015, from the launchpad, in this year could be some bias unidentified.
+    \item In case of the researchers didn't find the information to know if the previous commit inserted the bug or in contrast, it was caused by the evolution of the software. They keep the traditionalist thought, classify these previous commits are responsibles.
 \end{itemize}
 
-The external threats, related to the researchers that have conducted the classification, are following:
+The external threats, related to the case of the project, are following:
 
 \begin{itemize}
     \item The word \textit{bug} is continuously mentioned in the description and commit of a ticket even when we found it is not an error. This could lead to the incorrect classification during the reviewing process.
     \item Some tickets are not explicitly described, which could increase the percentage of \textit{Undecided}. This is especially true if the reviewers are not from OpenStack.
+    \item OpenStack is a special project put down a constant evolution due to their active community of developers. Maybe, in other projects with less commits per year the statistics about the responsability of previous commit change.
 \end{itemize}
 
 
 \section{Conclusions}
 \label{sec:conclusions}
-The empirical experiment carried out in OpenStack, supported that the current premisse assumed does not hold for a large fraction of the analyzed bugs, because around the half of the previous commits were not responsibles inserting the bug.
+The empirical experiment carried out in OpenStack, supported that the current premisse assumed does not hold for a large fraction of the analyzed bugs, because around the 40\% of the previous commits were not responsibles inserting the bug.
 With our results we can identify which ones are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improve their methodology.
 %How to plan to apply the knowledge in a way that can benefit software engineers.
 %What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
