@@ -225,6 +225,10 @@ This paper tries to shed some light on this area, by analyzing the relationship 
 
 \section{Introduction}
 \label{sec:introduction}
+- Codigo que era correcto deja de serlo
+- En el momento en el que se introdujo fue un error
+- ¿Código erroneo o hubo otro cambio?
+- Díficil conocer el codigo en todo el contexto 
 %How to plan to apply the knowledge in a way that can benefit software engineers.
 %What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
 
@@ -241,22 +245,112 @@ We refer to such \textit{previous commit} that the commit immediately before the
 %In order to investigate if this assumption is valid, we formulate following research questions:
 In this paper, we attempt to address the following research question regarding who introduced the bug in the source code.
 \begin{itemize}
-    \item RQ1 : How can tickets which are bug reports be differentiated from those that are not?
-    \item RQ2:  How often is the bug caused in the previous commit?
+    %\item RQ1 : How can tickets which are bug reports be differentiated from those that are not?
+     \item RQ1:  How I can know that a change was done to fix a bug in the source code? How I can identify them?
+    %\item RQ2:  How often is the bug caused in the previous commit?
+     \item RQ2:  In which cases the previous commit/s are responsible to cause the bug?
 \end{itemize}
 
-The remainder of this paper is structured as follows. First, we present the motivations that support our study,  explaining the current problem in section~\ref{sec:assumption}. Then, Section~\ref{sec:caseStudy} describes our empirical study in an open source project such as OpenStack, followed by the results in Section~\ref{sec:results}. Section~\ref{sec:discussion} discusses potential applications and improvements of our approach. Section~\ref{sec:threats} reports threats to validity. Finally, Section~\ref{sec:related} presenst the actual body of knowdeadge about who caused the bug and Section~\ref{sec:conclusions} concludes the article.
+\begin{figure*}
+\centering
+\includegraphics[height=2in, width=7in]{responsible.png}
+\caption{Example of previous commit. The 31f208423 is the previous commit in the line involved in the bug-fix}
+\label{fig:2}       % Give a unique label
+\end{figure*}
 
-\section{The Current Assumption}
-\label{sec:assumption}
+\begin{figure}[htb]
+\centering
+\includegraphics[height=2.4cm]{gerritPrevCommit.png}
+\caption{Description of the bug-fix commit when the previous commit caused the bug}
+\label{fig:3}       % Give a unique label
+\end{figure}
 
-- Problem of missclassification\\
-- Problem of little empirical evidence about the hypotesis.\\
+\begin{figure}[htb]
+\centering
+\includegraphics[height=2.4cm]{UpdateFixBug.png}
+\caption{Description of the bug-fix commit when the previous commit dind't cause the bug}
+\label{fig:5}       % Give a unique label
+\end{figure}
 
-\section{The Case of Study}
-\label{sec:caseStudy}
+The remainder of this paper is structured as follows. First, we present the motivations that support our study,  explaining the current body of knowleadge in section~\ref{sec:related}. Then, Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was inserted in the source code, followed by the results obtained after applaying our approach to OpenStack in Section~\ref{sec:results}. Section~\ref{sec:discussion} discusses potential applications and improvements of our approach. Section~\ref{sec:threats} reports threats to validity. Finally, Section~\ref{sec:conclusions} concludes the article.
 
-OpenStack was particularly of interest because of its continuously evolving due to its very active community. Although its short life, only five years, more than 5 thousand of resarchers and more than 233 thousand of commits with more than 2 Million of lines of code have contributed in the development of the project \footnote{\url{http://activity.openstack.org/dash/browser/}}. Futhermore, all history is saved and available in a version control system, being able to access to its issue tracking system \footnote{\url{https://launchpad.net/openstack}} and the source code review \footnote{\url{https://review.openstack.org/}}
+\section{Related Work}
+\label{sec:related}
+First SZZ\\
+Second Improvement of SZZ\\
+Then SZZ revisited\\
+Then Buginnings\\
+Finally our idea.
+
+\section{Methodology}
+\label{sec:methodology}
+%We present our approach to identify how and where a bug was inserted into the source code, causing a later fix. 
+We extract all the data necesary to analyze when the bug was inserted from the issue tracking system and the code review system used by the project we are analyzing. OpenStack uses Launchpad\footnote{\url{https://launchpad.net/openstack}} and Gerrit\footnote{\url{https://review.openstack.org/}}.
+
+The Launchapd of each project works with issues reports called tickets, which describe bug reports, feature requests, maintenance tickets, and even design discussions. But, in our study we are only interested in those tickets that describe a bug report and, in addition, have been closed with a merged in the code source to fix the bug. In this bug reports we can find a comment with the link of Gerrit where the bug was fixed. Is in Gerrit where we can see all the patchsets proposed and the comments done by the reviewers. 
+
+\subsection{Fist Stage: The Filtering}
+\label{sec:firstStage}
+In our approach, first of all we must identifying which of those issues extracted from Launchapd are bug reports. But, this is not a trivial task and we performed this identification using a web tool\footnote{\url{bugtracking.libresoft.es}} development to provide the researcher with all the relevant information needed to decide if an issue corresponds to a bug report or not. The tool uses information extracted automatically from the project repositories, and offers a web-based interface which allows for collaboration, traceability and transparency of the identification of bug reports.
+
+During the identification of the issues we have to take into account the next parameters for each ticket, the title and the description of the issue report and the description of the fix commit. Also, the code changes if neither the descriptions and the comments clarified the underlying ticket. Each ticket was then categorized into one of three following groups.
+\begin{enumerate}
+  \item The ticket describes a bug report.
+  \item The ticket describes a feature, an optimization code, changes in test files or other not bug reports.
+  \item The ticket presents a vague description and cannot be classified without doubts.
+\end{enumerate}
+
+Henceforth, we will refer to Group 1 as \textit{Bug Report}, Group 2 as \textit{Not Bug Report} and Group 3 as \textit{Undecided}.
+
+As result of analyze the tickets, main differences extracting data and to classifying tickets were found. So, we agree to follow the next four criteria: 
+\begin{itemize}
+    \item When there are only test files in the ticket, we classified it as note being a bug report. Test files in a ticket will not be analyzed, they are indispensables and used as testing method to determine whether the code is fit for use. Sometimes the developers inserted the bug only in the test files, in these cases the ticket was not considered as bug report because the software works as expected only failed the test.
+    \item When the title described optimization, deletion of a dead code or the implementation of new characteristics, our criteria indicated that it was not a bug report because there is no failure. 
+    \item When the title described the program as not working as expected, our criteria indicated that it was a bug report. 
+    \item When the title described that updates were required, our criteria indicated that it was a bug report. We consider all tickets that require updating as bug reports, because updating a software hints to the software not operating as expected. 
+\end{itemize}
+
+Sometimes we were unable to answer all the questions due to having insufficient data or because of the complexity of the issue. In this case, the ticket was classified into the \textit{Undecided} group.
+\subsection{Second Stage: Responsability of Previous Commit}
+\label{sec:secondStage}
+The next part is focusing on analyzing the previous commit in the \textit{Bug Report} group. For that, we had to analyze the lines involved in the bug fix, in the commit parent of the bug fix commit, and be sure that the lines was inserted/modified in the previous commit. This, way we can sure that the previous commit didn't copied any line that contained the bug, because in this case, the previous commit is not responsible to cause the bug. 
+
+The analisys was done manually, and we used \textit{git blame} to see all the previos commit in each line of a involved file. Also, we used \textit{diff} to see all the differences between two files, in our case, the file is going to be the same but in different moment inside the control version system used.
+
+Te procedure following in each file involved in a fix bug is show in the figure \ref{fig:4}, and describes below;
+\begin{enumerate}
+  \item git checkout \textit{commmit that fix the bug}, git blame \textit{file involved}. In this step we can see the lines added, modified or deleted by the commit that fix the bug.
+  \item git checkout \textit{parent of commmit that fix the bug}, git blame \textit{file involved}. In this step we can see all the previous commits involved in the different lines touched in the fix bug.
+  \item git checkout \textit{parent of previous commit}, git blame \textit{file involved}. In this step we can esure that the previous commit inserted these lines.
+\end{enumerate}
+
+\begin{figure*}[htb]
+\centering
+\includegraphics[height=2in, width=7in]{noResponsible.png}
+\caption{Process to discover the commit that caused the bug }
+\label{fig:4}       % Give a unique label
+\end{figure*}
+
+Finally we need to discard some noise presents in our final resulst according to the responsability of the previous commit inserting the bug in the code source. Due to they were not responsibles for cause the bug, we delete those previous commit which presents the following criteria;
+\begin{itemize}
+    \item Blank lines
+    \item Format changes
+    \item Copied lines
+    \item Changes in the comment.
+    \item Updatings in the version of a file. 
+\end{itemize}
+%- Que utilizo 
+%- Donde se encuentra
+%- Como los analizo (Tool)
+%- Que tengo en cuenta en el análisis de los tickets....
+%- Como resultado de analizar los tickets encuentro ...
+%- Despues me interesa los commits anteriores
+%- Que realizo un análisis manual
+
+\section{Evaluation}
+\label{sec:evaluation}
+
+We validate our methodology anlayzing 459 tickets in OpenStack. OpenStack was particularly of interest because of its continuously evolving due to its very active community. Although its short life, only five years, more than 5 thousand of resarchers and more than 233 thousand of commits with more than 2 Million of lines of code have contributed in the development of the project \footnote{\url{http://activity.openstack.org/dash/browser/}}. Futhermore, all history is saved and available in a version control system, being able to access to its issue tracking system \footnote{\url{https://launchpad.net/openstack}} and the source code review \footnote{\url{https://review.openstack.org/}}
 
 OpenStack is composed by 10 projects, but we only focused in the four more actives in the 2015, Nova, Cinder, Neutron and Horizon as we can see in table \ref{tab:OpenStack}
 \begin{table}[htb]
@@ -267,192 +361,148 @@ OpenStack is composed by 10 projects, but we only focused in the four more activ
 \begin{tabular}{lll}
 \toprule[0.3mm]%{\smallskip}
   & All History \kern 1pc & Last Year (2015) \\\hline
-Nova    \kern 1pc & (184) 55\% & (115) 34\%  \\
-Fuel    \kern 1pc & (188) 76\% & (54) 22 \%  \\
-Netron  \kern 1pc & (188) 56\% & (116) 35\% \\
-Openstack-manuals \kern 1pc & (184) 55\% & (115) 34\%  \\
-Horizon \kern 1pc & (188) 76\% & (54) 22 \%  \\
-Cinder  \kern 1pc & (188) 56\% & (116) 35\% \\
-Keystone\kern 1pc & (184) 55\% & (115) 34\%  \\
-Heat    \kern 1pc & (188) 76\% & (54) 22 \%  \\
-Glance  \kern 1pc & (188) 56\% & (116) 35\% \\
-Tempest \kern 1pc & (188) 56\% & (116) 35\% \\
+Nova    \kern 1pc & - & - \\
+Fuel    \kern 1pc & - & -  \\
+Netron  \kern 1pc & - & - \\
+Openstack-manuals \kern 1pc & - & -  \\
+Horizon \kern 1pc & - & -  \\
+Cinder  \kern 1pc & - & - \\
+Keystone\kern 1pc & - & -  \\
+Heat    \kern 1pc & - & -  \\
+Glance  \kern 1pc & - & - \\
+Tempest \kern 1pc & - & - \\
 \bottomrule[0.3mm]
 \end{tabular} %}
 %\end{center}
 \end{table}
 
-In this four projects we analized the relationship of bug fixes with their previous commits. In order to that, we extract a total of 459 tickets from this projects, in which we should be sure that the bug fixes come from a bug report, because two of five issues are misclassified \cite{herzig2013s} and this should cause bias in our final results.
+In this four projects we analized the relationship of bug fixes with their previous commits. In order to identify the moment in which the bug was injected into the source code. The first stage we did automatically using the tool and a double bind between three researchers, three PhD student  included me. The second stage was done manually and only me was involved analizing this relationship. %that, we extract a total of 459 tickets from this projects, in which we should be sure that the bug fixes come from a bug report, because two of five issues are misclassified \cite{herzig2013s} and this should cause bias in our final results.
 
-\subsection{Fist Stage: The Filtering}
-\label{sec:firstStage}
-At this stage and with a tool's support developed to classify bug reports from other issues we distinguished the real bug reports in which afterwards analyzed the relation of the bug fixes with their previous commit.
+\section{Results}
+\label{sec:results}
 
-We use the tool to analyze 459 randomly tickets from the four principal repositories in OpenStack. This tickets could be tagged as either "Fix Commited" or "Fix Released", to be able to localize the patch implemented into de source code in the version repository. They are generally tracked in Launchpad \texttt{Nova},\texttt{Cinder},\texttt{Horizon} and \texttt{Neutron}\footnote{\url{https://bugs.launchpad.net/NameOfRepository}}
+We extracted a total of 459 different tickets from the Launchpad of the four principal projects in OpenStack, 125 tickets from Nova, 125 tickets from cinder, 125 tickets from Horizon and 84 tickets from Neutron. These tickets first, were analized to identify those ones which were real bug reports. And secondly, each file was analyzed to obtain which previous commit inserted the bug causing the failure of the system and reporting the bug report. 
 
-Each ticket has an id unique in Launchpad, which will be referred as \textit{n\_ticket}. Given its id, all information about the bug is publicly available in the issues tracking system\footnote{\url{https://bugs.launchpad.net/cinder/+bug/n_ticket}}. OpenStack uses Gerrit as code review system to see the evolution of each bug report\footnote{\url{https://review.openstack.org/ }}. Specifically we found the code review for each \textit{'n\_ticket'}\footnote{\url{https://review.openstack.org/#/c/n_review}}, where \textit{'n\_review'} is the review unique id for each \textit{'n\_ticket'}. In the code review all the information about the patchset that fixed the bug is shown.
+\subsection{Fist Stage}
+\label{sec:resultsFS}
 
-The parameters analyzed for each ticket, to distinguish bug reports from others, were the title and the description of the issue report and the description of the fix commit. Also, the code changes if neither the descriptions and the comments clarified the underlying ticket. Each ticket was then categorized into one of three following groups.
-\begin{enumerate}
-  \item The ticket describes a bug report.
-  \item The ticket describes a feature, an optimization code, changes in test files or other not bug reports.
-  \item The ticket presents a vague description and cannot be classified without doubts.
-\end{enumerate}
+We classify a total of 459 tickets using the tool. In 417 of the ticktes, we used double bind analysis, and only those tickets classified as bug report by two of us, were considered in the next stage to analyze the relevance of their previous commits.
 
-Henceforth, we will refer to Group 1 as \textit{Bug Report}, Group 2 as \textit{Not Bug Report} and Group 3 as \textit{Undecided}.
+The table \ref{tab:2} shows the percentage of each researcher after analyzing the tickets, and the number of tickets classifyed identically by two different researchers. Obtaining that the researchers R1 and R2 had a similar data in their results, whereas research R2 got results significantly differents with a higher number of tickets classifyed as Bug Report.
+ 
+Finally, the researchers identifyed in the same way 292 tickets, that is, their results matched in a 70\% of the cases. Obtaining 209 tickets classifyed as Bug report, 74 tickets classifyed as Not Bug Report and 9 tickets classifyed as Undecided.
 
-The researchers found main differences to extract data or to classify. In case of disagreement about the ticket classification among researchers, four criteria were used:
-\begin{itemize}
-    \item When there are only test files in the ticket, we classified it as note being a bug report. Test files in a ticket will not be analyzed, they are indispensables and used as testing method to determine whether the code is fit for use. Sometimes the developers inserted the bug only in the test files, in these cases the ticket was not considered as bug report because the software works as expected only failed the test.
-    \item When the title described a new feature, our criteria indicated that it was not a bug report. New features are not considered bug reports, because there is no failure. The optimization, deletion of a dead code or the implementation of new characteristics are included in this criteria. 
-    \item When the title described the program as not working as expected, our criteria indicated that it was a bug report. Sometimes the bug is not in a main function which prevents \texttt{Cinder} from working, because a developer has considered it an important bug, although not relatively important. But it is not working as he/she expected. 
-    \item When the title described that updates were required, our criteria indicated that it was a bug report. We consider all tickets that require updating as bug reports, because updating a software hints to the software not operating as expected. 
-\end{itemize}
+\begin{table}
+\centering
+%\begin{center} {\footnotesize
+\caption{ Classification statistics of each researcher}
+\label{tab:2}
+\begin{tabular}{lllll}
+\toprule[0.3mm]%{\smallskip}
+  & Bug Report\kern 1pc & Not Bug Report & Undecided & Total \\\hline
+R1  & (184) 55\% & (115) 34\% & (35) 11\% & 334 \\
+R2  & (188) 76\% & (54) 22 \% & (7) 3\% & 249 \\
+R3 & (188) 56\% & (116) 35\% & (30) 9\% & 334 \\
+Finally & (209) 72\% & (74) 25\% & (9) 3\% & 292 \\
+\bottomrule[0.3mm]
+\end{tabular} %}
+%\end{center}
+\end{table}
 
-Sometimes we were unable to answer all the questions due to having insufficient data or because of the complexity of the issue. In this case, the ticket was classified into the \textit{Undecided} group. 
+Also we had measured the concordance in the classification of each developer according to the project analized. The table \ref{tab:3} shows that the concordante got between all the three research was very similar, around a 70\%. Furthermore, the concordance form each researcher with the rest alwas was up to 60\%. 
 
-Furthermore, due to tool allows carry out a double bind analysis, three researchers, included me, used the tool to classify the 459 tickets. In 417 of the ticktes we used double bind analysis, and only those tickets classified as bug report by two of us, were considered in the next stage to analyze the relevance of their previous commits.
-
-The table \ref{tab:1} show the percentage of each researcher after analyzing the tickets, and the number of tickets classifyed identically by two different researchers.
-
-
-\begin{table*}[htb]
+\begin{table}[htb]
 \begin{center} {\footnotesize
 \caption{ Concordance between each developer in each repository}
 \label{tab:3}
 \begin{tabular}{llllll}
 \toprule[0.3mm]%{\smallskip}
-  & Nova\kern 1pc & Cinder\kern 1pc & Horizon\kern 1pc & Neutron\kern 1pc & Total\\\hline
-D1 and D2  \kern 1pc & (44/63) 70\%\kern 1pc & (40/52) 77\%\kern 1pc & (37/62) 60\%\kern 1pc & - \kern 1pc& 68\% \\
-D1 and D3  \kern 1pc &  -\kern 1pc & (46/63) 73\%\kern 1pc & (48/63) 76\%\kern 1pc & (26/42) 62\%\kern 1pc & 71 \% \\
-D2 and D3  \kern 1pc & (41/62) 66\%\kern 1pc & (10/10) 100\%\kern 1pc  & - \kern 1pc& -\kern 1pc  &  71\% \\
+  & Nova & Cinder & Horizon & Neutron & Total\\\hline
+R1 and R2   & (44) 70\% & (40) 77\%  & (37) 60\% & -        & 68\% \\
+R1 and R3   &  -        & (46) 73\%  & (48) 76\% & (26)62\% & 71 \% \\
+R2 and R3   & (41) 66\% & (10) 100\% & -         & -        &  71\% \\
 \bottomrule[0.3mm]
 \end{tabular} }
 \end{center}
-\end{table*}
+\end{table}
 
-The table ~\ref{tab:3} shows that the concordance of the developers is high but, also demonstrate the difficulty to classify tickets as bug report or as not bug report, because each developer can have different ideas about a specific ticket. The concordance between the developers could be higer if they were expert in the project.
+%The table \ref{tab:1} show the percentage of each researcher after analyzing the tickets, and the number of
+%\subsection{Fist Stage: The Filtering}
+%\label{sec:firstStage}
+%At this stage and with a tool's support developed to classify bug reports from other issues we distinguished the real bug reports in which afterwards analyzed the relation of the bug fixes with their previous commit.
+
+%We use the tool to analyze 459 randomly tickets from the four principal repositories in OpenStack. This tickets could be tagged as either "Fix Commited" or "Fix Released", to be able to localize the patch implemented into de source code in the version repository. They are generally tracked in Launchpad \texttt{Nova},\texttt{Cinder},\texttt{Horizon} and \texttt{Neutron}\footnote{\url{https://bugs.launchpad.net/NameOfRepository}}
+
+%Each ticket has an id unique in Launchpad, which will be referred as \textit{n\_ticket}. Given its id, all information about the bug is publicly available in the issues tracking system\footnote{\url{https://bugs.launchpad.net/cinder/+bug/n_ticket}}. OpenStack uses Gerrit as code review system to see the evolution of each bug report\footnote{\url{https://review.openstack.org/ }}. Specifically we found the code review for each \textit{'n\_ticket'}\footnote{\url{https://review.openstack.org/#/c/n_review}}, where \textit{'n\_review'} is the review unique id for each \textit{'n\_ticket'}. In the code review all the information about the patchset that fixed the bug is shown.
+
+
+
+%Furthermore, due to tool allows carry out a double bind analysis, three researchers, included me, used the tool to classify the 459 tickets. In 417 of the ticktes we used double bind analysis, and only those tickets classified as bug report by two of us, were considered in the next stage to analyze the relevance of their previous commits.
+
+%The table ~\ref{tab:3} shows that the concordance of the developers is high but, also demonstrate the difficulty to classify tickets as bug report or as not bug report, because each developer can have different ideas about a specific ticket. The concordance between the developers could be higer if they were expert in the project.
  
-With the methodology at this stage, the researchers obtained a concordance of 70\% in their classification, being able to distinguish 209 bug reports from 292 issues report using the tool.
+%With the methodology at this stage, the researchers obtained a concordance of 70\% in their classification, being able to distinguish 209 bug reports from 292 issues report using the tool.
 
-\subsubsection{BugTracking: The tool used}
-\label{sec:tool}
-The tool was designed to solve the problem of missclassified, providing the researcher with all the relevant information needed to decide if an issue belongs to a bug report or not. The tool is available at\footnote{\url{bugtracking.libresoft.es}} and extracts automatically tickets from the project's repository, and offers a web-based interface which allows for collaboration, traceability and transparency of the identification of bug reports.
-The webpage provide us different functionalities depend on in which tab we are, next we explain these functionalities.
-\begin{enumerate}
-  \item Tab Repository: In this tab we choose which repository of OpenStack we want analyze. Currently the tool supports the four principal repositories: Cinder, Nova, Neutron and Horizon, in which there is more activity.
-  \item Tab Analyze: Is the Tab showed in \ref{fig:1} where the user select/insert an identifyer of a ticket and analyze with all the data displayed if the ticket are a bug report or not.
-  \item Tab Statistics: This tab collects the data saved in the user's repository in GitHub after analyze each ticket, and displays a table with the number of tickets classified as \textit{Bug Report},\textit{Not Bug Report} and \textit{Undecided} in the repository and from each developer involved in the analysis, which name has to be selected previously.
-  \item Tab Modify: In this tab, the user can see all his data saved in the GitHub repository and modify the content of the file that he wants, in case of have inserted a mistake during the analysis.
-\end{enumerate}
+%\subsubsection{BugTracking: The tool used}
+%\label{sec:tool}
+%The tool was designed to solve the problem of missclassified, providing the researcher with all the relevant information needed to decide if an issue belongs to a bug report or not. The tool is available at\footnote{\url{bugtracking.libresoft.es}} and extracts automatically tickets from the project's repository, and offers a web-based interface which allows for collaboration, traceability and transparency of the identification of bug reports.
+%The webpage provide us different functionalities depend on in which tab we are, next we explain these functionalities.
 
-The image \ref{fig:1} shows a screenshot of anlayze tab, the principal feature of the tool where each research can comment and classify the tickets. 
+%\begin{figure*}
+%\centering
+%\includegraphics[height=15cm]{index.png}
+%\caption{Screenshot of Analyze Tab}
+%\label{fig:1}       % Give a unique label
+%\end{figure*}
 
-\begin{figure*}
-\centering
-\includegraphics[height=15cm]{index.png}
-\caption{Screenshot of Analyze Tab}
-\label{fig:1}       % Give a unique label
-\end{figure*}
+%\subsection{Second Stage: Responsability of Previous Commit}
+%\label{sec:secondStage}
+%In the second stage, we only focused on the analysis of \textit{Bug Report} group, because this group contained the tickets that we are sure were bug reports. Discarding the \textit{Undecided} group in favour of the \textit{Bug Report} group reduces the accuracy of the experiment due to the fact that some errors are being lost in \textit{Undecided} group. However the \textit{Undecided} group being only 6\% of the bugs under consideration makes us think that this fact does not affect the validity of the final results.
 
-\subsection{Second Stage: Responsability of Previous Commit}
-\label{sec:secondStage}
-In the second stage, we only focused on the analysis of \textit{Bug Report} group, because this group contained the tickets that we are sure were bug reports. Discarding the \textit{Undecided} group in favour of the \textit{Bug Report} group reduces the accuracy of the experiment due to the fact that some errors are being lost in \textit{Undecided} group. However the \textit{Undecided} group being only 6\% of the bugs under consideration makes us think that this fact does not affect the validity of the final results.
-
-We focused on analyzing the previous commits involved in a bug fix, understanding previous commit as the last commit that touched the line that has been fixed in the bug fix commit. The image \ref{fig:2} shows a real example in which the commit 31f208423 injected the lines 715, 716 and 717 in the file. But in the line 716, this commit inserted a bug. According to the description of the commmit that fixed the bug, image \ref{fig:3}, the value in the variable of the line 716 had to be boolean, obtaining that the previous commit is responsible to cause the bug.
-\begin{figure*}
-\centering
-\includegraphics[height=2in, width=7in]{previouscommit.png}
-\caption{Example of previous commit. The 31f208423 is the previous commit in the line involved in the bug-fix}
-\label{fig:2}       % Give a unique label
-\end{figure*}
-
-\begin{figure}[htb]
-\centering
-\includegraphics[height=2.3cm]{gerritPrevCommit.png}
-\caption{Description of the bug-fix commit}
-\label{fig:3}       % Give a unique label
-\end{figure}
+%We focused on analyzing the previous commits involved in a bug fix, understanding previous commit as the last commit that touched the line that has been fixed in the bug fix commit. The image \ref{fig:2} shows a real example in which the commit 31f208423 injected the lines 715, 716 and 717 in the file. But in the line 716, this commit inserted a bug. According to the description of the commmit that fixed the bug, image \ref{fig:3}, the value in the variable of the line 716 had to be boolean, obtaining that the previous commit is responsible to cause the bug.
 
 
-At this stage, we got a list with all the previous commits, which could be where the bug was introduced. We  identifyed a total of 348 previous commits which can be responsible for inserting the line with the bug. When there are more than one commit implicated in the same file is because the bug was inserted in different lines of different commits, but not everyone has to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. After the analysis the responsible can be only one of them, more than one or none. 
 
-We analyzed a total of 209 tickets in which there were 348 previous commit, which we had to classify into one of the following groups, according to the responsability of the previous commit in the bug fix:
-\begin{enumerate}
-  \item It is responsible, when we are sure that the commit inserted the line with the bug.
-  \item It is not responsible, when we are sure that the commit dind't insert the line with the bug.
-  \item Undecided, when we cannot be sure if the commit is responsible due to our few knowleadge about the project or when the bug fix only added lines, complicating the analysis.
-\end{enumerate}
+%At this stage, we got a list with all the previous commits, which could be where the bug was introduced. We  identifyed a total of 348 previous commits which can be responsible for inserting the line with the bug. When there are more than one commit implicated in the same file is because the bug was inserted in different lines of different commits, but not everyone has to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. After the analysis the responsible can be only one of them, more than one or none. 
 
-For that, we had to analyze the lines involved in the bug fix, in the commit parent of the bug fix commit, and to be sure that the lines was inserted/modified in the previous commit, we have to analyze these lines in the commit parent of the previous commit. This, way we can sure that the previous commit didn't copied any line that contained the bug, because in this case, the previous commit is not responsible to cause the bug. 
+%We analyzed a total of 209 tickets in which there were 348 previous commit, which we had to classify into one of the following groups, according to the responsability of the previous commit in the bug fix:
+%\begin{enumerate}
+%  \item It is responsible, when we are sure that the commit inserted the line with the bug.
+%  \item It is not responsible, when we are sure that the commit dind't insert the line with the bug.
+%  \item Undecided, when we cannot be sure if the commit is responsible due to our few knowleadge about the project or when the bug fix only added lines, complicating the analysis.
+%\end{enumerate}
 
-The analisys was done manually, and we used \textit{git blame} to see all the previos commit in each line of a involved file. In \ref{fig:4}, we can show the steps following to discover the responsible of the bug.
-\begin{enumerate}
-  \item git checkout \textit{commmit that fix the bug}, git blame \textit{file involved}. In this step we can see the lines added, modified or deleted by the commit that fix the bug.
-  \item git checkout \textit{parent of commmit that fix the bug}, git blame \textit{file involved}. In this step we can see all the previous commits involved in the different lines touched in the fix bug.
-  \item git checkout \textit{parent of previous commit}, git blame \textit{file involved}. In this step we can esure that the previous commit inserted these lines.
-\end{enumerate}
-
-\begin{figure*}[htb]
-\centering
-\includegraphics[height=2in, width=7in]{gitBlame.png}
-\caption{Process to discover the commit that caused the bug }
-\label{fig:4}       % Give a unique label
-\end{figure*}
 
 %To analyze the lines of the files involved, we used therefore the \texttt{diff} command to display line-by-line difference between the file before and after the bug fix commit. \texttt{diff} is well-known algorithm, extensively explained in the research literature~\cite{ukkonen1985algorithms,myers1986ano}, which is included in any source code management system. \texttt{diff} examines both files and returns the differences found between them, showing the line number.% the necessary modifications which should be done in order to the files match. the differences found between them,showing the line number. %FIXME: de aqui en adelante no entiendo la frase. need to be made for first file and second file to match, that is, returns the differences found between them.
 
-After analayzed all the previous commit involved in the 209 Bug reports, we have discovered that not all the previous commits inserted the bug. This expecific project, which is continuosly evolving, presents some cases in which the bug was introduced by other actions. A clear example is the changes in called APIs, after the addition of a new feauture the called API fails, due to it requires an extra argument, but in the API there is not any bug.
+%After analayzed all the previous commit involved in the 209 Bug reports, we have discovered that not all the previous commits inserted the bug. This expecific project, which is continuosly evolving, presents some cases in which the bug was introduced by other actions. A clear example is the changes in called APIs, after the addition of a new feauture the called API fails, due to it requires an extra argument, but in the API there is not any bug.
 
-Other example is shows in the commit log of a bug fix \ref{fig:5}, the name of a variable changed in the new version causing a failure. This change due to the new requirements in the version doesn't implicate that the previous commit was who inserted the bug, because until the new version the system doesn't fail.
+%Other example is shows in the commit log of a bug fix \ref{fig:5}, the name of a variable changed in the new version causing a failure. This change due to the new requirements in the version doesn't implicate that the previous commit was who inserted the bug, because until the new version the system doesn't fail.
 
-\begin{figure}[htb]
-\centering
-\includegraphics[height=2.3cm]{UpdateFixBug.png}
-\caption{Description of the bug-fix commit}
-\label{fig:5}       % Give a unique label
-\end{figure}
+%\section{Results}
+%\label{sec:results}
 
-\subsubsection{Discarting False Positives}
-\label{sec:discarting}
-The classification of the previous commits according to its responsability has some noise that we had to delete. These previous commits that changed the format, added blank lines, changed comments or copied lines from the previous commit were discarted due to they were not responsibles for cause the bug.
+%\subsection{Fist Stage}
+%\label{sec:resultsFS}
+%We have manually analyzed 459 different tickets with support of the present tool, 125 from Cinder, 125 fron Nova, 125 from Horizon and 84 from Neutron. The table \ref{tab:1} show the percentage of each researcher after analyzing the tickets, 417 tickets were analyzed by two different researchers, 
 
 
-\section{Results}
-\label{sec:results}
-
-\subsection{Fist Stage}
-\label{sec:resultsFS}
-We have manually analyzed 459 different tickets with support of the present tool, 125 from Cinder, 125 fron Nova, 125 from Horizon and 84 from Neutron. The table \ref{tab:1} show the percentage of each researcher after analyzing the tickets, 417 tickets were analyzed by two different researchers, 
-
-\begin{table*}
-\centering
-%\begin{center} {\footnotesize
-\caption{ Classification statistics of each researcher}
-\label{tab:1}
-\begin{tabular}{lllll}
-\toprule[0.3mm]%{\smallskip}
-  & Bug Report\kern 1pc & Not Bug Report\kern 1pc & Undecided\kern 1pc & Total \\\hline
-Researcher 1 \kern 1pc & (184) 55\% & (115) 34\% & (35) 11\% & 334 \\
-Researcher 2 \kern 1pc & (188) 76\% & (54) 22 \% & (7) 3\% & 249 \\
-Researcher 3 \kern 1pc & (188) 56\% & (116) 35\% & (30) 9\% & 334 \\
-Total Concordance\kern 1pc & 209 & 74 & 6 & 292 \\
-\bottomrule[0.3mm]
-\end{tabular} %}
-%\end{center}
-\end{table*}
 
 \subsection{Second Stage}
 \label{sec:resultsSS}
 
+At this stage, we analyzed the 209 we got a list with all the previous commits and we were be able to classifyed the previous commit/s as Responsible, Not Responsible or Undecided, taken into account that the bug could be inserted in different lines of different commits, but not everyone had to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. In fact, the responsible can be only one of them, more than one or maybe none.
+
+We identifyed a total of 348 previous commits which can be responsible for inserting the line containing the bug. After analizing the Bug Reports and their previous commits and discarded 40 of them because were noise, Table \ref{tab:responsability}, we got that 152 previous commit were responsibles to cause the bug whereas 114 previous commit had not any responsability in the failure of the system, and only in 42 previous commits we were unable to identify the cause of the bug.
+
 \begin{table}[htb]
 \begin{center} {\footnotesize
-\caption{ Probability of cause the bug depending on how many previous commits had the bug report}
-\label{secondStage}
+\caption{ Responsability of each previous commit before and after deleting the noise in the results}
+\label{tab:responsability}
 \begin{tabular}{lcc}
 \toprule[0.3mm]
-  & \multicolumn{1}{c}{After} & \multicolumn{1}{c}{Before} \\
-  & \multicolumn{1}{c}{False Negative} & \multicolumn{1}{c}{False Negative} \\\hline
+  & \multicolumn{1}{c}{Before} & \multicolumn{1}{c}{After} \\
+  & \multicolumn{1}{c}{Deleting Noise} & \multicolumn{1}{c}{Deleting Noise} \\\hline
 \raisebox{1ex}{Responsible} & 152 & 152 \\[0ex]
 \raisebox{1ex}{Not responsible} & 154 & 114 \\[0ex]
 \raisebox{1ex}{Undecided} & 42 & 42 \\[0ex]
@@ -461,28 +511,70 @@ Total Concordance\kern 1pc & 209 & 74 & 6 & 292 \\
 \end{center}
 \end{table}
 
-58 tickets with more than one previous commit and 131 with only one previous commit
+Futhermore, focusing on how many previous commits presented each Bug Report, we obtained that 131 had one previous commit implicated, whereas 58 had more than one previous commit implicated in their file/s. According to Table \ref{tab:secondStage}, from the 131, we obtained that 65 of them inserted the bug, but 30 of them were not responsibles in the failure of the system. And from the 58 which had more than one previous commits, we obtained in total 189 previous commit, where 86 of them were respnsibles and 82 were not responsibles. %Probably, the bug was inserted in different lines of different commits, but not everyone has to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. After the analysis the responsible can be only one of them, more than one or maybe none. 
+
 \begin{table}[htb]
 \begin{center} {\footnotesize
 \caption{ Probability of cause the bug depending on how many previous commits had the bug report}
-\label{secondStage}
+\label{tab:secondStage}
 \begin{tabular}{lcc}
 \toprule[0.3mm]
   & \multicolumn{1}{c}{One previous } & \multicolumn{1}{c}{More than one previous} \\
   & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit} \\\hline
-\raisebox{1ex}{Responsible} & 65\% & 86\% \\[0ex]
-\raisebox{1ex}{Not responsible} & 30\% & 82\%\\[0ex]
-\raisebox{1ex}{Undecided} & 36\% & 11\%\\[0ex]
+\raisebox{1ex}{Responsible}     & 65 & 86 \\[0ex]
+\raisebox{1ex}{Not responsible} & 30 & 82 \\[0ex]
+\raisebox{1ex}{Undecided}       & 36 & 11 \\[0ex]
 \bottomrule[0.3mm]
 \end{tabular} }
 \end{center}
 \end{table}
 
+Also, we looked the distribution of the previous commit in each Bug Report, Table \ref{tab:secondStage2}, we observed that the most commun distribuion in the relationship between previous commit and bug report is one previous commit per Bug Report, following by the second commun distribution, two previous commit per Bug Report.
+\begin{table*}[htb]
+\begin{center} {\footnotesize
+\caption{ Distribution of number of previous commit per Bug Report in each project}
+\label{tab:secondStage2}
+\begin{tabular}{lccccc}
+\toprule[0.3mm]
+  & \multicolumn{1}{c}{One previous} & \multicolumn{1}{c}{two previous} & \multicolumn{1}{c}{three previous} & \multicolumn{1}{c}{four previous} & \multicolumn{1}{c}{+five previous}\\
+  & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit}& \multicolumn{1}{c}{commit}& \multicolumn{1}{c}{commit}\\\hline
+\raisebox{1ex}{Neutron} & 11 & 3 & 2 & 2 & 0 \\[0ex]
+\raisebox{1ex}{Horizon} & 39 & 8 & 3 & 2 & 4 \\[0ex]
+\raisebox{1ex}{Nova} & 44 & 5 & 2 & 4 & 4 \\[0ex]
+\raisebox{1ex}{Cinder} & 37 & 9 & 6 & 2 & 2\\[0ex]
+\raisebox{1ex}{Total} & 131 & 25 & 13 & 10 & 10\\[0ex]
+\bottomrule[0.3mm]
+\end{tabular} }
+\end{center}
+\end{table*}
+
+Finally we wanted to know the responsability preactised by each previous commit in the failure of a system, in other words, we were interested in analize from those cases where exists more than one previous commit, how many of them inserted the bug in the code source, Table \ref{tab:secondStage3}. We obtained that in 8 Bug Reports all the previous commits were responsibles, in 30 Bug reports at least one of their previous commit caused the bug and in 11 bug report none of their previous commits inserted the bug.
+\begin{table*}[htb]
+\begin{center} {\footnotesize
+\caption{ Probability of cause the bug depending on how many previous commits had the bug report}
+\label{tab:secondStage3}
+\begin{tabular}{lccccc}
+\toprule[0.3mm]
+   & \multicolumn{1}{c}{two previous} & \multicolumn{1}{c}{three previous} & \multicolumn{1}{c}{four previous} & \multicolumn{1}{c}{+five previous} & \multicolumn{1}{c}{Total}\\
+  & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit}& \multicolumn{1}{c}{commit}& \multicolumn{1}{c}{commit}\\\hline
+\raisebox{1ex}{All Responsible}          & 4 & 3 & 0 & 1 & 8\\[0ex]
+\raisebox{1ex}{At least one responsible} & 9 & 7 & 5 & 9 & 30\\[0ex]
+\raisebox{1ex}{None Responsible}         & 4 & 2 & 4 & 1 & 11\\[0ex]
+\raisebox{1ex}{Undecided}                & 1 & 0 & 1 & 0 & 2\\[0ex]
+\bottomrule[0.3mm]
+\end{tabular} }
+\end{center}
+\end{table*}
+
+
 \section{Discussion}
 \label{sec:discussion}
 
-This section presents first the threats to the validity of our study. Then, it discusses the possible applications and introduces the work that still has to be done. 
-
+- Como se responden las RQ1 y RQ2
+- No todos los casos son tan claros como los mostrados en los ejemplos ....
+- Casuistica del common juidment
+- Hemos sido conservadores
+-Hemos utilizado la herramienta porque es un proceso complicado
 Once we have all the tickets analyzed by diferents researchers who have used a double blind, how to proceed if there are discordances between them:
 \begin{enumerate}
 \item Should they discuss after their analysis to reach a better classification?, Should the tool provide this?
@@ -516,13 +608,6 @@ The external threats, related to the researchers that have conducted the classif
     \item Some tickets are not explicitly described, which could increase the percentage of \textit{Undecided}. This is especially true if the reviewers are not from OpenStack.
 \end{itemize}
 
-\section{Related Work}
-\label{sec:related}
-First SZZ\\
-Second Improvement of SZZ\\
-Then SZZ revisited\\
-Then Buginnings\\
-Finally our idea.
 
 \section{Conclusions}
 \label{sec:conclusions}
