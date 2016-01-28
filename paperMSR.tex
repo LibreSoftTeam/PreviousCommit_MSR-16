@@ -226,9 +226,9 @@ This paper tries to shed some light on this area, by analyzing the relationship 
 \section{Introduction}
 \label{sec:introduction}
 
-When a failure is found in the behavoir of a software, the developers try to fix it locating and modifiying the line/s that contains the bug in the source code. It seems reasonable to assign the previous modification of this/those lines, \textit{The previous commit}, as the cause of the bug. But in fact, find when and where a bug was injected into the souce code is not a trivial task which has largely been ignored due to the data related about the origin of a bug is embedded in the evolution of the software \cite{sinha2010buginnings}. 
+When a failure is found in the behavoir of a software, the developers try to fix it locating and modifiying the line that contains the bug in the source code. It seems reasonable to assign the previous modification of this line as the cause of the bug, this previous modification is \textit{The previous commit}. But in fact, find when and where a bug was injected into the souce code is not a trivial task which has largely been ignored due to the data related about the origin of a bug is embedded in the evolution of the software \cite{sinha2010buginnings}. 
 
-In spite of some studies in bug seeding start with this implicit assumption, \textit{"This earlier change is the one that caused the later fixed"} \cite{williams2008szz} or even we can find this assumption in tools that prevent for future bugs; \textit{" We assume that a change/commit is buggy if its modifications has been later altered by a bug-fix commit"} \cite{fejzer2015supporting}. We think that there is not empirical evidence supporting this assumption and we conducted an observational study on fix-bugs, expend significantly effort locating the bug origins into the source code.
+In spite of some studies in bug seeding start with this implicit assumption, \textit{"This earlier change is the one that caused the later fixed"} \cite{williams2008szz} or \textit{"The lines affected in the process of fixing a bug are the same one that originated or seeded that bug"} \cite{izquierdo2011developers}.Even, we can find this assumption in tools that prevent for future bugs; \textit{"We assume that a change/commit is buggy if its modifications has been later altered by a bug-fix commit"} \cite{fejzer2015supporting}. We think that there is not empirical evidence supporting this assumption and we conducted an observational study on fix-bugs, expend significantly effort locating the bug origins into the source code.
 
 The image \ref{fig:1} shows a clear example of we understand as responsible to cause the bug. In the image we can see three different versions of the same file in the history of the control version used in the project. The left code \textit{(1)} was written to fix the bug inserted in the middle code \textit{(2)} and with the \textit{31f08423} as the id of change,the previous commit. The code in the right \textit{(3)} is to ensure that in previous versions of the file did't exist the bug. In this example, the commit \textit{31f08423} inserted for first time the line in where the bug was. And, according to the description of the commit log that fix the bug  \ref{fig:2}, this previous commit is responsible due to used the variable as string when had to be used as in the rest of the code, like as boolean.
 
@@ -243,7 +243,7 @@ In this paper, we attempt to address the following research question regarding w
     %\item RQ1 : How can tickets which are bug reports be differentiated from those that are not?
      \item RQ1:  How I can know that a change was done to fix a bug in the source code? How I can identify them?
     %\item RQ2:  How often is the bug caused in the previous commit?
-     \item RQ2:  In which cases the previous commit/s are responsible to cause the bug?
+     \item RQ2:  In which cases the previous commit/s inserted the line with the bug into the source code?
 \end{itemize}
 
 \begin{figure*}
@@ -506,12 +506,12 @@ Finally we wanted to know the responsability preactised by each previous commit 
 \section{Discussion}
 \label{sec:discussion}
 \fbox{\begin{minipage}{25em}
-\textbf{RQ1:} asdasdasdasdasdasdsaddasdadasdasd
+\textbf{RQ1: Using all the information available in the bug tracking system and code review system related a fix-bug, we have obtained that this fix-bug were real Bug Reports in a 72\% of the tickets analyzed} 
 \end{minipage}}
 \fbox{\begin{minipage}{25em}
-\textbf{RQ2:} asdasdasdasdasdasdsaddasdadasdasd
+\textbf{RQ2: We have comfirmed that 50\% of the previous commits analyzed caused the failure in the system, whereas the 37\% of them didn't injected any bug in the code source } 
 \end{minipage}}
-- Como se responden las RQ1 y RQ2
+\\
 - No todos los casos son tan claros como los mostrados en los ejemplos ....
 - Casuistica del common juidment
 - Hemos sido conservadores
