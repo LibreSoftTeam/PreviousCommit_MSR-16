@@ -358,10 +358,17 @@ During the identification of the issues, we have to take into account the next p
   \item The title of the issue report
   \item The description of the issue report
   \item The description of the fix commit
-  \item The changes to the source code, as sometimes neither the descriptions nor the comments clarified the underlying ticket. FIXME: what comments?
+  \item The changes to the source code, as sometimes neither the descriptions nor the comments by developers in the Launchpad an Gerrit of each ticket, clarified the underlying ticket. FIXME: what comments?
 \end{itemize}
 
 FIXME: aqui podemos poner un pantallazo de la interfaz web.
+We can see the web interface of the tool in the image \ref{fig:screenshot}, the left side is used to display the information extracted from Launchapad and Gerrit and the right part is the one in which the users can wirte and classify the ticket into one of the three groups.
+\begin{figure}[ht]
+\centering
+\includegraphics[height=12cm]{index.png}
+\caption{Screenshot of the tool used to classify the tickets}
+\label{fig:screenshot}       % Give a unique label
+\end{figure}
 
 Each ticket was then categorized into one of three following groups:
 
@@ -376,7 +383,7 @@ From the experience of analysing a small number of tickets, we agreed on followi
 \begin{enumerate}
     \item When the ticket title described the program as not working as expected, our criteria indicated that it was a bug report. 
     \item When the title described optimization, deletion of a dead code or the implementation of new characteristics, we agreed not to classify it as a bug report because there is no failure. 
-    \item When the ticket title described that updates were required, we agreed that it was a bug report. We consider all tickets that require updating as bug reports, because updating a software hints to the software not operating as expected. 
+    \item When the ticket title described that updates were required, the ticket is a bug report. We consider all tickets that require updating as bug reports, because updating a software hints to the software not operating as expected. 
     \item When only test files are affected in a ticket, we classified it as not being a bug report. Test files in a ticket were not be analyzed, as we consider they are not a core part of the software and are used as a testing method to determine whether the code is fit for use. When the bug exclusively lies in a test file, the ticket was not considered as bug report because the software still works as expected, only test fails. FIXME: no se repiten las frases?
 \end{enumerate}
 
@@ -385,7 +392,7 @@ Sometimes we were unable to answer all the questions due to having insufficient 
 \subsection{Second Stage: Who caused the Bug?}
 \label{sec:secondStage}
 
-The next part is focused on analyzing the previous commit exclusively in the \textit{Bug Report} group. For that, we had to analyze the lines involved in the bug fix, in the \emph{parent} commit of the bug fix commit, and be sure that the lines were inserted/modified in the previous commit. This way we can be sure that the previous commit did not copy lines that contained the bug, because in that case, the previous commit is not responsible to cause the bug. FIXME: aclarar este parrafo! 
+The next part is focused on analyzing the previous commit exclusively in the \textit{Bug Report} group to identify which line contained the bug and why the software failed, keeping in mind the context of the project. For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added,inserted or modified in the previous commit. This way, we can be sure that we are looking the correct change, because some times although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, is a false positive where the previous commit didn't cause the bug. FIXME: aclarar este parrafo! 
 
 The analysis was done manually. We used \textit{git blame} to see the previous commit for each line of the involved file. Also, we used \textit{diff} to see the differences between the two files, in our case as the file is going to be the same, between the file in two different moments in the control version system.
 
