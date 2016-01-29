@@ -590,7 +590,7 @@ Finally we wanted to know the responsibility practiced by each previous commit i
 \fbox{\begin{minipage}{25em}
 \textbf{RQ2: We have confirmed that 50\% of the previous commits analyzed caused the failure in the system, whereas the 37\% of them didn't injected any bug in the code source } 
 \end{minipage}}
-
+FIXME: Debería hablar sobre los siguientes puntos:
 \begin{enumerate}
  \item No todos los casos son tan claros como los mostrados en los ejemplos ....
  \item Casuistica del common juidment
@@ -605,7 +605,7 @@ Once we have all the tickets analyzed by diferents researchers who have used a d
   \item Does the Bug report only the same ticket classified as Bug report for all the researchers?
 \end{enumerate}
 
-How to proceed if looking for the responsibility of a bug when only added lines are inserted? And we are talking about a bug report not a new feature, these kinds of cases use to be when a researcher forgot check some case inside a function. [reference]
+How to proceed if looking for the responsibility of a bug when only added lines are inserted? And we are talking about a bug report not a new feature, these kinds of cases use to be when a researcher forgot check some case inside a function.
 \begin{enumerate}
 \item Is responsible the function where these lines are content?
 \item Is responsible the last commit that modify something in the function?
@@ -635,12 +635,12 @@ The external threats, related to the case of the project, are following:
     \item Some tickets are not explicitly described, which could increase the percentage of \textit{Undecided}. This is especially true if the reviewers are not from OpenStack.
     \item OpenStack is a special project put down a constant evolution due to their active community of developers. Maybe, in other projects with less commits per year the statistics about the responsibility of previous commit change.
 \end{itemize}
-
+FIXME: Anñadir un link con la web en la que pondré todos los datos y scripts utilizados para los datos.
 
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
 The empirical experiment carried out in OpenStack, supported that the current premise assumed does not hold for a large fraction of the analyzed bugs, because around the 40\% of the previous commits were not responsible inserting the bug.
-With our results we can identify which ones are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improve their methodology.
+With our results we can identify which ones are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improving their methodology.
 %How to plan to apply the knowledge in a way that can benefit software engineers.
 %What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
 
