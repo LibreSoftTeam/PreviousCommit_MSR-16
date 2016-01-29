@@ -133,24 +133,24 @@
 %
 % 1st. author
 \alignauthor
-Gema Rodriguez\\
-       \affaddr{University King Juan Carlos}\\
+Gema Rodr\'iguez\\
+       \affaddr{Universidad Rey Juan Carlos}\\
        %\affaddr{1932 Wallamaloo Lane}\\
        \affaddr{Madrid, Spain}\\
        \email{gerope@libresoft.es}
 % 2nd. author
 \alignauthor
-Jesus M. Gonzalez-Barahon\\
-      \affaddr{University King Juan Carlos}\\
+Jesus M. Gonz\'alez-Barahona\\
+      \affaddr{Universidad Rey Juan Carlos}\\
        %\affaddr{1932 Wallamaloo Lane}\\
        \affaddr{Madrid, Spain}\\
        \email{jgb@gsyc.es}
 % 3rd. author
 \alignauthor Gregorio Robles\\
-       \affaddr{University King Juan Carlos}\\
+       \affaddr{Universidad Rey Juan Carlos}\\
        %\affaddr{1932 Wallamaloo Lane}\\
        \affaddr{Madrid, Spain}\\
-       \email{grex@gsyc.es}
+       \email{grex@gsyc.urjc.es}
 \and  % use '\and' if you need 'another row' of author names
 }
 % There's nothing stopping you putting the seventh, eighth, etc.
@@ -167,9 +167,9 @@ Jesus M. Gonzalez-Barahon\\
 
 \maketitle
 \begin{abstract}
-To fix a bug in a certain software product, some parts of its source code are modified. At first glance, it could seem reasonable that the fixed bug was introduced by the previous modification of those same parts of the source code (the previous commit). In fact, many studies on bug seeding start with this assumption. However, there is little empirical evidence supporting this assumption, and there are reasons to suppose that in some cases the bug was introduced by other actions, such as an older modification, or a change in called APIs.
+It is common practice that developers mark in the versioning system when they are fixing a software bug. At first glance, it could seem reasonable to assume that the fixed bug had been introduced in the previous modification of those same parts of the source code (i.e., in the previous commit). In fact, many studies on bug seeding start with this assumption. However, there is little empirical evidence supporting this assumption, and there are reasons to suppose that in some cases the bug may have been introduced by other actions, such as an older modification, or a change in the API that is being called.
 
-This paper tries to shed some light on this area, by analyzing the relationship of bug fixes with their previous commits. To this end, we conducted an observational study on bug reports, their fixes, and their correspoonding previous commits for OpenStack. Our results show that the mentioned asumption does not hold for a large fraction of the analyzed bugs, which were not introduced by their previous commit.
+This paper tries to shed some light on this topic, by analyzing the relationship of bug fixes with their previous commits. To this end, we conducted an observational study on bug reports, their fixes, and their corresponding previous commits for the OpenStack project. Our results show that the assumption that bugs have been introduced in the previous commit does not hold for a large fraction of the bugs analyzed. FIXME: maybe something more here
 \end{abstract}
 
 
@@ -221,22 +221,22 @@ This paper tries to shed some light on this area, by analyzing the relationship 
 % We no longer use \terms command
 %\terms{Theory}
 
-\keywords{Bug introduction, bug seeding, SZZ algoritm, previous commit}
+\keywords{Bug introduction, bug seeding, SZZ algorithm, previous commit}
 
 \section{Introduction}
 \label{sec:introduction}
 
-When a failure is found in the behavoir of a software, the developers try to fix it locating and modifiying the line that contains the bug in the source code. It seems reasonable to assign the previous modification of this line as the cause of the bug, this previous modification is \textit{The previous commit}. But in fact, find when and where a bug was injected into the souce code is not a trivial task which has largely been ignored due to the data related about the origin of a bug is embedded in the evolution of the software \cite{sinha2010buginnings}. 
+When a failure is found in the behavior of a software, the developers try to fix it locating and modifying the line that contains the bug in the source code. It seems reasonable to assign the previous modification of this line as the cause of the bug, this previous modification is \textit{The previous commit}. But in fact, find when and where a bug was injected into the source code is not a trivial task which has largely been ignored due to the data related about the origin of a bug is embedded in the evolution of the software \cite{sinha2010buginnings}. 
 
-In spite of, some studies in bug seeding start with this implicit assumption, \textit{"This earlier change is the one that caused the later fixed"} \cite{williams2008szz} or \textit{"The lines affected in the process of fixing a bug are the same one that originated or seeded that bug"} \cite{izquierdo2011developers}. Also in \cite{pan2009toward}'s work describing the bug fix patterns we can find this assumption; \textit{"The version before the bug fix revision is the bug version"}. Even, we can find this assumption in tools that prevent for future bugs; \textit{"We assume that a change/commit is buggy if its modifications has been later altered by a bug-fix commit"} \cite{fejzer2015supporting}. Opposite that, we think that there is not empirical evidence supporting this assumption and we conducted an observational study on fix-bugs, expend significantly effort locating the bug origins into the source code and understandig the possible cause taken into account the moment in which this line was inserted as well as the general context of the project.
+In spite of, some studies in bug seeding start with this implicit assumption, \textit{"This earlier change is the one that caused the later fixed"} \cite{williams2008szz} or \textit{"The lines affected in the process of fixing a bug are the same one that originated or seeded that bug"} \cite{izquierdo2011developers}. Also in \cite{pan2009toward}'s work describing the bug fix patterns we can find this assumption; \textit{"The version before the bug fix revision is the bug version"}. Even, we can find this assumption in tools that prevent for future bugs; \textit{"We assume that a change/commit is buggy if its modifications has been later altered by a bug-fix commit"} \cite{fejzer2015supporting}. Opposite that, we think that there is not empirical evidence supporting this assumption and we conducted an observational study on fix-bugs, expend significantly effort locating the bug origins into the source code and understanding the possible cause taken into account the moment in which this line was inserted as well as the general context of the project.
 
-The image \ref{fig:1} shows a clear example of we understand as cause of the bug. In the image we can see three different versions of the same file in the history of the control version used in the project. The code on the left \textit{(1)} was written to fix the bug previously inserted, the code in the middle \textit{(2)} shows the moment in which the bug was inserted by \textit{31f08423} as the id of change,the previous commit. The code on the right \textit{(3)} is to ensure that in previous versions of the file did't exist the bug. In this example, the commit \textit{31f08423} inserted for first time the line in where the bug was. And, according to the description of the commit log that fix the bug \ref{fig:2}, this previous commit cause the failure on the system due to used a variable as string when had to be used as boolean keeping the concordance with the rest of the code.
+The image \ref{fig:1} shows a clear example of we understand as cause of the bug. In the image we can see three different versions of the same file in the history of the control version used in the project. The code on the left \textit{(1)} was written to fix the bug previously inserted, the code in the middle \textit{(2)} shows the moment in which the bug was inserted by \textit{31f08423} as the id of change,the previous commit. The code on the right \textit{(3)} is to ensure that in previous versions of the file did not exist the bug. In this example, the commit \textit{31f08423} inserted for first time the line in where the bug was. And, according to the description of the commit log that fix the bug \ref{fig:2}, this previous commit cause the failure on the system due to used a variable as string when had to be used as Boolean keeping the concordance with the rest of the code.
 
-Whereas the image \ref{fig:3} shows a clear example of we understand as no responsible to cause the bug. In this example, the bug fix commit log \ref{fig:4}, describes that in the update of the version, the name of an argument changed causing the failure in the sofware. This change was done because of the new requirements in the version, and this doesn't implicate that the previous commit inserted the bug, because when the line involved in the fix-bug was inserted by first time, it doesn't contain any bug.
+Whereas the image \ref{fig:3} shows a clear example of we understand as no responsible to cause the bug. In this example, the bug fix commit log \ref{fig:4}, describes that in the update of the version, the name of an argument changed causing the failure in the software. This change was done because of the new requirements in the version, and this doesn't implicate that the previous commit inserted the bug, because when the line involved in the fix-bug was inserted by first time, it doesn't contain any bug.
 
-We based on some reasons such as the explained before to suppose that the previous commit didn't insert the bug. Thus, our main idea to support this is that in a project which is evolving continuously and where many different developers are working on, the code that before was correct, now could be buggy. Thinking in called APIs, in the moment that this called was written there wasn't any bug and the software works fine, but in the addition of a new feauture or an enhancement the called API should be changed to support this new characteristic, but it didn't it. As a result, the software fails at this line. But in fact, the previous commit which wrote the called API is not responsible, due to the line did't contain any bug at the moment in which was written. 
+We based on some reasons such as the explained before to suppose that the previous commit didn't insert the bug. Thus, our main idea to support this is that in a project which is evolving continuously and where many different developers are working on, the code that before was correct, now could be buggy. Thinking in called APIs, in the moment that this called was written there wasn't any bug and the software works fine, but in the addition of a new feature or an enhancement the called API should be changed to support this new characteristic, but it didn't it. As a result, the software fails at this line. But in fact, the previous commit which wrote the called API is not responsible, due to the line did not contain any bug at the moment in which was written. 
 
-Unfortunately, not all times the code analyzed was so easy as the code showed in figures \ref{fig:1} and \ref{fig:3}. So the principal aim of this paper to find the responsible of the bug is to know if the previous commits contained buggy code at the moment in which were added/modifyed or, another change in the software, related to the update of the software and its evolution, caused the bug.
+Unfortunately, not all times the code analyzed was so easy as the code showed in figures \ref{fig:1} and \ref{fig:3}. So the principal aim of this paper to find the responsible of the bug is to know if the previous commits contained buggy code at the moment in which were added/modified or, another change in the software, related to the update of the software and its evolution, caused the bug.
 
 In this paper, we attempt to address the following research question regarding who introduced the bug in the source code.
 \begin{itemize}
@@ -270,23 +270,23 @@ In this paper, we attempt to address the following research question regarding w
 \begin{figure}[htb]
 \centering
 \includegraphics[height=2.4cm]{UpdateFixBug.png}
-\caption{Description of the bug-fix commit when the previous commit dind't cause the bug}
+\caption{Description of the bug-fix commit when the previous commit did not cause the bug}
 \label{fig:4}       % Give a unique label
 \end{figure}
 
-The remainder of this paper is structured as follows. First, we present the motivations that support our study,  explaining the current body of knowleadge in section~\ref{sec:related}. Then, Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was inserted in the source code, followed by the results obtained after applaying our approach to OpenStack in Section~\ref{sec:results}. Section~\ref{sec:discussion} answers the research question suggested in ~\ref{sec:introduction}discusses potential applications and improvements of our approach. Section~\ref{sec:threats} reports threats to validity. Finally, Section~\ref{sec:conclusions} concludes the article.
+The remainder of this paper is structured as follows. First, we present the motivations that support our study,  explaining the current body of knowledge in section~\ref{sec:related}. Then, Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was inserted in the source code, followed by the results obtained after applying our approach to OpenStack in Section~\ref{sec:results}. Section~\ref{sec:discussion} answers the research question suggested in ~\ref{sec:introduction}discusses potential applications and improvements of our approach. Section~\ref{sec:threats} reports threats to validity. Finally, Section~\ref{sec:conclusions} concludes the article.
 
 \section{Related Work}
 \label{sec:related}
-The first algorithm to identifying bug-introducing code changes automatically was described in \cite{sliwerski2005changes}. Currently, is a well-known algorithm called SZZ, which is based on text diferencing to discover modified, added and delete lines between the bug-fix and its previous version. SZZ uses CVS annotate command to identify the last commit that touched these lines.
+The first algorithm to identifying bug-introducing code changes automatically was described in \cite{sliwerski2005changes}. Currently, is a well-known algorithm called SZZ, which is based on text differences to discover modified, added and delete lines between the bug-fix and its previous version. SZZ uses CVS annotate command to identify the last commit that touched these lines.
 
 An improvement on SZZ algorithm is described in \cite{kim2006automatic}, the authors used annotation graphs instead of CVS annotation to locate, in previous versions, the affected lines by modification and deletion. Also, they deleting some false positives as blank spaces, changes in the format or changes in the comments.
 
-Other methodology to identify the origins of a bug is describes in \cite{sinha2010buginnings}, this work doesn't present a text-based technique as SZZ, the authors analized the effects of bug-fix changes on program dependences. Taking into account the semantic of the source code they achieved more accuracy identifying the origins of a bug.
+Other methodology to identify the origins of a bug is describes in \cite{sinha2010buginnings}, this work doesn't present a text-based technique as SZZ, the authors analyzed the effects of bug-fix changes on program dependencies. Taking into account the semantic of the source code they achieved more accuracy identifying the origins of a bug.
 
 These two approach have the similar ideas: (1) find the differences between the bug-fix version of and the previous version of the file to recognize those changes done by bug-fix commit. (2) look back in the code revision history until identify which version touched the lines affected in the bug-fix for the last time.
 
-Exists several articles based on SZZ such as \cite{williams2008szz} revisied SZZ algorithm, tracking bug-inducing changes and identify change types of them. Also, in \cite{yangbug} the authors applyed this algorithm to find out what kind of bug-inducing changes are likely to become in a great threat after being marked as bug-fix changes.In addition, new techniques in bug prediction are based in this algotimh such as \cite{kim2008classifying} which was the first work classifying file changes as buggy or clean using change information features and source code terms.
+Exists several articles based on SZZ such as \cite{williams2008szz} revisited SZZ algorithm, tracking bug-inducing changes and identify change types of them. Also, in \cite{yangbug} the authors applied this algorithm to find out what kind of bug-inducing changes are likely to become in a great threat after being marked as bug-fix changes.In addition, new techniques in bug prediction are based in this algorithm such as \cite{kim2008classifying} which was the first work classifying file changes as buggy or clean using change information features and source code terms.
 
 %In addition some tools are based on SZZ too such as \cite{} 
 Finally our idea.
@@ -294,13 +294,13 @@ Finally our idea.
 \section{Methodology}
 \label{sec:methodology}
 %We present our approach to identify how and where a bug was inserted into the source code, causing a later fix. 
-We extract all the data necesary to analyze when the bug was inserted from the issue tracking system and the code review system used by the project we are analyzing. OpenStack uses Launchpad\footnote{\url{https://launchpad.net/openstack}} and Gerrit\footnote{\url{https://review.openstack.org/}}.
+We extract all the data necessary to analyze when the bug was inserted from the issue tracking system and the code review system used by the project we are analyzing. OpenStack uses Launchpad\footnote{\url{https://launchpad.net/openstack}} and Gerrit\footnote{\url{https://review.openstack.org/}}.
 
-The Launchapd of each project works with issues reports called tickets, which describe bug reports, feature requests, maintenance tickets, and even design discussions. But, in our study we are only interested in those tickets that describe a bug report and, in addition, have been closed with a merged in the code source to fix the bug. In this bug reports we can find a comment with the link of Gerrit where the bug was fixed. Is in Gerrit where we can see all the patchsets proposed and the comments done by the reviewers. 
+The Launchpad of each project works with issues reports called tickets, which describe bug reports, feature requests, maintenance tickets, and even design discussions. But, in our study we are only interested in those tickets that describe a bug report and, in addition, have been closed with a merged in the code source to fix the bug. In this bug reports we can find a comment with the link of Gerrit where the bug was fixed. Is in Gerrit where we can see all the patchsets proposed and the comments done by the reviewers. 
 
 \subsection{Fist Stage: The Filtering}
 \label{sec:firstStage}
-In our approach, first of all we must identifying which of those issues extracted from Launchapd are bug reports. But, this is not a trivial task and we performed this identification using a web tool\footnote{\url{bugtracking.libresoft.es}} development to provide the researcher with all the relevant information needed to decide if an issue corresponds to a bug report or not. The tool uses information extracted automatically from the project repositories, and offers a web-based interface which allows for collaboration, traceability and transparency of the identification of bug reports.
+In our approach, first of all we must identifying which of those issues extracted from Launchpad are bug reports. But, this is not a trivial task and we performed this identification using a web tool\footnote{\url{bugtracking.libresoft.es}} development to provide the researcher with all the relevant information needed to decide if an issue corresponds to a bug report or not. The tool uses information extracted automatically from the project repositories, and offers a web-based interface which allows for collaboration, traceability and transparency of the identification of bug reports.
 
 During the identification of the issues we have to take into account the next parameters for each ticket, the title and the description of the issue report and the description of the fix commit. Also, the code changes if neither the descriptions and the comments clarified the underlying ticket. Each ticket was then categorized into one of three following groups.
 \begin{enumerate}
@@ -324,30 +324,30 @@ Sometimes we were unable to answer all the questions due to having insufficient 
 \label{sec:secondStage}
 The next part is focusing on analyzing the previous commit in the \textit{Bug Report} group. For that, we had to analyze the lines involved in the bug fix, in the commit parent of the bug fix commit, and be sure that the lines was inserted/modified in the previous commit. This, way we can sure that the previous commit didn't copied any line that contained the bug, because in this case, the previous commit is not responsible to cause the bug. 
 
-The analisys was done manually, and we used \textit{git blame} to see all the previos commit in each line of a involved file. Also, we used \textit{diff} to see all the differences between two files, in our case, the file is going to be the same but in different moment inside the control version system used.
+The analysis was done manually, and we used \textit{git blame} to see all the previous commit in each line of a involved file. Also, we used \textit{diff} to see all the differences between two files, in our case, the file is going to be the same but in different moment inside the control version system used.
 
 Te procedure following in each file involved in a fix bug is describing below;
 \begin{enumerate}
-  \item git checkout \textit{commmit that fix the bug}, git blame \textit{file involved}. In this step we can see the lines added, modified or deleted by the commit that fix the bug.
-  \item git checkout \textit{parent of commmit that fix the bug}, git blame \textit{file involved}. In this step we can see all the previous commits involved in the different lines touched in the fix bug.
-  \item git checkout \textit{parent of previous commit}, git blame \textit{file involved}. In this step we can esure that the previous commit inserted these lines.
+  \item git checkout \textit{commit that fix the bug}, git blame \textit{file involved}. In this step we can see the lines added, modified or deleted by the commit that fix the bug.
+  \item git checkout \textit{parent of commit that fix the bug}, git blame \textit{file involved}. In this step we can see all the previous commits involved in the different lines touched in the fix bug.
+  \item git checkout \textit{parent of previous commit}, git blame \textit{file involved}. In this step we can ensure that the previous commit inserted these lines.
 \end{enumerate}
 
 
-Finally we need to discard some noise presents in our final resulst according to the responsability of the previous commit inserting the bug in the code source. Due to they were not responsibles for cause the bug, we delete those previous commit which presents the following criteria;
+Finally we need to discard some noise presents in our final results according to the responsibility of the previous commit inserting the bug in the code source. Due to they were not responsible for cause the bug, we delete those previous commit which presents the following criteria;
 \begin{itemize}
     \item Blank lines
     \item Format changes
     \item Copied lines
     \item Changes in the comment.
-    \item Updatings in the version of a file. 
+    \item Updates in the version of a file. 
 \end{itemize}
 
 
 \section{Evaluation}
 \label{sec:evaluation}
 
-We validate our methodology anlayzing 459 tickets in OpenStack. OpenStack was particularly of interest because of its continuously evolving due to its very active community. Although its short life, only five years, more than 5 thousand of resarchers and more than 233 thousand of commits with more than 2 Million of lines of code have contributed in the development of the project \footnote{\url{http://activity.openstack.org/dash/browser/}}. Futhermore, all history is saved and available in a version control system, being able to access to its issue tracking system \footnote{\url{https://launchpad.net/openstack}} and the source code review \footnote{\url{https://review.openstack.org/}}
+We validate our methodology analyzing 459 tickets in OpenStack. OpenStack was particularly of interest because of its continuously evolving due to its very active community. Although its short life, only five years, more than 5 thousand of researchers and more than 233 thousand of commits with more than 2 Million of lines of code have contributed in the development of the project \footnote{\url{http://activity.openstack.org/dash/browser/}}. Furthermore, all history is saved and available in a version control system, being able to access to its issue tracking system \footnote{\url{https://launchpad.net/openstack}} and the source code review \footnote{\url{https://review.openstack.org/}}
 
 OpenStack is composed by 9 projects, but we only focused in the four of them, Nova, Cinder, Neutron and Horizon as we can see in table \ref{tab:OpenStack} these projects are really actives during all their history and in the last year.
 \begin{table}[htb]
@@ -372,21 +372,21 @@ Tempest \kern 1pc & 4,141 & 1,312 \\
 %\end{center}
 \end{table}
 
-In this four projects we analized the relationship of bug fixes with their previous commits. In order to identify the moment in which the bug was injected into the source code. The first stage we did automatically using the tool and a double bind between three researchers, three PhD student  included me. The second stage was done manually and only me was involved analizing this relationship. %that, we extract a total of 459 tickets from this projects, in which we should be sure that the bug fixes come from a bug report, because two of five issues are misclassified \cite{herzig2013s} and this should cause bias in our final results.
+In this four projects we analyzed the relationship of bug fixes with their previous commits. In order to identify the moment in which the bug was injected into the source code. The first stage we did automatically using the tool and a double bind between three researchers, three PhD student  included me. The second stage was done manually and only me was involved analyzing this relationship. %that, we extract a total of 459 tickets from this projects, in which we should be sure that the bug fixes come from a bug report, because two of five issues are misclassified \cite{herzig2013s} and this should cause bias in our final results.
 
 \section{Results}
 \label{sec:results}
 
-We extracted a total of 459 different tickets from the Launchpad of the four principal projects in OpenStack, 125 tickets from Nova, 125 tickets from cinder, 125 tickets from Horizon and 84 tickets from Neutron. These tickets first, were analized to identify those ones which were real bug reports. And secondly, each file was analyzed to obtain which previous commit inserted the bug causing the failure of the system and reporting the bug report. 
+We extracted a total of 459 different tickets from the Launchpad of the four principal projects in OpenStack, 125 tickets from Nova, 125 tickets from cinder, 125 tickets from Horizon and 84 tickets from Neutron. These tickets first, were analyzed to identify those ones which were real bug reports. And secondly, each file was analyzed to obtain which previous commit inserted the bug causing the failure of the system and reporting the bug report. 
 
 \subsection{Fist Stage}
 \label{sec:resultsFS}
 
-We classify a total of 459 tickets using the tool. In 417 of the ticktes, we used double bind analysis, and only those tickets classified as bug report by two of us, were considered in the next stage to analyze the relevance of their previous commits.
+We classify a total of 459 tickets using the tool. In 417 of the tickets, we used double bind analysis, and only those tickets classified as bug report by two of us, were considered in the next stage to analyze the relevance of their previous commits.
 
-The table \ref{tab:2} shows the percentage of each researcher after analyzing the tickets, and the number of tickets classifyed identically by two different researchers. Obtaining that the researchers R1 and R2 had a similar data in their results, whereas research R2 got results significantly differents with a higher number of tickets classifyed as Bug Report.
+The table \ref{tab:2} shows the percentage of each researcher after analyzing the tickets, and the number of tickets classified identically by two different researchers. Obtaining that the researchers R1 and R2 had a similar data in their results, whereas research R2 got results significantly different with a higher number of tickets classified as Bug Report.
  
-Finally, the researchers identifyed in the same way 292 tickets, that is, their results matched in a 70\% of the cases. Obtaining 209 tickets classifyed as Bug report, 74 tickets classifyed as Not Bug Report and 9 tickets classifyed as Undecided.
+Finally, the researchers identified in the same way 292 tickets, that is, their results matched in a 70\% of the cases. Obtaining 209 tickets classified as Bug report, 74 tickets classified as Not Bug Report and 9 tickets classified as Undecided.
 
 \begin{table}
 \centering
@@ -405,7 +405,7 @@ Finally & (209)72\% & (74)25\% & (9)3\% & 292 \\
 %\end{center}
 \end{table}
 
-Also we had measured the concordance in the classification of each developer according to the project analized. The table \ref{tab:3} shows that the concordante got between all the three research was very similar, around a 70\%. Furthermore, the concordance form each researcher with the rest alwas was up to 60\%. 
+Also we had measured the concordance in the classification of each developer according to the project analyzed. The table \ref{tab:3} shows that the concordant got between all the three research was very similar, around a 70\%. Furthermore, the concordance form each researcher with the rest always was up to 60\%. 
 
 \begin{table}[htb]
 \begin{center} {\footnotesize
@@ -427,13 +427,13 @@ R2\&R3   & (41)66\% & (10)100\% & -         & -        &  71\% \\
 \subsection{Second Stage}
 \label{sec:resultsSS}
 
-At this stage, we analyzed the 209 we got a list with all the previous commits and we were be able to classifyed the previous commit/s as Responsible, Not Responsible or Undecided, taken into account that the bug could be inserted in different lines of different commits, but not everyone had to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. In fact, the responsible can be only one of them, more than one or maybe none.
+At this stage, we analyzed the 209 we got a list with all the previous commits and we were be able to classified the previous commit/s as Responsible, Not Responsible or Undecided, taken into account that the bug could be inserted in different lines of different commits, but not everyone had to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. In fact, the responsible can be only one of them, more than one or maybe none.
 
-We identifyed a total of 348 previous commits which can be responsible for inserting the line containing the bug. After analizing the Bug Reports and their previous commits and discarded 40 of them because were noise, Table \ref{tab:responsability}, we got that 152 previous commit were responsibles to cause the bug whereas 114 previous commit had not any responsability in the failure of the system, and only in 42 previous commits we were unable to identify the cause of the bug.
+We identified a total of 348 previous commits which can be responsible for inserting the line containing the bug. After analyzing the Bug Reports and their previous commits and discarded 40 of them because were noise, Table \ref{tab:responsability}, we got that 152 previous commit were responsible to cause the bug whereas 114 previous commit had not any responsibility in the failure of the system, and only in 42 previous commits we were unable to identify the cause of the bug.
 
 \begin{table}[htb]
 \begin{center} {\footnotesize
-\caption{ Responsability of each previous commit before and after deleting the noise in the results}
+\caption{ Responsibility of each previous commit before and after deleting the noise in the results}
 \label{tab:responsability}
 \begin{tabular}{lcc}
 \toprule[0.3mm]
@@ -447,7 +447,7 @@ We identifyed a total of 348 previous commits which can be responsible for inser
 \end{center}
 \end{table}
 
-Futhermore, focusing on how many previous commits presented each Bug Report, we obtained that 131 had one previous commit implicated, whereas 58 had more than one previous commit implicated in their file/s. According to Table \ref{tab:secondStage}, from the 131, we obtained that 65 of them inserted the bug, but 30 of them were not responsibles in the failure of the system. And from the 58 which had more than one previous commits, we obtained in total 189 previous commit, where 86 of them were respnsibles and 82 were not responsibles. %Probably, the bug was inserted in different lines of different commits, but not everyone has to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. After the analysis the responsible can be only one of them, more than one or maybe none. 
+Furthermore, focusing on how many previous commits presented each Bug Report, we obtained that 131 had one previous commit implicated, whereas 58 had more than one previous commit implicated in their file/s. According to Table \ref{tab:secondStage}, from the 131, we obtained that 65 of them inserted the bug, but 30 of them were not responsible in the failure of the system. And from the 58 which had more than one previous commits, we obtained in total 189 previous commit, where 86 of them were responsible and 82 were not responsible. %Probably, the bug was inserted in different lines of different commits, but not everyone has to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. After the analysis the responsible can be only one of them, more than one or maybe none. 
 
 \begin{table}[htb]
 \begin{center} {\footnotesize
@@ -465,7 +465,7 @@ Futhermore, focusing on how many previous commits presented each Bug Report, we 
 \end{center}
 \end{table}
 
-Also, we looked the distribution of the previous commit in each Bug Report, Table \ref{tab:secondStage2}, we observed that the most commun distribuion in the relationship between previous commit and bug report is one previous commit per Bug Report, following by the second commun distribution, two previous commit per Bug Report.
+Also, we looked the distribution of the previous commit in each Bug Report, Table \ref{tab:secondStage2}, we observed that the most common distribution in the relationship between previous commit and bug report is one previous commit per Bug Report, following by the second common distribution, two previous commit per Bug Report.
 \begin{table*}[htb]
 \begin{center} {\footnotesize
 \caption{ Distribution of number of previous commit per Bug Report in each project}
@@ -484,7 +484,7 @@ Also, we looked the distribution of the previous commit in each Bug Report, Tabl
 \end{center}
 \end{table*}
 
-Finally we wanted to know the responsability preactised by each previous commit in the failure of a system, in other words, we were interested in analize from those cases where exists more than one previous commit, how many of them inserted the bug in the code source, Table \ref{tab:secondStage3}. We obtained that in 8 Bug Reports all the previous commits were responsibles, in 30 Bug reports at least one of their previous commit caused the bug and in 11 bug report none of their previous commits inserted the bug.
+Finally we wanted to know the responsibility practiced by each previous commit in the failure of a system, in other words, we were interested in analyze from those cases where exists more than one previous commit, how many of them inserted the bug in the code source, Table \ref{tab:secondStage3}. We obtained that in 8 Bug Reports all the previous commits were responsible, in 30 Bug reports at least one of their previous commit caused the bug and in 11 bug report none of their previous commits inserted the bug.
 \begin{table*}[htb]
 \begin{center} {\footnotesize
 \caption{ Probability of cause the bug depending on how many previous commits had the bug report}
@@ -509,7 +509,7 @@ Finally we wanted to know the responsability preactised by each previous commit 
 \textbf{RQ1: Using all the information available in the bug tracking system and code review system related a fix-bug, we have obtained that this fix-bug were real Bug Reports in a 72\% of the tickets analyzed} 
 \end{minipage}}
 \fbox{\begin{minipage}{25em}
-\textbf{RQ2: We have comfirmed that 50\% of the previous commits analyzed caused the failure in the system, whereas the 37\% of them didn't injected any bug in the code source } 
+\textbf{RQ2: We have confirmed that 50\% of the previous commits analyzed caused the failure in the system, whereas the 37\% of them didn't injected any bug in the code source } 
 \end{minipage}}
 \\
 - No todos los casos son tan claros como los mostrados en los ejemplos ....
@@ -522,7 +522,7 @@ Once we have all the tickets analyzed by diferents researchers who have used a d
 \item Does the Bug report only the same ticket classified as Bug report for all the researchers?
 \end{enumerate}
 
-How to proceed if looking for the responsability of a bug when only added lines are inserted? And we are talking about a bug report not a new feature, these kinds of cases use to be when a researcher forgot check some case inside a function. [reference]
+How to proceed if looking for the responsibility of a bug when only added lines are inserted? And we are talking about a bug report not a new feature, these kinds of cases use to be when a researcher forgot check some case inside a function. [reference]
 \begin{enumerate}
 \item Is responsible the function where these lines are content?
 \item Is responsible the last commit that modify something in the function?
@@ -532,7 +532,7 @@ How to proceed if looking for the responsability of a bug when only added lines 
 \section{Threats to validity}
 \label{sec:threats}
 %The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
-The size of the tickets extracted form the Launcpad is medium, but doing the analisys manually we are sure that the results present in this paper are valid, being sure that the previous commits classifyed as not responsible, they are. 
+The size of the tickets extracted form the Launchpad is medium, but doing the analysis manually we are sure that the results present in this paper are valid, being sure that the previous commits classified as not responsible, they are. 
 
 Although, we understand that the model presented has some threats, external and internal, that make our model not 100\% valid. The internal threats related to the researchers that have conducted the study are following:
 
@@ -540,9 +540,9 @@ Although, we understand that the model presented has some threats, external and 
     \item We have not taken into account errors that have been classified into \textit{Undecided}, and probably we are lost some real bug reports belonging this group .
     \item There could be some lax criteria involving the subjective opinion of the researchers.
     \item The researchers are not experts in OpenStack, and our inexperience may have influenced the results of the analysis.
-    \item We are only using part of the information that the ticket provides, like comments and text. There could be a recognized pattern in teh data, unknown at first sight, that involves other parts of the information.
+    \item We are only using part of the information that the ticket provides, like comments and text. There could be a recognized pattern in the data, unknown at first sight, that involves other parts of the information.
     \item Although we use a random script to extract the tickets reported in during the last year, 2015, from the launchpad, in this year could be some bias unidentified.
-    \item In case of the researchers didn't find the information to know if the previous commit inserted the bug or in contrast, it was caused by the evolution of the software. They keep the traditionalist thought, classify these previous commits are responsibles.
+    \item In case of the researchers didn't find the information to know if the previous commit inserted the bug or in contrast, it was caused by the evolution of the software. They keep the traditionalist thought, classify these previous commits are responsible.
 \end{itemize}
 
 The external threats, related to the case of the project, are following:
@@ -550,23 +550,23 @@ The external threats, related to the case of the project, are following:
 \begin{itemize}
     \item The word \textit{bug} is continuously mentioned in the description and commit of a ticket even when we found it is not an error. This could lead to the incorrect classification during the reviewing process.
     \item Some tickets are not explicitly described, which could increase the percentage of \textit{Undecided}. This is especially true if the reviewers are not from OpenStack.
-    \item OpenStack is a special project put down a constant evolution due to their active community of developers. Maybe, in other projects with less commits per year the statistics about the responsability of previous commit change.
+    \item OpenStack is a special project put down a constant evolution due to their active community of developers. Maybe, in other projects with less commits per year the statistics about the responsibility of previous commit change.
 \end{itemize}
 
 
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
-The empirical experiment carried out in OpenStack, supported that the current premisse assumed does not hold for a large fraction of the analyzed bugs, because around the 40\% of the previous commits were not responsibles inserting the bug.
+The empirical experiment carried out in OpenStack, supported that the current premise assumed does not hold for a large fraction of the analyzed bugs, because around the 40\% of the previous commits were not responsible inserting the bug.
 With our results we can identify which ones are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improve their methodology.
 %How to plan to apply the knowledge in a way that can benefit software engineers.
 %What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
 
-A final field in our future work concerns the full automatization on the methodology could developer an automatic classifier base on the idea that not all the previous commit injected the bug. Another interesting investigation could leadge the same empirical study in a project with a community less active, to can prove if our idea is fullfil in other projects.
+A final field in our future work concerns the full automation on the methodology could developer an automatic classifier base on the idea that not all the previous commit injected the bug. Another interesting investigation could perform the same empirical study in a project with a community less active, to can prove if our idea is fulfill in other projects.
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
-We thank the two phd students, Dorealda Dalipaj and Nelson Sekitoleko, that participated differentiating Bug report from the others. Also, we thank Bitergia \footnote{\url{http://bitergia.com/}} to explain its available database of OpenStack. 
-Finally,thanks the Spanish Goverment because all authors are funded in part by it, through project TIN2014-59400-R.
+We thank the two PhD students, Dorealda Dalipaj and Nelson Sekitoleko, that participated differentiating Bug report from the others. Also, we thank Bitergia \footnote{\url{http://bitergia.com/}} to explain its available database of OpenStack. 
+Finally,thanks the Spanish Government because all authors are funded in part by it, through project TIN2014-59400-R.
 
 \nocite{*}
 %
