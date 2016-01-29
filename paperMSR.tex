@@ -85,7 +85,7 @@
 %\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
 % --- End of Author Metadata ---
 
-\title{Who introduced this bug? \\ It may not have been in the previous commit!}
+\title{Who introduced this bug? \\ It may not have been caused by the previous commit!}
 %\subtitle{[Extended Abstract]
 %\titlenote{A full version of this paper is available as
 %\textit{Author's Guide to Preparing ACM SIG Proceedings Using
@@ -302,7 +302,7 @@ FIXME: rephrase RQs
      \item RQ2:  When did the previous commit introduce the line with the bug into the source code?
 \end{itemize}
 
-The remainder of this paper is structured as follows. Next, we present the current body of knowledge in section~\ref{sec:related}. Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was introduced in the source code, followed by the results obtained after applying our approach to a selection of OpenStack bug fixes in Section~\ref{sec:results}. Section~\ref{sec:discussion} answers the research questions and discusses potential applications and improvements of our approach. After reporting the limitations and threats to validity in Section~\ref{sec:threats}, we draw some conclusions in Section~\ref{sec:conclusions}.
+The remainder of this paper is structured as follows. Next, we present the current body of knowledge in section~\ref{sec:related}. Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was introduced in the source code, followed by the results obtained after applying our approach to a selection of OpenStack bug fixes in Section~\ref{sec:results}. Section~\ref{sec:discussion} answers the research questions and discusses potential applications and improvements of our approach. After reporting the limitations and threats to validity in Section~\ref{sec:threats}, we draw some conclusions and point out some potential future work in Section~\ref{sec:conclusions}.
 
 
 \section{Related Work}
@@ -336,7 +336,7 @@ FIXME: maybe talk about my paper with dmg and ahmed, where bugs could be found e
 \label{sec:methodology}
 %We present our approach to identify how and where a bug was inserted into the source code, causing a later fix. 
 
-All data needed to analyze when the bug was introduced can be obtained from the issue tracking systems and the code review systems used generally by free/open source software (FOSS) projects. In our analysis, we have used OpenStack, a cloud computing platform with a huge developing community (more than 5,000 developers) and significant industrial support from several major companies such as Red Hat, Intel, IBM, HP, etc. OpenStack, as many other FOSS projects nowadays, uses Launchpad\footnote{\url{https://launchpad.net/openstack}} as issue tracking system, and Gerrit\footnote{\url{https://review.openstack.org/}} to support their code review process.
+All data needed to analyze when the bug was introduced can be obtained from the issue tracking systems and the code review systems used generally by free/open source software (FOSS) projects. In our analysis, we have focused on Launchpad\footnote{\url{https://launchpad.net/}} as issue tracking system, and Gerrit\footnote{\url{https://www.gerritcodereview.com/}} as code review supporting tool, as they are widely used by FOSS projects nowadays, but our methodology should be generalizable to any such tool.
 
 The Launchpad of each project works with issue reports called tickets, which describe bug reports, feature requests, maintenance tickets, and even design discussions. In our study, however, we are only interested in those tickets that have following properties:
 
@@ -361,6 +361,8 @@ During the identification of the issues, we have to take into account the next p
   \item The changes to the source code, as sometimes neither the descriptions nor the comments clarified the underlying ticket. FIXME: what comments?
 \end{itemize}
 
+FIXME: aqui podemos poner un pantallazo de la interfaz web.
+
 Each ticket was then categorized into one of three following groups:
 
 \begin{enumerate}
@@ -383,19 +385,20 @@ Sometimes we were unable to answer all the questions due to having insufficient 
 \subsection{Second Stage: Who caused the Bug?}
 \label{sec:secondStage}
 
-The next part is focusing on analyzing the previous commit in the \textit{Bug Report} group. For that, we had to analyze the lines involved in the bug fix, in the commit parent of the bug fix commit, and be sure that the lines was inserted/modified in the previous commit. This, way we can sure that the previous commit didn't copied any line that contained the bug, because in this case, the previous commit is not responsible to cause the bug. 
+The next part is focused on analyzing the previous commit exclusively in the \textit{Bug Report} group. For that, we had to analyze the lines involved in the bug fix, in the \emph{parent} commit of the bug fix commit, and be sure that the lines were inserted/modified in the previous commit. This way we can be sure that the previous commit did not copy lines that contained the bug, because in that case, the previous commit is not responsible to cause the bug. FIXME: aclarar este parrafo! 
 
-The analysis was done manually, and we used \textit{git blame} to see all the previous commit in each line of a involved file. Also, we used \textit{diff} to see all the differences between two files, in our case, the file is going to be the same but in different moment inside the control version system used.
+The analysis was done manually. We used \textit{git blame} to see the previous commit for each line of the involved file. Also, we used \textit{diff} to see the differences between the two files, in our case as the file is going to be the same, between the file in two different moments in the control version system.
 
-Te procedure following in each file involved in a fix bug is describing below;
+The procedure for each file involved in a bug fix is as follows:
+
 \begin{enumerate}
-  \item git checkout \textit{commit that fix the bug}, git blame \textit{file involved}. In this step we can see the lines added, modified or deleted by the commit that fix the bug.
-  \item git checkout \textit{parent of commit that fix the bug}, git blame \textit{file involved}. In this step we can see all the previous commits involved in the different lines touched in the fix bug.
-  \item git checkout \textit{parent of previous commit}, git blame \textit{file involved}. In this step we can ensure that the previous commit inserted these lines.
+  \item git checkout \textit{commit that fixed the bug}, git blame \textit{file involved}. In this step we can see the lines added, modified or deleted by the commit that fixed the bug.
+  \item git checkout \textit{parent of commit that fix the bug}, git blame \textit{file involved}. In this step we can see the previous commits for the different lines touched in the fixed bug.
+  \item git checkout \textit{parent of previous commit}, git blame \textit{file involved}. With this step we can ensure that the previous commit inserted these lines.
 \end{enumerate}
 
+Finally we need to discard some noise presents in our final results according to the responsibility of the previous commit inserting the bug in the code source. Due to they were not responsible for cause the bug, we delete those previous commit which presents the following criteria:
 
-Finally we need to discard some noise presents in our final results according to the responsibility of the previous commit inserting the bug in the code source. Due to they were not responsible for cause the bug, we delete those previous commit which presents the following criteria;
 \begin{itemize}
     \item Blank lines
     \item Format changes
@@ -408,9 +411,10 @@ Finally we need to discard some noise presents in our final results according to
 \section{Evaluation}
 \label{sec:evaluation}
 
-We validate our methodology analyzing 459 tickets in OpenStack. OpenStack was particularly of interest because of its continuously evolving due to its very active community. Although its short life, only five years, more than 5 thousand of researchers and more than 233 thousand of commits with more than 2 Million of lines of code have contributed in the development of the project\footnote{\url{http://activity.openstack.org/dash/browser/}}. Furthermore, all history is saved and available in a version control system, being able to access to its issue tracking system\footnote{\url{https://launchpad.net/openstack}} and the source code review\footnote{\url{https://review.openstack.org/}}
+We validate our methodology analyzing 459 tickets from OpenStack. OpenStack is a cloud computing platform with a huge developing community (more than 5,000 developers) and significant industrial support from several major companies such as Red Hat, Intel, IBM, HP, etc. OpenStack was particularly of interest because of its continuously evolving due to its very active community. Currently it has more than 233,000 commits with more than 2 million lines of code \footnote{\url{http://activity.openstack.org/dash/browser/}}. All its history is saved and available in a version control system, as well as its issue tracking system (Launchpad\footnote{\url{https://launchpad.net/openstack}}) and the source code review system (Gerrit\footnote{\url{https://review.openstack.org/}}).
 
-OpenStack is composed by 9 projects, but we only focused in the four of them, Nova, Cinder, Neutron and Horizon as we can see in table \ref{tab:OpenStack} these projects are really actives during all their history and in the last year.
+OpenStack is composed by 9 projects, but we only focused in four of them: Nova, Cinder, Neutron and Horizon. As can be seen from Table~\ref{tab:OpenStack}, these projects have been very active during their entier history, and in the last year.
+
 \begin{table}[htb]
 \centering
 %\begin{center} {\footnotesize
@@ -453,13 +457,13 @@ Finally, the researchers identified in the same way 292 tickets, that is, their 
 \begin{table}
 \centering
 %\begin{center} {\footnotesize
-\begin{tabular}{lllll}
+\begin{tabular}{lrrrr}
 \toprule[0.3mm]%{\smallskip}
   & Bug Report & Not Bug Report & Undecided & Total \\\hline
-R1  & (184)55\% & (115)34\% & (35)11\% & 334 \\
-R2  & (188)76\% & (54)22 \% & (7)3\% & 249 \\
-R3 & (188)56\% & (116)35\% & (30)9\% & 334 \\
-Finally & (209)72\% & (74)25\% & (9)3\% & 292 \\
+R1  & (184) 55\% & (115)34\% & (35) 11\% & 334 \\
+R2  & (188) 76\% & (54)22 \% & (7) 3\% & 249 \\
+R3 & (188) 56\% & (116) 35\% & (30) 9\% & 334 \\
+Finally & (209) 72\% & (74) 25\% & (9) 3\% & 292 \\
 \bottomrule[0.3mm]
 \end{tabular} %}
 \caption{ Statistics of each researcher in the classification}
@@ -471,12 +475,12 @@ Also we had measured the concordance in the classification of each developer acc
 
 \begin{table}[htb]
 \begin{center} {\footnotesize
-\begin{tabular}{llllll}
+\begin{tabular}{lrrrrr}
 \toprule[0.3mm]%{\smallskip}
   & Nova & Cinder & Horizon & Neutron & Total\\\hline
-R1\&R2   & (44)70\% & (40)77\%  & (37)60\% & -        & 68\% \\
-R1\&R3   &  -        & (46)73\%  & (48)76\% & (26)62\% & 71 \% \\
-R2\&R3   & (41)66\% & (10)100\% & -         & -        &  71\% \\
+R1\&R2   & (44) 70\% & (40) 77\%  & (37) 60\% & -        & 68\% \\
+R1\&R3   &  -        & (46) 73\%  & (48) 76\% & (26) 62\% & 71\% \\
+R2\&R3   & (41) 66\% & (10) 100\% & -         & -        &  71\% \\
 \bottomrule[0.3mm]
 \end{tabular} }
 \caption{ Concordance between each developer in each repository}
@@ -495,7 +499,7 @@ We identified a total of 348 previous commits which can be responsible for inser
 
 \begin{table}[htb]
 \begin{center} {\footnotesize
-\begin{tabular}{lcc}
+\begin{tabular}{lrr}
 \toprule[0.3mm]
   & \multicolumn{1}{c}{Before} & \multicolumn{1}{c}{After} \\
   & \multicolumn{1}{c}{Deleting Noise} & \multicolumn{1}{c}{Deleting Noise} \\\hline
