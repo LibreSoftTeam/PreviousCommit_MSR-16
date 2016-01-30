@@ -180,7 +180,7 @@ Jes\'us M. Gonz\'alez-Barahona\\
 \begin{abstract}
 It is common practice that developers mark in the versioning system when they are fixing a software bug. At first glance, it could seem reasonable to assume that the fixed bug had been introduced in the previous modification of those same parts of the source code (i.e., in the previous commit). In fact, many studies on bug seeding start with this assumption. However, there is little empirical evidence supporting this assumption, and there are reasons to suppose that in some cases the bug may have been introduced by other actions, such as an older modification, or a change in the API that is being called.
 
-This paper tries to shed some light on this topic, by analyzing the relationship of bug fixes with their previous commits. To this end, we conducted an observational study on bug reports, their fixes, and their corresponding previous commits for the OpenStack project. Our results show that the assumption that bugs have been introduced in the previous commit does not hold for a large fraction of the bugs analyzed. \grex{maybe we could say something more here}.
+This paper tries to shed some light on this topic, by analyzing the relationship of bug fixes with their previous commits. To this end, we conducted an observational study on bug reports, their fixes, and their corresponding previous commits for the OpenStack project. Our results show that the assumption that bugs have been introduced in the previous commit does not hold for a large fraction of the bugs analyzed. \grex{maybe we could say something more here}. \gema{podriamos escribir algunos porcentajes de lo que hemos encontrado, algo asi como que un 37\% de los commits previos no son responsables de introducir niingun bug}
 \end{abstract}
 
 
@@ -333,13 +333,14 @@ The two approaches have some metodological patterns in common:
 \end{enumerate}
 
 \grex{This last paragraph should be clarified, and more on papers using the SZZ algorithm! Maybe we should state how many papers in total exist based or using SZZ in Google Scholar.}
+\gema{ He buscado en google schoolar las entradas que tiene SZZ algoritm y aparecen 1170 resultados desde 2006 que es cuando sacaron el articulo, pero alguna de las entradas solo contine algorithm y no SZZ algoritm}
 
 The SZZ algorithm (and its \emph{successors}) have been widely used in the researc community.
 Williams et al. revisited the SZZ algorithm to track bug-inducing changes and identify types of changes~\cite{williams2008szz}. Yang et al. applied SZZ to find what kind of bug-inducing changes are likely to become a great threat after being mared as bug-fix changes
 Finally, some bug prediction algorithms are based on SZZ; Kim et al. showed how to classify file changes as buggy or clean using change information features and sour code terms~\cite{kim2008classifying}.
 
 \grex{maybe talk about my paper with dmg and ahmed, where bugs could be found elsewhere~\cite{german2009change}. There the talk is precisely about those bugs whose origina are elsewhere. Title of the paper: \emph{Change impact graphs: Determining the impact of prior codechanges}}
-
+\gema{Hay que incluir lo que nuestro articulo aporta al estado actual}
 %In addition some tools are based on SZZ too such as \cite{} 
 %Finally our idea.
 
@@ -571,12 +572,12 @@ If we attend to how many previous commits each of the 189 bug reports analyzed h
 \label{tab:secondStage}
 \end{center}
 \end{table}
-\gema{Los resultados que he obtenido y que queria plasmar en las tablas son:
-- He analizado 189 bugs reports\\
-- De los 189, 131 presentaban el mismo identificador de commit previo para todas las lineas que habian sido modificadas, mientras que 58 presentaban mas de un identificador de commit previo.\\
-- Dentro de los bugs reports que tienen mas de un commit previo analizando el total de todos los commits para saber quien causo el bug, he encontrado que en total de los 179 comit previos 86 causaron el bug mientarsa que 82 no lo causaron y 11 no he podido decidir si eran causantes o no.\\
-- Además he mirado como o porse distribuyen los commits en cada bug report dentro de cada proyecto analizado, y he visto que por ejemplo Neutron presentaba 11 bugs report con solo un ticket previo, 3 bugs report con dos identificadores diferentes para los commit previos, 2 bug reports que presentaban  3 commit previos... etc.\|\\\
-- Finalmente realicé ora clasificacion en la que tenia en cuenta el numero de commits que fueron causantes del error para un mismo bug report. Al analizar los bug reports encontre que en aquellos que presenstaban mas de un commit previo no todos los commit eran causantes del error, y en ocasiones solamente había un commit que causo el error y los otros no o por el contrario habia bugs report en los que ninguno de sus commits previos era responsable y otras ocasiones en las que todos los commits previos eran responsables. Por tanto la tabla 7 muestra cual es la responsabilidad (tods responsables, al menos uno ningun responsable y desconozco la responsabilidad) de los coommits previos presentes en un bug report. Por ejemplo, bugs reports que tenían dos commits previos, en 4 de ellos los dos commits previous eran responsables, mientras que en 9 bug report había al menos un responsable y en otros 4 bug report ninguno de los dos commit previos eran responsables.  }
+\gema{Los resultados que he obtenido y que queria plasmar en las tablas son:}
+\gema{- He analizado 189 bugs reports}\\
+\gema{- De los 189, 131 presentaban el mismo identificador de commit previo para todas las lineas que habian sido modificadas, mientras que 58 presentaban mas de un identificador de commit previo.}\\
+\gema{- Dentro de los bugs reports que tienen mas de un commit previo analizando el total de todos los commits para saber quien causo el bug, he encontrado que en total de los 179 comit previos 86 causaron el bug mientarsa que 82 no lo causaron y 11 no he podido decidir si eran causantes o no.}\\
+\gema{- Además he mirado como o porse distribuyen los commits en cada bug report dentro de cada proyecto analizado, y he visto que por ejemplo Neutron presentaba 11 bugs report con solo un ticket previo, 3 bugs report con dos identificadores diferentes para los commit previos, 2 bug reports que presentaban  3 commit previos... etc.}\\
+\gema{- Finalmente realicé ora clasificacion en la que tenia en cuenta el numero de commits que fueron causantes del error para un mismo bug report. Al analizar los bug reports encontre que en aquellos que presenstaban mas de un commit previo no todos los commit eran causantes del error, y en ocasiones solamente había un commit que causo el error y los otros no o por el contrario habia bugs report en los que ninguno de sus commits previos era responsable y otras ocasiones en las que todos los commits previos eran responsables. Por tanto la tabla 7 muestra cual es la responsabilidad (tods responsables, al menos uno ningun responsable y desconozco la responsabilidad) de los coommits previos presentes en un bug report. Por ejemplo, bugs reports que tenían dos commits previos, en 4 de ellos los dos commits previous eran responsables, mientras que en 9 bug report había al menos un responsable y en otros 4 bug report ninguno de los dos commit previos eran responsables.}  
 We also studied the distribution of the number of previous commits for each Bug Report. As shown in Table~\ref{tab:secondStage2}, the number of commits that can be considered as previous is 1, followed by 2 commits.
 
 \begin{table*}[htb]
@@ -634,6 +635,7 @@ Finally, we were interested in analyzing, for those cases where more than one pr
  \item Hemos utilizado la herramienta porque es un proceso complicado. Para la primera parte de decidir si es o no es un bug report hemos tenido que desarrollar la herramienta.
 \end{enumerate}
 
+\gema{Algunos de los problemas que nos hemos encontrado durante el analisis y que podrian ser resueltos de otra forma diferente a la nuestra y quizas puede que varie algo los resultados no lo se}
 Once we have all the tickets analyzed by diferents researchers who have used a double blind, how to proceed if there are discordances between them:
 
 \begin{enumerate}
@@ -646,6 +648,7 @@ How to proceed if looking for the responsibility of a bug when only added lines 
 \item Is responsible the function where these lines are content?
 \item Is responsible the last commit that modify something in the function?
 \end{enumerate}
+\gema{anadir ademas que los resultados optenidos presentan una oposicion a la idea actual de que el previo commit introdujo el error}
 
 
 \section{Threats to validity}
