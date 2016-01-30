@@ -309,11 +309,13 @@ In detail, in this paper we attempt to address the following research question r
 \begin{itemize}
     %\item RQ1 : How can tickets which are bug reports be differentiated from those that are not?
      \item RQ1:  How can we know that a change was done to fix a bug in the source code? How can we identify them?
+     \item \gema{RQ1: How we can identify a change done to fix a bug inserted in the code source? Que tal esta forma de plantear la RQ1? Esta pregunta se refiere a como podemos diferenciar los bug reports de los otros pero realizada desde el punto de vista del comit previo }
     %\item RQ2:  How often is the bug caused in the previous commit?
-     \item RQ2:  When did the previous commit introduce the line with the bug into the source code?
+     \item RQ2:  When did the previous commit introduce the line containing the bug into the source code?
 \end{itemize}
 
 \grex{Aqui deberiamos poner la contribucion de nuestro articulo al estado del arte.}
+With this paper we try to shed some ligths on how and when the bug was inserted into the source code, showing different empirical results from the the current assumption about the bug was originated in the previous modifications of the lines involved in the fix bug. Thus, our idea is based on the thought that some modifications or additions into the code source don't introduce any bug in the software. Our results could lead to think that all the articles based on this assumption are not using the best data in their results.On the other hand, this could be very useful in future research deleting this previous commits from the cause of a bug in their studies and could help developers understanding the bug seeding process.
 
 The remainder of this paper is structured as follows. Next, we present the current body of knowledge in section~\ref{sec:related}. Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was introduced in the source code, followed by the results obtained after applying our approach to a selection of OpenStack bug fixes in Section~\ref{sec:results}. Section~\ref{sec:discussion} answers the research questions and discusses potential applications and improvements of our approach. After reporting the limitations and threats to validity in Section~\ref{sec:threats}, we draw some conclusions and point out some potential future work in Section~\ref{sec:conclusions}.
 
@@ -343,7 +345,7 @@ Finally, some bug prediction algorithms are based on SZZ; Kim et al. showed how 
 
 \grex{maybe talk about my paper with dmg and ahmed, where bugs could be found elsewhere~\cite{german2009change}. There the talk is precisely about those bugs whose origina are elsewhere. Title of the paper: \emph{Change impact graphs: Determining the impact of prior codechanges}}
 
-\gema{Hay que incluir lo que nuestro articulo aporta al estado actual} \grex{Buena idea, pero eso es mejor ponerlo en la intro.}
+\gema{Hay que incluir lo que nuestro articulo aporta al estado actual} \grex{Buena idea, pero eso es mejor ponerlo en la intro.}\gema{Ya esta puesto}
 %In addition some tools are based on SZZ too such as \cite{} 
 %Finally our idea.
 
@@ -373,7 +375,7 @@ During the identification of the issues, we have to take into account the next p
   \item The title of the issue report
   \item The description of the issue report
   \item The description of the fix commit
-  \item The changes to the source code, as sometimes neither the descriptions nor the comments by developers in the Launchpad and Gerrit of each ticket, clarified the underlying ticket. \grex{what comments?}
+  \item The changes to the source code, as sometimes neither the descriptions nor the comments by developers and reviewers in the Launchpad and Gerrit of each ticket, clarified the underlying ticket. \grex{what comments?}\gema{los comentarios de los reviewers que podemos ver en Luanchpad y Gerrit }
 \end{itemize}
 
 We can see a screenshot of the web interface of the tool in Figure~\ref{fig:screenshot}. The left side is used to display the information extracted from Launchpad and Gerrit, and the right part is the one in which the researchers can write and classify the ticket into one of the three groups. Additional meta-data, such as keywords, comments and the reviewer are included in the database.
@@ -399,7 +401,7 @@ From the experience of analysing a small number of tickets, we agreed on followi
     \item When the ticket title described the program as not working as expected, our criteria indicated that it was a bug report. 
     \item When the title described optimization, deletion of a dead code or the implementation of new characteristics, we agreed not to classify it as a bug report because there is no failure. 
     \item When the ticket title described that updates were required, the ticket is a bug report. We consider all tickets that require updating as bug reports, because updating a software hints to the software not operating as expected. 
-    \item When only test files are affected in a ticket, we classified it as not being a bug report. Test files in a ticket were not be analyzed, as we consider they are not a core part of the software and are used as a testing method to determine whether the code is fit for use. When the bug exclusively lies in a test file, the ticket was not considered as bug report because the software still works as expected, only test fails. \grex{no se repiten las frases?}
+    \item When only test files are affected in a ticket, we classified it as not being a bug report. Test files in a ticket were not be analyzed, as we consider they are not a core part of the software and are used as a testing method to determine whether the code is fit for use. When the bug exclusively lies in a test file, the ticket was not considered as bug report because the software still works as expected, only test fails. \grex{no se repiten las frases?}\gema{Te refieres al inicio de cada frase o a lo que se describo en cada frase?}
 \end{enumerate}
 
 Sometimes we were unable to answer all the questions due to having insufficient data or because of the complexity of the issue. In this case, the ticket was classified into the \textit{Undecided} group.
@@ -530,7 +532,7 @@ The possible outcome was one of the following three options:
   \item Undecided
 \end{itemize}
 
-This analysis takes into account that the bug could have been inserted in many lines belong to many differnt previous commits, but in fact, not all of them could cause the bug. It could have happened that in the previous commit lines had been copied from further previous commits, or comments may have been modified, or blank spaces/lines have been added. Thus, the cause could be found in a single previous commit, in many or even in none. \grex{repasar este parrafo}
+This analysis takes into account that the bug could have been inserted in many lines belong to many different previous commits, but in fact, not all of them could cause the bug. Sometimes happens that in the previous commit some lines had been copied from further previous commits, or comments may have been modified, or blank spaces/lines have been added. Thus, the cause could be found in a single previous commit, in many or even in none. \grex{repasar este parrafo} \gema{Que tal ahora? esta mas claro?}
 
 We identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis, we analyzed the bug reports together with their previous commits discarting these cases where the previous commit was false positives such as blank lines, changes in comments or even a change in the version of the file., so in total we had analyzed 308 previous commit.
 
