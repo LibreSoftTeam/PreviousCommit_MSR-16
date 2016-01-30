@@ -358,7 +358,7 @@ During the identification of the issues, we have to take into account the next p
   \item The title of the issue report
   \item The description of the issue report
   \item The description of the fix commit
-  \item The changes to the source code, as sometimes neither the descriptions nor the comments by developers in the Launchpad an Gerrit of each ticket, clarified the underlying ticket. FIXME: what comments?
+  \item The changes to the source code, as sometimes neither the descriptions nor the comments by developers in the Launchpad and Gerrit of each ticket, clarified the underlying ticket. FIXME: what comments?
 \end{itemize}
 
 We can see a screenshot of the web interface of the tool in Figure~\ref{fig:screenshot}. The left side is used to display the information extracted from Launchpad and Gerrit, and the right part is the one in which the researchers can write and classify the ticket into one of the three groups. Additional meta-data, such as keywords, comments and the reviewer are included in the database.
@@ -515,12 +515,12 @@ The possible outcome was one of the following three options:
   \item Undecided
 \end{itemize}
 
-This analysis takes into account that the bug could have been inserted in several lines in several commits, but not everyone had to be responsible for the commit; sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. In fact, the cause could be found in a single commit, in many or even in none. FIXME: repasar este parrafo
+This analysis takes into account that the bug could have been inserted in many lines belong to many differnt previous commits, but in fact, not all of them could cause the bug. Could happen that these previous commit copied lines from its previous commits or modified the comments and added blank spaces. Thus, the cause could be found in a single previous commit, in many or even in none. FIXME: repasar este parrafo
 
 We identified a total of 348 previous commits which could be the cause of the 292 bugs under analysis, and analyzed the bug reports together with their previous commits.
 
 
-As can be seen in Table~\ref{tab:responsability}, in 152 cases the previous commits have been considered the cause of the bug, whereas 114 times they were not the cause. We were unable to identify the cause of the bug in 42 cases, and discarded 40 more because they were noise. FIXME: explicar que es eso de noise!
+As can be seen in Table~\ref{tab:responsability}, in 152 cases the previous commits have been considered the cause of the bug, whereas 114 times they were not the cause. We were unable to identify the cause of the bug in 42 cases, and discarded 40 more because they ere false positives such as blank lines, changes in comments or even a change in the version of the file. FIXME: explicar que es eso de noise!, Con Noise me referia a los falsos positivos que puede haber en los commits previos, las líneas copiadas de otros commits o lineas en blanco, comentarios ...
 
 
 \begin{table}[htb]
