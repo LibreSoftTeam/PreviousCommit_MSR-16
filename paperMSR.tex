@@ -361,12 +361,12 @@ During the identification of the issues, we have to take into account the next p
   \item The changes to the source code, as sometimes neither the descriptions nor the comments by developers in the Launchpad an Gerrit of each ticket, clarified the underlying ticket. FIXME: what comments?
 \end{itemize}
 
-FIXME: aqui podemos poner un pantallazo de la interfaz web.
-We can see the web interface of the tool in the image \ref{fig:screenshot}, the left side is used to display the information extracted from Launchapad and Gerrit and the right part is the one in which the users can wirte and classify the ticket into one of the three groups.
+We can see a screenshot of the web interface of the tool in Figure~\ref{fig:screenshot}. The left side is used to display the information extracted from Launchpad and Gerrit, and the right part is the one in which the researchers can write and classify the ticket into one of the three groups. Additional meta-data, such as keywords, comments and the reviewer are included in the database.
+
 \begin{figure}[ht]
 \centering
 \includegraphics[height=12cm]{index.png}
-\caption{Screenshot of the tool used to classify the tickets}
+\caption{Screenshot of the tool used to classify the tickets.}
 \label{fig:screenshot}       % Give a unique label
 \end{figure}
 
@@ -418,9 +418,9 @@ Finally we need to discard some noise presents in our final results according to
 \section{Evaluation}
 \label{sec:evaluation}
 
-We validate our methodology analyzing 459 tickets from OpenStack. OpenStack is a cloud computing platform with a huge developing community (more than 5,000 developers) and significant industrial support from several major companies such as Red Hat, Intel, IBM, HP, etc. OpenStack was particularly of interest because of its continuously evolving due to its very active community. Currently it has more than 233,000 commits with more than 2 million lines of code \footnote{\url{http://activity.openstack.org/dash/browser/}}. All its history is saved and available in a version control system, as well as its issue tracking system (Launchpad\footnote{\url{https://launchpad.net/openstack}}) and the source code review system (Gerrit\footnote{\url{https://review.openstack.org/}}).
+We have validated our methodology analyzing tickets from OpenStack. OpenStack is a cloud computing platform with a huge developing community (more than 5,000 developers) and significant industrial support from several major companies such as Red Hat, Intel, IBM, HP, etc. OpenStack was particularly of interest because of its continuously evolving due to its very active community. Currently it has more than 233,000 commits with more than 2 million lines of code \footnote{\url{http://activity.openstack.org/dash/browser/}}. All its history is saved and available in a version control system, as well as its issue tracking system (Launchpad\footnote{\url{https://launchpad.net/openstack}}) and the source code review system (Gerrit\footnote{\url{https://review.openstack.org/}}).
 
-OpenStack is composed by 9 projects, but we only focused in four of them: Nova, Cinder, Neutron and Horizon. As can be seen from Table~\ref{tab:OpenStack}, these projects have been very active during their entier history, and in the last year.
+OpenStack is composed by 9 projects, but we only focused on the main four of them: Nova, Cinder, Neutron and Horizon. As can be seen from Table~\ref{tab:OpenStack}, these projects have been very active during their entier history, and in the last year.
 
 \begin{table}[htb]
 \centering
@@ -430,7 +430,7 @@ OpenStack is composed by 9 projects, but we only focused in four of them: Nova, 
   & All History  & Last Year (2015) \\\hline
 Nova    \kern 1pc & 14,558 & 3,283 \\
 Fuel    \kern 1pc & 9,139 & 5,123 \\
-Netron  \kern 1pc & 8,452 & 3,855 \\
+Neutron  \kern 1pc & 8,452 & 3,855 \\
 Horizon \kern 1pc & 4,871 & 1,994 \\
 Cinder  \kern 1pc & 4,556 & 1,832 \\
 Keystone\kern 1pc & 4,874 & 1,795  \\
@@ -445,21 +445,17 @@ Tempest \kern 1pc & 4,141 & 1,312 \\
 %\end{center}
 \end{table}
 
-In this four projects we analyzed the relationship of bug fixes with their previous commits. In order to identify the moment in which the bug was injected into the source code. The first stage we did automatically using the tool and a double bind between three researchers, three PhD student  included me. The second stage was done manually and only me was involved analyzing this relationship. %that, we extract a total of 459 tickets from this projects, in which we should be sure that the bug fixes come from a bug report, because two of five issues are misclassified \cite{herzig2013s} and this should cause bias in our final results.
+For these four projects we analyzed if bug fixes where introduce in their previous commits. For the first stage, we used the tool described in~\ref{sec:firstStage}. Each ticket was analyzed by two researchers independently. The second stage was done manually by the first author. %that, we extract a total of 459 tickets from this projects, in which we should be sure that the bug fixes come from a bug report, because two of five issues are misclassified \cite{herzig2013s} and this should cause bias in our final results.
 
 \section{Results}
 \label{sec:results}
 
-We extracted a total of 459 different tickets from the Launchpad of the four principal projects in OpenStack, 125 tickets from Nova, 125 tickets from cinder, 125 tickets from Horizon and 84 tickets from Neutron. These tickets first, were analyzed to identify those ones which were real bug reports. And secondly, each file was analyzed to obtain which previous commit inserted the bug causing the failure of the system and reporting the bug report. 
+A total of 459 different tickets from the Launchpad of the four main projects in OpenStack: 125 tickets from Nova, 125 tickets from cinder, 125 tickets from Horizon and 84 tickets from Neutron.
 
 \subsection{Fist Stage}
 \label{sec:resultsFS}
 
-We classify a total of 459 tickets using the tool. In 417 of the tickets, we used double bind analysis, and only those tickets classified as bug report by two of us, were considered in the next stage to analyze the relevance of their previous commits.
-
-The table \ref{tab:2} shows the percentage of each researcher after analyzing the tickets, and the number of tickets classified identically by two different researchers. Obtaining that the researchers R1 and R2 had a similar data in their results, whereas research R2 got results significantly different with a higher number of tickets classified as Bug Report.
- 
-Finally, the researchers identified in the same way 292 tickets, that is, their results matched in a 70\% of the cases. Obtaining 209 tickets classified as Bug report, 74 tickets classified as Not Bug Report and 9 tickets classified as Undecided.
+We classify a total of 459 tickets using the tool, resulting in 918 reviews. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits.
 
 \begin{table}
 \centering
@@ -467,60 +463,86 @@ Finally, the researchers identified in the same way 292 tickets, that is, their 
 \begin{tabular}{lrrrr}
 \toprule[0.3mm]%{\smallskip}
   & Bug Report & Not Bug Report & Undecided & Total \\\hline
-R1  & (184) 55\% & (115)34\% & (35) 11\% & 334 \\
-R2  & (188) 76\% & (54)22 \% & (7) 3\% & 249 \\
-R3 & (188) 56\% & (116) 35\% & (30) 9\% & 334 \\
-Finally & (209) 72\% & (74) 25\% & (9) 3\% & 292 \\
+R1  & (184) 55\% & (115) 34\% & (35) 11\% & 334 \\
+R2  & (188) 76\% & (54) 22\% & (7) 3\% & 249 \\
+R3 & (188) 56\% & (116) 35\% & (30) 9\% & 334 \\ \hline
+Agree & (209) 72\% & (74) 25\% & (9) 3\% & 292 \\
 \bottomrule[0.3mm]
 \end{tabular} %}
-\caption{ Statistics of each researcher in the classification}
+\caption{Statistics for each researcher as a result of the classification process. For each researcher R, the number of tickets (and percentages) classified into the three groups is given. The \emph{Agree} row gives the number of tickets (and percentages) were two researchers agreed.}
 \label{tab:2}
 %\end{center}
 \end{table}
 
-Also we had measured the concordance in the classification of each developer according to the project analyzed. The table \ref{tab:3} shows that the concordant got between all the three research was very similar, around a 70\%. Furthermore, the concordance form each researcher with the rest always was up to 60\%. 
+
+Table~\ref{tab:2} shows the classification percentages for each researcher after analyzing the tickets, and the number of tickets classified by two different researchers in the same group. %Obtaining that the researchers R1 and R2 had a similar data in their results, whereas research R2 got results significantly different with a higher number of tickets classified as Bug Report.
+As a result, researchers identified 292 tickets in the same group, that is, their results matched in over 70\% of the cases. Of those, 209 tickets had been classified in the \emph{Bug report} group, 74 in the \emph{Not Bug Report} group and 9 tickets classified in the \emph{Undecided} group.
+
+We also measured the concordance in the classification of each developer according to the project analyzed (see table~\ref{tab:3}). Values obtained by the three researchers are very similar, in general around a 70\%. The concordance values were always above 60\%. 
 
 \begin{table}[htb]
 \begin{center} {\footnotesize
 \begin{tabular}{lrrrrr}
 \toprule[0.3mm]%{\smallskip}
   & Nova & Cinder & Horizon & Neutron & Total\\\hline
-R1\&R2   & (44) 70\% & (40) 77\%  & (37) 60\% & -        & 68\% \\
-R1\&R3   &  -        & (46) 73\%  & (48) 76\% & (26) 62\% & 71\% \\
-R2\&R3   & (41) 66\% & (10) 100\% & -         & -        &  71\% \\
+R1 -- R2   & (44) 70\% & (40) 77\%  & (37) 60\% & -        & 68\% \\
+R1 -- R3   &  -        & (46) 73\%  & (48) 76\% & (26) 62\% & 71\% \\
+R2 -- R3   & (41) 66\% & (10) 100\% & -         & -        &  71\% \\
 \bottomrule[0.3mm]
 \end{tabular} }
-\caption{ Concordance between each developer in each repository}
+\caption{Concordance among researchers for each repository.}
 \label{tab:3}
 \end{center}
 \end{table}
 
 
+\vspace{0.2cm}
+\fbox{\begin{minipage}{25em}
+\textbf{RQ1: Using all the information available in the bug tracking system and code review systems related to a fix-bug, we have obtained that in at least 72\% of the tickets analyzed the fix-bugs were real bug reports.} 
+\end{minipage}}
+\vspace{0.1cm}
+
 
 \subsection{Second Stage}
 \label{sec:resultsSS}
 
-At this stage, we analyzed the 209 we got a list with all the previous commits and we were be able to classified the previous commit/s as Responsible, Not Responsible or Undecided, taken into account that the bug could be inserted in different lines of different commits, but not everyone had to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. In fact, the responsible can be only one of them, more than one or maybe none.
+In this stage we analyzed the 209 tickets classified as bug reports and their previous commits.
+The possible outcome was one of the following three options:
 
-We identified a total of 348 previous commits which can be responsible for inserting the line containing the bug. After analyzing the Bug Reports and their previous commits and discarded 40 of them because were noise, Table \ref{tab:responsability}, we got that 152 previous commit were responsible to cause the bug whereas 114 previous commit had not any responsibility in the failure of the system, and only in 42 previous commits we were unable to identify the cause of the bug.
+\begin{itemize}
+  \item Cause
+  \item No Cause
+  \item Undecided
+\end{itemize}
+
+This analysis takes into account that the bug could have been inserted in several lines in several commits, but not everyone had to be responsible for the commit; sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. In fact, the cause could be found in a single commit, in many or even in none. FIXME: repasar este parrafo
+
+We identified a total of 348 previous commits which could be the cause of the 292 bugs under analysis, and analyzed the bug reports together with their previous commits.
+
+
+As can be seen in Table~\ref{tab:responsability}, in 152 cases the previous commits have been considered the cause of the bug, whereas 114 times they were not the cause. We were unable to identify the cause of the bug in 42 cases, and discarded 40 more because they were noise. FIXME: explicar que es eso de noise!
+
 
 \begin{table}[htb]
-\begin{center} {\footnotesize
+\begin{center}
 \begin{tabular}{lrr}
 \toprule[0.3mm]
   & \multicolumn{1}{c}{Before} & \multicolumn{1}{c}{After} \\
   & \multicolumn{1}{c}{Deleting Noise} & \multicolumn{1}{c}{Deleting Noise} \\\hline
-\raisebox{1ex}{Responsible} & 152 & 152 \\[0ex]
-\raisebox{1ex}{Not responsible} & 154 & 114 \\[0ex]
-\raisebox{1ex}{Undecided} & 42 & 42 \\[0ex]
+{Cause} & (152) 44\% & (152) 49\% \\[0ex]
+{Not Cause} & (154) 44\% & (114) 37\% \\[0ex]
+{Undecided} & (42) 12\% & (42) 14\% \\[0ex]
 \bottomrule[0.3mm]
-\end{tabular} }
-\caption{ Responsibility of each previous commit before and after deleting the noise in the results}
+\end{tabular}
+\caption{Number of times (and percentage) where the previous commit is the cause, not the cause or could not be classified, before and after deleting noise.}
 \label{tab:responsability}
 \end{center}
 \end{table}
 
-Furthermore, focusing on how many previous commits presented each Bug Report, we obtained that 131 had one previous commit implicated, whereas 58 had more than one previous commit implicated in their file/s. According to Table \ref{tab:secondStage}, from the 131, we obtained that 65 of them inserted the bug, but 30 of them were not responsible in the failure of the system. And from the 58 which had more than one previous commits, we obtained in total 189 previous commit, where 86 of them were responsible and 82 were not responsible. %Probably, the bug was inserted in different lines of different commits, but not everyone has to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. After the analysis the responsible can be only one of them, more than one or maybe none. 
+
+If we attend to how many previous commits each of the 292 bug reports analyzed had, we see that 131 only had a previous commit, whereas 58 had more than one previous commit. As can be seen from Table~\ref{tab:secondStage}, from the 131 unique previous commits, 65 were the cause of the bug, and 30 not the cause. For the 58 bugs that had more than one previous commit, a total number of 189 previous commits were identified; of them 86 were the cause of the bug, while 82 were not.
+
+% Furthermore, focusing on how many previous commits presented each Bug Report, we obtained that 131 had one previous commit implicated, whereas 58 had more than one previous commit implicated in their file/s. According to Table \ref{tab:secondStage}, from the 131, we obtained that 65 of them inserted the bug, but 30 of them were not responsible in the failure of the system. And from the 58 which had more than one previous commits, we obtained in total 189 previous commit, where 86 of them were responsible and 82 were not responsible. %Probably, the bug was inserted in different lines of different commits, but not everyone has to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. After the analysis the responsible can be only one of them, more than one or maybe none. 
 
 \begin{table}[htb]
 \begin{center} {\footnotesize
@@ -528,17 +550,17 @@ Furthermore, focusing on how many previous commits presented each Bug Report, we
 \toprule[0.3mm]
   & \multicolumn{1}{c}{One previous } & \multicolumn{1}{c}{More than one previous} \\
   & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit} \\\hline
-\raisebox{1ex}{Responsible}     & 65 & 86 \\[0ex]
-\raisebox{1ex}{Not responsible} & 30 & 82 \\[0ex]
-\raisebox{1ex}{Undecided}       & 36 & 11 \\[0ex]
+\raisebox{1ex}{Cause}     & 65 & 86 \\[0ex]
+\raisebox{1ex}{Not cause} & 30 & 82 \\[0ex]
+\raisebox{1ex}{Undecided} & 36 & 11 \\[0ex]
 \bottomrule[0.3mm]
 \end{tabular} }
-\caption{ Probability of cause the bug depending on how many previous commits had the bug report}
+\caption{Probability of the cause of the bug depending on how many previous commits the bug report had.}
 \label{tab:secondStage}
 \end{center}
 \end{table}
 
-Also, we looked the distribution of the previous commit in each Bug Report, Table \ref{tab:secondStage2}, we observed that the most common distribution in the relationship between previous commit and bug report is one previous commit per Bug Report, following by the second common distribution, two previous commit per Bug Report.
+We also studied the distribution of the number of previous commits for each Bug Report. As shown in Table~\ref{tab:secondStage2}, the number of commits that can be considered as previous is 1, followed by 2 commits.
 
 \begin{table*}[htb]
 \begin{center} {\footnotesize
@@ -558,7 +580,7 @@ Also, we looked the distribution of the previous commit in each Bug Report, Tabl
 \end{center}
 \end{table*}
 
-Finally we wanted to know the responsibility practiced by each previous commit in the failure of a system, in other words, we were interested in analyze from those cases where exists more than one previous commit, how many of them inserted the bug in the code source, Table \ref{tab:secondStage3}. We obtained that in 8 Bug Reports all the previous commits were responsible, in 30 Bug reports at least one of their previous commit caused the bug and in 11 bug report none of their previous commits inserted the bug.
+Finally, we were interested in analyzing, for those cases where more than one previous commit exist, how many of them inserted the bug in the code source. Results are given in Table~\ref{tab:secondStage3}; in 8 bug reports all the previous commits were identified as the cause, in 30 bug reports at least one of the previous commits caused the bug, and in 11 bug reports none of the previous commits introduced the bug.
 
 \begin{table*}[htb]
 \begin{center} {\footnotesize
@@ -578,21 +600,20 @@ Finally we wanted to know the responsibility practiced by each previous commit i
 \end{table*}
 
 
+\vspace{0.2cm}
+\fbox{\begin{minipage}{25em}
+\textbf{RQ2: Only 50\% of the previous commits analyzed caused the failure in the system, whereas the 37\% of them did not introduce the bug in the code source.} 
+\end{minipage}}
+\vspace{0.1cm}
+
+
 \section{Discussion}
 \label{sec:discussion}
 
 
-\fbox{\begin{minipage}{25em}
-
-\textbf{RQ1: Using all the information available in the bug tracking system and code review system related a fix-bug, we have obtained that this fix-bug were real Bug Reports in a 72\% of the tickets analyzed} 
-\end{minipage}}
-
-\fbox{\begin{minipage}{25em}
-\textbf{RQ2: We have confirmed that 50\% of the previous commits analyzed caused the failure in the system, whereas the 37\% of them didn't injected any bug in the code source } 
-\end{minipage}}
 FIXME: Debería hablar sobre los siguientes puntos:
 \begin{enumerate}
- \item No todos los casos son tan claros como los mostrados en los ejemplos ....
+ \item No todos los casos son tan claros como los mostrados en los ejemplos....
  \item Casuistica del common juidment
  \item Hemos sido conservadores
  \item Hemos utilizado la herramienta porque es un proceso complicado
@@ -639,6 +660,7 @@ FIXME: Anñadir un link con la web en la que pondré todos los datos y scripts u
 
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
+
 The empirical experiment carried out in OpenStack, supported that the current premise assumed does not hold for a large fraction of the analyzed bugs, because around the 40\% of the previous commits were not responsible inserting the bug.
 With our results we can identify which ones are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improving their methodology.
 %How to plan to apply the knowledge in a way that can benefit software engineers.
@@ -648,6 +670,7 @@ A final field in our future work concerns the full automation on the methodology
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
+
 We thank Dorealda Dalipaj and Nelson Sekitoleko, two PhD students in our research team, that participated in the process of classifying bug reports. We also want to express our gratitude to Bitergia\footnote{\url{http://bitergia.com/}} for the OpenStack database and the support they have provided when questions have arised. 
 Finally, we would like to acknowledge the Spanish Government because all authors are funded in part by it, through project TIN2014-59400-R.
 
