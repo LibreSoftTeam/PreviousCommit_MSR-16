@@ -313,6 +313,8 @@ In detail, in this paper we attempt to address the following research question r
      \item RQ2:  When did the previous commit introduce the line with the bug into the source code?
 \end{itemize}
 
+\grex{Aqui deberiamos poner la contribucion de nuestro articulo al estado del arte.}
+
 The remainder of this paper is structured as follows. Next, we present the current body of knowledge in section~\ref{sec:related}. Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was introduced in the source code, followed by the results obtained after applying our approach to a selection of OpenStack bug fixes in Section~\ref{sec:results}. Section~\ref{sec:discussion} answers the research questions and discusses potential applications and improvements of our approach. After reporting the limitations and threats to validity in Section~\ref{sec:threats}, we draw some conclusions and point out some potential future work in Section~\ref{sec:conclusions}.
 
 
@@ -340,7 +342,8 @@ Williams et al. revisited the SZZ algorithm to track bug-inducing changes and id
 Finally, some bug prediction algorithms are based on SZZ; Kim et al. showed how to classify file changes as buggy or clean using change information features and sour code terms~\cite{kim2008classifying}.
 
 \grex{maybe talk about my paper with dmg and ahmed, where bugs could be found elsewhere~\cite{german2009change}. There the talk is precisely about those bugs whose origina are elsewhere. Title of the paper: \emph{Change impact graphs: Determining the impact of prior codechanges}}
-\gema{Hay que incluir lo que nuestro articulo aporta al estado actual}
+
+\gema{Hay que incluir lo que nuestro articulo aporta al estado actual} \grex{Buena idea, pero eso es mejor ponerlo en la intro.}
 %In addition some tools are based on SZZ too such as \cite{} 
 %Finally our idea.
 
@@ -576,8 +579,8 @@ If we attend to how many previous commits each of the 189 bug reports analyzed h
 \gema{- He analizado 189 bugs reports}\\
 \gema{- De los 189, 131 presentaban el mismo identificador de commit previo para todas las lineas que habian sido modificadas, mientras que 58 presentaban mas de un identificador de commit previo.}\\
 \gema{- Dentro de los bugs reports que tienen mas de un commit previo analizando el total de todos los commits para saber quien causo el bug, he encontrado que en total de los 179 comit previos 86 causaron el bug mientarsa que 82 no lo causaron y 11 no he podido decidir si eran causantes o no.}\\
-\gema{- Además he mirado como o porse distribuyen los commits en cada bug report dentro de cada proyecto analizado, y he visto que por ejemplo Neutron presentaba 11 bugs report con solo un ticket previo, 3 bugs report con dos identificadores diferentes para los commit previos, 2 bug reports que presentaban  3 commit previos... etc.}\\
-\gema{- Finalmente realicé ora clasificacion en la que tenia en cuenta el numero de commits que fueron causantes del error para un mismo bug report. Al analizar los bug reports encontre que en aquellos que presenstaban mas de un commit previo no todos los commit eran causantes del error, y en ocasiones solamente había un commit que causo el error y los otros no o por el contrario habia bugs report en los que ninguno de sus commits previos era responsable y otras ocasiones en las que todos los commits previos eran responsables. Por tanto la tabla 7 muestra cual es la responsabilidad (tods responsables, al menos uno ningun responsable y desconozco la responsabilidad) de los coommits previos presentes en un bug report. Por ejemplo, bugs reports que tenían dos commits previos, en 4 de ellos los dos commits previous eran responsables, mientras que en 9 bug report había al menos un responsable y en otros 4 bug report ninguno de los dos commit previos eran responsables.}  
+\gema{- Ademas he mirado como o porse distribuyen los commits en cada bug report dentro de cada proyecto analizado, y he visto que por ejemplo Neutron presentaba 11 bugs report con solo un ticket previo, 3 bugs report con dos identificadores diferentes para los commit previos, 2 bug reports que presentaban  3 commit previos... etc.}\\
+\gema{- Finalmente realice ora clasificacion en la que tenia en cuenta el numero de commits que fueron causantes del error para un mismo bug report. Al analizar los bug reports encontre que en aquellos que presenstaban mas de un commit previo no todos los commit eran causantes del error, y en ocasiones solamente habia un commit que causo el error y los otros no o por el contrario habia bugs report en los que ninguno de sus commits previos era responsable y otras ocasiones en las que todos los commits previos eran responsables. Por tanto la tabla 7 muestra cual es la responsabilidad (tods responsables, al menos uno ningun responsable y desconozco la responsabilidad) de los coommits previos presentes en un bug report. Por ejemplo, bugs reports que tenian dos commits previos, en 4 de ellos los dos commits previous eran responsables, mientras que en 9 bug report habia al menos un responsable y en otros 4 bug report ninguno de los dos commit previos eran responsables.}  
 We also studied the distribution of the number of previous commits for each Bug Report. As shown in Table~\ref{tab:secondStage2}, the number of commits that can be considered as previous is 1, followed by 2 commits.
 
 \begin{table*}[htb]
@@ -613,6 +616,7 @@ Finally, we were interested in analyzing, for those cases where more than one pr
 \bottomrule[0.3mm]
 \end{tabular} }
 \caption{ Number of previous commit responsibles per bug report}
+\label{tab:secondStage3}
 \end{center}
 \end{table*}
 
@@ -630,8 +634,8 @@ Finally, we were interested in analyzing, for those cases where more than one pr
 
 \gema{Deberia hablar sobre los siguientes puntos:} \grex{Puedes elaborar un poco mas cada punto, aunque sea en castellano?}
 \begin{enumerate}
- \item No todos los casos son tan claros como los mostrados en los ejemplos, hay ocasiones en las que solo se han anadido códifo y no somos capaces de encontrar al responsable por que no existe ninguna manera de poder identificar al commit previo. 
- \item Hemos sido conservadores, en ocasiones cuando se han modificado lineas como if/else y se han añadido comprobacione que anteriormente no estaban, se puede pensar que el commit previo que toco la línea se olvido de realizar dichas comporbaciones, y en ese caso sería el causante del bug. Pero existen casos que la comprobación que se necesita en el if ha aparecido porque se introdujo una nueva funcionalidad, por stanto en el momento original en el que se escribio la linea por primera vez no habia ningun error. Por tanto a menos que se descrisba esta ultima situacion en la descripcion del commit o del bug report, he considerado la idea treadicional, que el commit anterior provocó el error, porque realmente era dificil saberlo.
+ \item No todos los casos son tan claros como los mostrados en los ejemplos, hay ocasiones en las que solo se ha anadido codigo y no somos capaces de encontrar al responsable por que no existe ninguna manera de poder identificar al commit previo. 
+ \item Hemos sido conservadores, en ocasiones cuando se han modificado lineas como if/else y se han anadido comprobacione que anteriormente no estaban, se puede pensar que el commit previo que toco la linea se olvido de realizar dichas comporbaciones, y en ese caso seria el causante del bug. Pero existen casos que la comprobacion que se necesita en el if ha aparecido porque se introdujo una nueva funcionalidad, por stanto en el momento original en el que se escribio la linea por primera vez no habia ningun error. Por tanto a menos que se descrisba esta ultima situacion en la descripcion del commit o del bug report, he considerado la idea treadicional, que el commit anterior provoco el error, porque realmente era dificil saberlo.
  \item Hemos utilizado la herramienta porque es un proceso complicado. Para la primera parte de decidir si es o no es un bug report hemos tenido que desarrollar la herramienta.
 \end{enumerate}
 
@@ -675,7 +679,7 @@ The external threats, related to the case of the project, are following:
     \item OpenStack is a special project put down a constant evolution due to their active community of developers. Maybe, in other projects with less commits per year the statistics about the responsibility of previous commit change.
 \end{itemize}
 
-\gema{Incluir un link con la web en la que pondré todos los datos y scripts utilizados para los datos.}
+\gema{Incluir un link con la web en la que pondre todos los datos y scripts utilizados para los datos.}
 
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
