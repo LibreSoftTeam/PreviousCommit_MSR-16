@@ -506,7 +506,7 @@ R2 -- R3   & (41) 66\% & (10) 100\% & -         & -        &  71\% \\
 \subsection{Second Stage}
 \label{sec:resultsSS}
 
-In this stage we analyzed the 209 tickets classified as bug reports and their previous commits.
+In this stage we analyzed the 189 tickets classified as bug reports and their previous commits.
 The possible outcome was one of the following three options:
 
 \begin{itemize}
@@ -517,10 +517,12 @@ The possible outcome was one of the following three options:
 
 This analysis takes into account that the bug could have been inserted in many lines belong to many differnt previous commits, but in fact, not all of them could cause the bug. Could happen that these previous commit copied lines from its previous commits or modified the comments and added blank spaces. Thus, the cause could be found in a single previous commit, in many or even in none. FIXME: repasar este parrafo
 
-We identified a total of 348 previous commits which could be the cause of the 292 bugs under analysis, and analyzed the bug reports together with their previous commits.
+We identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis, we analyzed the bug reports together with their previous commits discarting these cases where the previous commit was false positives such as blank lines, changes in comments or even a change in the version of the file., so in total we had analyzed 308 previous commit.
 
 
-As can be seen in Table~\ref{tab:responsability}, in 152 cases the previous commits have been considered the cause of the bug, whereas 114 times they were not the cause. We were unable to identify the cause of the bug in 42 cases, and discarded 40 more because they ere false positives such as blank lines, changes in comments or even a change in the version of the file. FIXME: explicar que es eso de noise!, Con Noise me referia a los falsos positivos que puede haber en los commits previos, las líneas copiadas de otros commits o lineas en blanco, comentarios ...
+As can be seen in Table~\ref{tab:responsability}, from the 308 previous commit, 152 of them have been considered the cause of the bug, whereas 114 were not the cause. We were unable to identify the cause of the bug in 42 cases, due to there was only added lines or our knowleadge about the code. 
+
+FIXME: explicar que es eso de noise!, Con Noise me referia a los falsos positivos que puede haber en los commits previos, las líneas copiadas de otros commits o lineas en blanco, comentarios ...
 
 
 \begin{table}[htb]
@@ -540,7 +542,7 @@ As can be seen in Table~\ref{tab:responsability}, in 152 cases the previous comm
 \end{table}
 
 
-If we attend to how many previous commits each of the 292 bug reports analyzed had, we see that 131 only had a previous commit, whereas 58 had more than one previous commit. As can be seen from Table~\ref{tab:secondStage}, from the 131 unique previous commits, 65 were the cause of the bug, and 30 not the cause. For the 58 bugs that had more than one previous commit, a total number of 189 previous commits were identified; of them 86 were the cause of the bug, while 82 were not.
+If we attend to how many previous commits each of the 189 bug reports analyzed had, we see that 131 only had a previous commit, whereas 58 had more than one previous commit. As can be seen from Table~\ref{tab:secondStage}, from the 131 unique previous commits, 65 were the cause of the bug, and 30 not caused the failure. For the 58 bugs that had more than one previous commit, a total number of 179 previous commits were identified; of them 86 were the cause of the bug, while 82 were not.
 
 % Furthermore, focusing on how many previous commits presented each Bug Report, we obtained that 131 had one previous commit implicated, whereas 58 had more than one previous commit implicated in their file/s. According to Table \ref{tab:secondStage}, from the 131, we obtained that 65 of them inserted the bug, but 30 of them were not responsible in the failure of the system. And from the 58 which had more than one previous commits, we obtained in total 189 previous commit, where 86 of them were responsible and 82 were not responsible. %Probably, the bug was inserted in different lines of different commits, but not everyone has to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. After the analysis the responsible can be only one of them, more than one or maybe none. 
 
@@ -550,16 +552,21 @@ If we attend to how many previous commits each of the 292 bug reports analyzed h
 \toprule[0.3mm]
   & \multicolumn{1}{c}{One previous } & \multicolumn{1}{c}{More than one previous} \\
   & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit} \\\hline
-\raisebox{1ex}{Cause}     & 65 & 86 \\[0ex]
-\raisebox{1ex}{Not cause} & 30 & 82 \\[0ex]
-\raisebox{1ex}{Undecided} & 36 & 11 \\[0ex]
+\raisebox{1ex}{Cause}     & (65)50\% & (86)48\% \\[0ex]
+\raisebox{1ex}{Not cause} & (30)23\% & (82)46\% \\[0ex]
+\raisebox{1ex}{Undecided} & (36)27\% & (11)6\% \\[0ex]
 \bottomrule[0.3mm]
 \end{tabular} }
-\caption{Probability of the cause of the bug depending on how many previous commits the bug report had.}
+\caption{Probability of the cause of the bug when the bug report present one previous commit or more than one previous commit.}
 \label{tab:secondStage}
 \end{center}
 \end{table}
-
+[Los resultados que he obtenido y que queria plasmar en las tablas son:
+- He analizado 189 bugs reports\\
+- De los 189, 131 presentaban el mismo identificador de commit previo para todas las lineas que habian sido modificadas, mientras que 58 presentaban mas de un identificador de commit previo.\\
+- Dentro de los bugs reports que tienen mas de un commit previo analizando el total de todos los commits para saber quien causo el bug, he encontrado que en total de los 179 comit previos 86 causaron el bug mientarsa que 82 no lo causaron y 11 no he podido decidir si eran causantes o no.\\
+- Además he mirado como o porse distribuyen los commits en cada bug report dentro de cada proyecto analizado, y he visto que por ejemplo Neutron presentaba 11 bugs report con solo un ticket previo, 3 bugs report con dos identificadores diferentes para los commit previos, 2 bug reports que presentaban  3 commit previos... etc.\|\\\
+- Finalmente realicé ora clasificacion en la que tenia en cuenta el numero de commits que fueron causantes del error para un mismo bug report. Al analizar los bug reports encontre que en aquellos que presenstaban mas de un commit previo no todos los commit eran causantes del error, y en ocasiones solamente había un commit que causo el error y los otros no o por el contrario habia bugs report en los que ninguno de sus commits previos era responsable y otras ocasiones en las que todos los commits previos eran responsables. Por tanto la tabla 7 muestra cual es la responsabilidad (tods responsables, al menos uno ningun responsable y desconozco la responsabilidad) de los coommits previos presentes en un bug report. Por ejemplo, bugs reports que tenían dos commits previos, en 4 de ellos los dos commits previous eran responsables, mientras que en 9 bug report había al menos un responsable y en otros 4 bug report ninguno de los dos commit previos eran responsables.  ]
 We also studied the distribution of the number of previous commits for each Bug Report. As shown in Table~\ref{tab:secondStage2}, the number of commits that can be considered as previous is 1, followed by 2 commits.
 
 \begin{table*}[htb]
@@ -594,8 +601,7 @@ Finally, we were interested in analyzing, for those cases where more than one pr
 \raisebox{1ex}{Undecided}                & 1 & 0 & 1 & 0 & 2\\[0ex]
 \bottomrule[0.3mm]
 \end{tabular} }
-\caption{ Probability of cause the bug depending on how many previous commits had the bug report}
-\label{tab:secondStage3}
+\caption{ Number of previous commit responsibles per bug report}
 \end{center}
 \end{table*}
 
@@ -613,7 +619,7 @@ Finally, we were interested in analyzing, for those cases where more than one pr
 
 FIXME: Debería hablar sobre los siguientes puntos:
 \begin{enumerate}
- \item No todos los casos son tan claros como los mostrados en los ejemplos....
+ \item No todos los casos son tan claros como los mostrados en los ejemplos, hay ocasiones en las que solo se han anadido codigo 
  \item Casuistica del common juidment
  \item Hemos sido conservadores
  \item Hemos utilizado la herramienta porque es un proceso complicado
