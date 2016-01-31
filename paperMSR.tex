@@ -311,7 +311,7 @@ To achieve our goal, this paper attempts to address the following research quest
 
 Answering RQ1 is a prerequisite to be able to answer RQ2. This is because (real) bugs are managed together in an issue-tracking tool with feature requests, optimizations, test files, among others. As we are only interested in our research in the actual bugs, we need to identify those as a previous step to analyze if they have been caused by the previous commit.
 
-With this paper we try to shed some ligth on how and when the bug was inserted into the source code, showing different empirical results from the the current assumption about the bug was originated in the previous modifications of the lines involved in the fix bug. Thus, our idea is based on the thought that some modifications or additions into the code source don't introduce any bug in the software. Our results could lead to think that all the articles based on this assumption are not using the best data in their results.On the other hand, this could be very useful in future research deleting this previous commits from the cause of a bug in their studies and could help developers understanding the bug seeding process. \grex{reescribir este parrafo para que quede mas claro.}
+The main contribution of this paper is to shed some light on the correctness of the asumption that a bug is caused in the previous commit. In the point of time where the previous commit was performed, the lines that are modified in the bug-fix were correct. We show that a significant portion of bugs can be attributed to other causes, offering evidence that all the research findings and methods that have been constructed based on this assumption are not using accurate data and may give inaccurate results. Finally, our study can be understood as a step forward to better understand the bug seeding process.
 
 The remainder of this paper is structured as follows. Next, we present the current body of knowledge in section~\ref{sec:related}. Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was introduced in the source code, followed by the results obtained after applying our approach to a selection of OpenStack bug fixes in Section~\ref{sec:results}. Section~\ref{sec:discussion} answers the research questions and discusses potential applications and improvements of our approach. After reporting the limitations and threats to validity in Section~\ref{sec:threats}, we draw some conclusions and point out some potential future work in Section~\ref{sec:conclusions}.
 
@@ -660,7 +660,7 @@ And we are talking about a bug report not a new feature, these kinds of cases us
 \item Is responsible the last commit that modify something in the function?
 \end{enumerate}
 
-\gema{Puedes elaborar un poco mas el parrafo anterior? Puede ser en castellano}
+\grex{Puedes elaborar un poco mas el parrafo (y los puntos) anterior(es)? Puede ser en castellano.}
 
 There are other cases where it is difficult to determine if the change is the cause. For instance, when additional conditions are added to \emph{if}s or \emph{else}s, one might think that in the previous commit those were not included due to an error, so that the previous commit becomes the cause of the bug. However, situations exist where the additional conditions in an if appear because of the introduction of a new functionality, and thus the line in the previous commit was correct at the time it was introduced. In our analysis, if the latter situation is not explicity mentioned we have considered that the previous commit caused the error.
 
@@ -675,7 +675,7 @@ But already the identification of an issue as a bug report is a process that is 
 
 %\gema{Algunos de los problemas que nos hemos encontrado durante el analisis y que podrian ser resueltos de otra forma diferente a la nuestra y quizas puede que varie algo los resultados no lo se}
 
-In any case, our research shows evidence that assuming that the previous commit is where the cause of a bug can be found does not hold for a not insignificant percentage of bugs. \grex{Tengo que elaborar mas esto, que es el punto fuerte del articulo.}
+In any case, our research shows evidence that assuming that the previous commit is where the cause of a bug can be found does not hold for a not insignificant percentage of bugs. \grex{Tengo que elaborar mas esto, que es el punto mas fuerte (o de mayor) del articulo.}
 
 
 \section{Threats to validity}
