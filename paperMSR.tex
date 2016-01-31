@@ -237,7 +237,7 @@ This paper tries to shed some light on this topic, by analyzing the relationship
 \section{Introduction}
 \label{sec:introduction}
 
-When a failure is found in the behavior of a software, the developers try to fix it locating and modifying the source code line(s) that are reponsible for the wrong behaviour in the source code. It may semm at first reasonable to assume that previous modifications of this line or these lines are the cause of the bug; the previous modification is what is called \textit{the previous commit}. But in fact, to find when and where a bug was introduced in the source code is not a trivial task, and by far more complex than this assumption. This has largely been ignored in many of the bug-fix literature, mainly because the data related to the origin of a bug is embedded in the evolution of the software~\cite{sinha2010buginnings}, meaning that when someone fixes a bug they don't take into consideration the context and the history behind of the project and you cannot have access into this information easily. \grex{Gema, puedes clarificar la frase anterior? No me ha quedado muy claro que querias decir con lo de embedded in the evolution of the software; quizas habria que poner un ejemplo.}\gema{No se si asi queda mas claro, la idea de embebed la saque del articulo y por lo que entendi con embebed se referia a que no hay ningun log o nada donde los desarrolladores expliquen porque se ha producido un error desde un punto de vista mas historico, que la informacion sobre el error se encuentra embebida en la historia y la evolucion del propio proyecto, no creo que pueda sacar ningun ejemplo }
+When a failure is found in the behavior of a software, the developers try to fix it locating and modifying the source code line(s) that are reponsible for the wrong behaviour in the source code. It may semm at first reasonable to assume that previous modifications of this line or these lines are the cause of the bug; the previous modification is what is called \textit{the previous commit}. But in fact, to find when and where a bug was introduced in the source code is not a trivial task, and by far more complex than this assumption. This has been largely ignored in much of the bug-fix literature, mainly because the data related to the origin of a bug is \emph{embedded} in the evolution of the software~\cite{sinha2010buginnings}, as the authors state. With this they mean that there is no easy evidence (artifact, comment or log) where developers specify what produced that error from a more historical point of view; the explanation of the cause is thus \emph{embedded} in the project.
 
 This is the reason why many studies in the area of mining software repositories start with this implicit assumption. So, for instance, we have found following reasonings in several areas of research, such as:
 
@@ -302,20 +302,24 @@ The goal of this paper is to find if the cause of the bug can be assigned to the
 
 In detail, in this paper we attempt to address the following research question regarding who introduced the bug in the source code:
 
-\grex{rephrase RQs}
+%\grex{rephrase RQs}
 \begin{itemize}
-    %\item RQ1 : How can tickets which are bug reports be differentiated from those that are not?
-    %\item RQ1:  How can we know that a change was done to fix a bug in the source code? How can we identify them?
-     \item \grex{RQ1: How many tickets in the issue tracking system are (real) bug reports?}
-     \item \gema{ Me parece bien la pregunta anterior pero queria focalizarla mas desde el punto de vista del commit previo, para que se adapte mas a la idea del articulo ya que en realidad es algo que se debe hacer pero no tiene mucho que ver con encontrar el causante del bug reports, yo había pensado algo como: How we can identify a change done to fix a bug inserted in the code source? }
+% \gema{ Me parece bien la pregunta anterior pero queria focalizarla mas desde el punto de vista del commit previo, para que se adapte mas a la idea del articulo ya que en realidad es algo que se debe hacer pero no tiene mucho que ver con encontrar el causante del bug reports, yo había pensado algo como: How we can identify a change done to fix a bug inserted in the code source? }
     %\item RQ2:  How often is the bug caused in the previous commit?
      \item RQ2: How often is the previous commit the cause of the bug?
+     
+     As already explained, this is the main question that we want to answer in this paper. Given bugs that have been fixed, how many of those were introduced by the previous commit. To do so, we first have to answer RQ1.
+
+    %\item RQ1 : How can tickets which are bug reports be differentiated from those that are not?
+    %\item RQ1:  How can we know that a change was done to fix a bug in the source code? How can we identify them?
+     \item RQ1: How can we identify changes done to fix a bug?
+
+     To be able to answer RQ2, we first need to study the issue-tracking system and identify there the subset of tickets that correspond to already fixed bugs. In essence, RQ1 could be also stated as \emph{How many tickets in the issue tracking system are (real) bug reports?}. This is because (real) bugs are managed together in an issue-tracking tool with feature requests, optimizations, test files, among others. As we are only interested in our research in the actual bugs, we need to identify those as a previous step to analyze if they have been caused by the previous commit. 
+
+     
 \end{itemize}
 
-Answering RQ1 is a prerequisite to be able to answer RQ2. This is because (real) bugs are managed together in an issue-tracking tool with feature requests, optimizations, test files, among others. As we are only interested in our research in the actual bugs, we need to identify those as a previous step to analyze if they have been caused by the previous commit. 
-
-\grex{Aqui deberiamos poner la contribucion de nuestro articulo al estado del arte.}
-The goal of this paper is to shed some ligths on how and when the bug was inserted into the source code, showing different empirical results from the the current assumption about the bug was originated in the previous modifications of the lines involved in the fix bug. Thus, our idea is based on the thought that some changes into the code source don't introduce any bug in the software, due to at the moment in which this lines were written, the code wasn't buggy. Finally, our results could lead to think that all the articles based on this assumption are not using the best data in their approach and as a result they can improve their results with our idea. On the other hand, this could be very useful in future researchs, could help developers understanding the bug seeding process.
+The goal of this paper is to shed some ligth on how and when the bug was inserted into the source code, showing different empirical results from the the current assumption about the bug was originated in the previous modifications of the lines involved in the fix bug. Thus, our idea is based on the thought that some changes into the code source don't introduce any bug in the software, due to at the moment in which this lines were written, the code wasn't buggy. Finally, our results could lead to think that all the articles based on this assumption are not using the best data in their approach and as a result they can improve their results with our idea. On the other hand, this could be very useful in future researchs, could help developers understanding the bug seeding process.
 
 The remainder of this paper is structured as follows. Next, we present the current body of knowledge in section~\ref{sec:related}. Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was introduced in the source code, followed by the results obtained after applying our approach to a selection of OpenStack bug fixes in Section~\ref{sec:results}. Section~\ref{sec:discussion} answers the research questions and discusses potential applications and improvements of our approach. After reporting the limitations and threats to validity in Section~\ref{sec:threats}, we draw some conclusions and point out some potential future work in Section~\ref{sec:conclusions}.
 
