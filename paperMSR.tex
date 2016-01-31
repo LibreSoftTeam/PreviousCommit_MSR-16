@@ -297,7 +297,7 @@ Based on anecdotal evidence like the one presented in Figures~\ref{fig:3} and Fi
 of the code may induce wrong behavior (bugs) in places that were correct in the past. This happens often in situations like changes to the API. In the moment the code ws written, it was correct and the woftware worked fine. Additions of new features or enhancements to the API had as a side effect that the formerly correct code presents a wrong behavior, making the software fail. But in such cases, the source of the error cannot be attributed to a change performed in the previous commit, as in that moment it referred to a different API.
 
 \grex{poner el siguiente parrafo bien}
-\gema{podemos eliminar el siguiente parrafo porque en realidad lo que qería decir aquí es la contribucion del paper y si la pongo luego puedo eliminar este parrafo}
+\gema{podemos eliminar el siguiente parrafo porque en realidad lo que queria decir aqui es la contribucion del paper y si la pongo luego puedo eliminar este parrafo} \grex{Queda entonces mirar a ver cual de los dos parrafos es mejor o si hacer un merge}
 The goal of this paper is to find if the cause of the bug can be assigned to the previous commit, understanding that at the time when the previous commit is introduced not all times the code analyzed was so easy as the code showed in Figures~\ref{fig:1} and~\ref{fig:3}. So the principal aim of this paper to find the responsible of the bug is to know if the previous commits contained buggy code at the moment in which were added/modified or, another change in the software, related to the update of the software and its evolution, caused the bug.
 
 In detail, in this paper we attempt to address the following research question regarding who introduced the bug in the source code:
@@ -351,11 +351,10 @@ The SZZ algorithm (and its \emph{successors}) have been widely used in the resea
 Williams et al. revisited the SZZ algorithm to track bug-inducing changes and identify types of changes~\cite{williams2008szz}. Yang et al. applied SZZ to find what kind of bug-inducing changes are likely to become a great threat after being mared as bug-fix changes
 Finally, some bug prediction algorithms are based on SZZ; Kim et al. showed how to classify file changes as buggy or clean using change information features and sour code terms~\cite{kim2008classifying}.
 
-\grex{maybe talk about my paper with dmg and ahmed, where bugs could be found elsewhere~\cite{german2009change}. There the talk is precisely about those bugs whose origina are elsewhere. Title of the paper: \emph{Change impact graphs: Determining the impact of prior codechanges}}\gema{me parece bien, no lo he leido pero nadie mejor que tu para resumirlo en esta seccion}
+%\grex{maybe talk about my paper with dmg and ahmed, where bugs could be found elsewhere~\cite{german2009change}. There the talk is precisely about those bugs whose origina are elsewhere. Title of the paper: \emph{Change impact graphs: Determining the impact of prior codechanges}}\gema{me parece bien, no lo he leido pero nadie mejor que tu para resumirlo en esta seccion}
 
 In the research literature, we can already find methods that consider other sources of information than the previous commit. In fact, German et al.~\cite{german2009change} 
-point out that software is in constant change, and that changes performed may have impact across the whole system and may lead to the manifestation of bugs in unchanged parts. In this case, a bug emerges in a different location from the source of the bug, which is a change to a function somewhere else in the source code base.
-
+point out that software is in constant change, and that changes performed may have impact across the whole system and may lead to the manifestation of bugs in unchanged parts. In this case, a bug emerges in a different location from the source of the bug, which is a change to a function somewhere else in the source code base. \grex{Quizas mirar si hay mas articulos en esta linea. No es muy importante esto.}
 
 
 %In addition some tools are based on SZZ too such as \cite{} 
@@ -413,7 +412,7 @@ From the experience of analysing a small number of tickets, we agreed on followi
     \item Each time that the title or the description of a ticket describes an unexpected behaviour in the program, our criteria indicated that it was considerated as a bug report. 
     \item The description of the ticket presents an optimization, deletion of a dead code or the implementation of new characteristics, we agreed not to classify it as a bug report because there is no failure. 
     \item When the ticket described that some updates were required, the ticket is a bug report. We consider all tickets that require updating as bug reports, because updating a software hints to the software not operating as expected. 
-    \item When only test files are affected in a ticket, we classified it as not being a bug report. We consider bug errors in test files are a different type of bugs, as the software may still work as expected. \grex{no se si esto es lo que querias decir}\gema{si, es eso lo que queria decir}
+    \item When only test files are affected in a ticket, we classified it as not being a bug report. We consider bug errors in test files are a different type of bugs, as the software may still work as expected.
     
 %    Test files in a ticket were not be analyzed, as we consider they are not a core part of the software and are used as a testing method to determine whether the code is fit for use. When the bug exclusively lies in a test file, the ticket was not considered as bug report because the software still works as expected, only test fails. \grex{no se repiten las frases?}\gema{Te refieres al inicio de cada frase o a lo que se describo en cada frase?}
 
@@ -426,11 +425,13 @@ Sometimes we were unable to answer all the questions due to having insufficient 
 
 In this second part, our work was focused on analyzing the previous commit exclusively for those tickets classified in the \textit{Bug Report} group. Therefore we had to locate the line that contained the bug, inquire the reason of the software failure, and gathering additional information on the context of the project.
 
-For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added,inserted or modified in the previous commit, we refered to \emph{parent} commit as the last commit that was edited to produce the subsequent state of the file. We do this process to be sure that we are looking the correct change, because some times although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, is a false positive where the previous commit didn't cause the bug. \grex{Gema, puedes aclarar este parrafo? Que es el "parent" commit? Es lo mismo que el previous commit? Es la primera vez que hablamos de el. Quizas sea buena idea que lo reformules en castellano, porque ahora mismo es criptico}\gema{el parent commit es el ultimo commit que se hizo en el fichero antes de que se realizase el que arreglo el error, por tanto lo que hago usar diff y blame en el commit parent y en el commit que arregla el error para saber que lineas se shan cambiado y que commit las cambio), y despues hago lo mismo con el commit previo y el commit parent del pervio para saber que en realidad en ese momento se produjo el cambio. En el gerrit nos dan esa info como se puede ver en \ref{fig:parent}}
+For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added, inserted or modified in the previous commit. We refer to \emph{parent} commit as the last commit that was edited to produce the subsequent state of the file. We do this process to be sure that we are looking the correct change, because some times although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, it is a false positive where the previous commit did not cause the bug. \grex{Gema, puedes aclarar este parrafo? Que es el "parent" commit? Es lo mismo que el previous commit? Es la primera vez que hablamos de el. Quizas sea buena idea que lo reformules en castellano, porque ahora mismo es criptico}\gema{el parent commit es el ultimo commit que se hizo en el fichero antes de que se realizase el que arreglo el error, por tanto lo que hago usar diff y blame en el commit parent y en el commit que arregla el error para saber que lineas se han cambiado y que commit las cambio), y despues hago lo mismo con el commit previo y el commit parent del previo para saber que en realidad en ese momento se produjo el cambio. En el gerrit nos dan esa info como se puede ver en la figura~\ref{fig:parent}}
+
 \begin{figure}[ht]
 \centering
 \includegraphics[height=2cm]{parent.png}
-\label{fig:patent}       % Give a unique label
+\label{fig:parent}       % Give a unique label
+\caption{Information in Gerrit.\grex{contar que se ve en la figura}}
 \end{figure}
 
 The analysis was done manually. We used \textit{git blame} to see the previous commit for each line of the involved file. Also, we used \textit{diff} to see the differences between the two files, in our case as the file is going to be the same, between the file in two different moments in the control version system.
@@ -494,7 +495,7 @@ A total of 459 different tickets from the Launchpad of the four main projects in
 \subsection{Fist Stage}
 \label{sec:resultsFS}
 
-We classify a total of 459 tickets using the tool, resulting in 917 reviews\grex{Mirando la Tabla 2, veo que las revisiones suman 917, no 918!}.\gema{Es cierto, son 917} Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits.
+We classify a total of 459 tickets using the tool, resulting in 917 reviews\grex{Mirando la Tabla 2, veo que las revisiones suman 917, no 918!} \gema{Es cierto, son 917}. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits.
 
 \begin{table*}
 \centering
@@ -539,9 +540,6 @@ R2 -- R3   & (41) 66\% & (10) 100\% & -         & -        &  (51) 71\% \\
 
 After this, we can answer the first research question because at this moment we have all the data necessary and all the knowleadge to can distinguish bug reports from others reports.
 
-\grex{Tiene sentido anadir numeros absolutos, como he hecho a la columna de Total en la Tabla 3?}
-\gema{Si, tiene sentido}
-
 \vspace{0.2cm}
 \fbox{\begin{minipage}{25em}
 \textbf{RQ1: Using all the information available in the bug tracking system and code review systems related to a fix-bug, we have obtained that in at least 72\% of the tickets analyzed the fix-bugs were real bug reports.} 
@@ -549,7 +547,7 @@ After this, we can answer the first research question because at this moment we 
 \vspace{0.1cm}
 
 \grex{Molaria hablar de cuanto tiempo ha llevado realizar esta etapa de clasificacion por cada uno de los investigadores (o sea, sin contar el desarrollo de herramienta y conseguir y cargar los datos de bugs y demas en la base de datos)}
-\gema{El problema es que no hemos medido el tiempo, he hablado con ellos y me dicen que de media de 5 a 10 minutos por ticket, a mi me llevo unos 5 minutos de media, por que ya estaba mas acostumbrada, pero de todas formas se podría medir en github en tiempo que les ha llevado a cada uno entre ticket y ticket, en aquellos casos que se puedan medir y hacer una media, Que te parece?}
+\gema{El problema es que no hemos medido el tiempo, he hablado con ellos y me dicen que de media de 5 a 10 minutos por ticket, a mi me llevo unos 5 minutos de media, por que ya estaba mas acostumbrada, pero de todas formas se podria medir en github en tiempo que les ha llevado a cada uno entre ticket y ticket, en aquellos casos que se puedan medir y hacer una media, Que te parece?}
 
 \subsection{Second Stage}
 \label{sec:resultsSS}
