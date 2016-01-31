@@ -564,14 +564,14 @@ The possible outcome of the analysis was one of the following three options:
   \item Undecided
 \end{itemize}
 
-This analysis takes into account that the bug could have been inserted in many lines that belong to many different previous commits, but in fact, not all of them could cause the bug. It may happen that in the previous commit, lines have been copied from further previous commits, comments may have been modified or blank spaces/lines have been introduced. Thus, the cause could be found in a single previous commit, in many or even in none. \grex{Todavia no esta del todo claro... yo creo que esto merece un ejemplo - incluso con codigo real, tal y como hemos hecho al principio del articulo. Ademas, nos lo podemos permitir; tenemos espacio.}\gema{perfecto, ahora busco un ejemplo y lo anado abajo}
+This analysis takes into account that the bug could have been inserted in many lines that belong to many different previous commits, but in fact, not all of them could cause the bug. It may happen that in the previous commit, lines have been copied from further previous commits, comments may have been modified or blank spaces/lines have been introduced. Thus, the cause could be found in a single previous commit, in many or even in none. In the \ref{fig:previous} we see that the previous commits are more than one, in this case two \textit{e7be0a988} and \textit{e5296c1da}. The previous commit \textit{e7be0a988} didn't cause the bug because it's a line to know the version of the file. The previous commit \textit{e5296c1da} caused the bug because it inserted a incorrect \textit{break} line. \grex{Todavia no esta del todo claro... yo creo que esto merece un ejemplo - incluso con codigo real, tal y como hemos hecho al principio del articulo. Ademas, nos lo podemos permitir; tenemos espacio.}\gema{perfecto, ahora busco un ejemplo y lo anado abajo}
 
-%\begin{figure}[ht]
-%\centering
-%\includegraphics[height=12cm]{manylines.png}
-%\caption{Screenshot of the tool used to classify the tickets.}
-%\label{fig:screenshot}       % Give a unique label
-%\end{figure}
+\begin{figure}[ht]
+\centering
+\includegraphics[height=2.5cm]{manyprevious.png}
+\caption{Previous commits: \textit{e7be0a988}, \textit{e5296c1da} }
+\label{fig:previous}       % Give a unique label
+\end{figure}
 
 
 We identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis. Then, we analyzed the bug reports together with their previous commits discarting the cases where the previous commit was a false positive (blank lines, changes in comments or even a change in the version of the file). So, in total we have analyzed 308 previous commit.
@@ -692,7 +692,8 @@ And we are talking about a bug report not a new feature, these kinds of cases us
 \item Is responsible the last commit that modify something in the function?
 \end{enumerate}
 
-\grex{Gema, puedes elaborar un poco mas el parrafo anterior? Puede ser en castellano}
+\grex{Puedes elaborar un poco mas el parrafo (y los puntos) anterior(es)? Puede ser en castellano.}
+\gema{En casos de que el error se arregle solamente anadiendo lineas, al intentar saber quien es el causante, podemos pensar en que el responsable podria ser el primero que introduce la funcion que olvido tener en cuenta ese caso, o si la funcion en la que se anade el codigo ha sido modificada varias veces pordriamos pensar que el ultimo que modifico la funcion puede ser el causante porue no se dio cuenta que fataba por anadir ese codigo. Otro caso puede ser lo if/else, en estos casos hay que ser cuidadosos y saber diferenciar si el causante fue el comit previo porque se olvido de comporbar una condicion, o si el commit previo no fue el causante del error porque la condicion que se introduce en el commit que arregla el error se debe a que han anadido una nueva funcionalidad despues de haber anadido el if/else y necesitan comprobarla ahora, por tanto seria debido a la evolucion del projecto. En este ultimo caso, si no tenemos toda la descripcion de lo que realmente esta pasando, para poder decidir en que situacion estamos, hemos sido conservadores y hemos inducado que el commit anterior fue el responsable}
 
 There are other cases where it is difficult to determine if the change is the cause. For instance, when additional conditions are added to \emph{if}s or \emph{else}s, one might think that in the previous commit those were not included due to an error, so that the previous commit becomes the cause of the bug. However, situations exist where the additional conditions in an if appear because of the introduction of a new functionality, and thus the line in the previous commit was correct at the time it was introduced. In our analysis, if the latter situation is not explicity mentioned we have considered that the previous commit caused the error.
 
