@@ -180,7 +180,7 @@ Jes\'us M. Gonz\'alez-Barahona\\
 \begin{abstract}
 It is common practice that developers mark in the versioning system when they are fixing a software bug. At first glance, it could seem reasonable to assume that the fixed bug had been introduced in the previous modification of those same parts of the source code (i.e., in the previous commit). In fact, many studies on bug seeding start with this assumption. However, there is little empirical evidence supporting this assumption, and there are reasons to suppose that in some cases the bug may have been introduced by other actions, such as an older modification, or a change in the API that is being called.
 
-This paper tries to shed some light on this topic, by analyzing the relationship of bug fixes with their previous commits. To this end, we conducted an observational study on bug reports, their fixes, and their corresponding previous commits for the OpenStack project. Our results show that the assumption that bugs have been introduced in the previous commit does not hold for a large fraction of the bugs analyzed. \grex{maybe we could say something more here}. \gema{podriamos escribir algunos porcentajes de lo que hemos encontrado, algo asi como que un 37\% de los commits previos no son responsables de introducir niingun bug}
+This paper tries to shed some light on this topic, by analyzing the relationship of bug fixes with their previous commits. To this end, we conducted an observational study on bug reports, their fixes, and their corresponding previous commits for the OpenStack project. Our results show that the assumption that bugs have been introduced in the previous commit does not hold for a large fraction (at least 37\%) of the bugs analyzed.
 \end{abstract}
 
 
@@ -237,7 +237,7 @@ This paper tries to shed some light on this topic, by analyzing the relationship
 \section{Introduction}
 \label{sec:introduction}
 
-When a failure is found in the behavior of a software, the developers try to fix it locating and modifying the source code line(s) that are reponsible for the wrong behaviour in the source code. It seems reasonable to assume that the previous modification of this line or these lines are the cause of the bug; this previous modification is \textit{the previous commit}. But in fact, to find when and where a bug was introduced in the source code is not a trivial task. This has largely been ignored, mainly because the data related to the origin of a bug is embedded in the evolution of the software~\cite{sinha2010buginnings}. \grex{clarificar la frase anterior... no ha quedado muy claro.}
+When a failure is found in the behavior of a software, the developers try to fix it locating and modifying the source code line(s) that are reponsible for the wrong behaviour in the source code. It may semm at first reasonable to assume that previous modifications of this line or these lines are the cause of the bug; the previous modification is what is called \textit{the previous commit}. But in fact, to find when and where a bug was introduced in the source code is not a trivial task, and by far more complex than this assumption. This has largely been ignored in many of the bug-fix literature, mainly because the data related to the origin of a bug is embedded in the evolution of the software~\cite{sinha2010buginnings}. \grex{Gema, puedes clarificar la frase anterior? No me ha quedado muy claro que querias decir con lo de embedded in the evolution of the software; quizas habria que poner un ejemplo.}
 
 This is the reason why many studies in the area of mining software repositories start with this implicit assumption. So, for instance, we have found following reasonings in several areas of research, such as:
 
@@ -294,28 +294,24 @@ On the other hand, Figure~\ref{fig:3} shows a clear example of a case where the 
 \end{figure}
 
 Based on anecdotal evidence like the one presented in Figures~\ref{fig:3} and Figure~\ref{fig:4}, we argue that in projects that are continuously evolving, with an ample developer community, code that before was correct could be buggy at some time. So, changes in other parts
-of the code may induce wrong behavior (bugs) in places that were correct in the past. This happens often in situations like changes to the API. In the moment the code ws written, it was correct and the woftware worked fine. Additions of new features or enhancements to the API had as a side effect that the formerly correct code presents a wrong behavior, making the software fail. But in such cases, the source of the error cannot be \grex{assigned} to a change performed in the previous commit, as in that moment it referred to a different API.
+of the code may induce wrong behavior (bugs) in places that were correct in the past. This happens often in situations like changes to the API. In the moment the code ws written, it was correct and the woftware worked fine. Additions of new features or enhancements to the API had as a side effect that the formerly correct code presents a wrong behavior, making the software fail. But in such cases, the source of the error cannot be attributed to a change performed in the previous commit, as in that moment it referred to a different API.
 
-\grex{poner el siguiente parrafo bien}
+The goal of this paper is to find if the cause of the bug can be attributed to the previous commit. A previous commit will be identified as the cause if the buggy behavior is present at the time it is performed. If the buggy behavior is due to other changes in the software, e.g., due to its evolution or changes elsewhere in the source code base, the previous commit should not be considered as the cause of a bug.
 
-The goal of this paper is to find if the cause of the bug can be \grex{assigned} to the previous commit, understanding that at the time when the previous commit is introduced
-
-not all times the code analyzed was so easy as the code showed in Figures~\ref{fig:1} and~\ref{fig:3}. So the principal aim of this paper to find the responsible of the bug is to know if the previous commits contained buggy code at the moment in which were added/modified or, another change in the software, related to the update of the software and its evolution, caused the bug.
-
-In detail, in this paper we attempt to address the following research question regarding who introduced the bug in the source code:
-
-\grex{rephrase RQs}
+To achieve our goal, this paper attempts to address the following research questions:
 
 \begin{itemize}
     %\item RQ1 : How can tickets which are bug reports be differentiated from those that are not?
-     \item RQ1:  How can we know that a change was done to fix a bug in the source code? How can we identify them?
+    %\item RQ1:     How can we know that a change was done to fix a bug in the source code? How can we identify them?
      \item \gema{RQ1: How we can identify a change done to fix a bug inserted in the code source? Que tal esta forma de plantear la RQ1? Esta pregunta se refiere a como podemos diferenciar los bug reports de los otros pero realizada desde el punto de vista del comit previo }
+     \item \grex{RQ1: How many tickets in the issue tracking system are (real) bug reports?}
     %\item RQ2:  How often is the bug caused in the previous commit?
-     \item RQ2:  When did the previous commit introduce the line containing the bug into the source code?
+     \item RQ2: How often is the previous commit the cause of the bug?
 \end{itemize}
 
-\grex{Aqui deberiamos poner la contribucion de nuestro articulo al estado del arte.}
-With this paper we try to shed some ligths on how and when the bug was inserted into the source code, showing different empirical results from the the current assumption about the bug was originated in the previous modifications of the lines involved in the fix bug. Thus, our idea is based on the thought that some modifications or additions into the code source don't introduce any bug in the software. Our results could lead to think that all the articles based on this assumption are not using the best data in their results.On the other hand, this could be very useful in future research deleting this previous commits from the cause of a bug in their studies and could help developers understanding the bug seeding process.
+Answering RQ1 is a prerequisite to be able to answer RQ2. This is because (real) bugs are managed together in an issue-tracking tool with feature requests, optimizations, test files, among others. As we are only interested in our research in the actual bugs, we need to identify those as a previous step to analyze if they have been caused by the previous commit.
+
+With this paper we try to shed some ligth on how and when the bug was inserted into the source code, showing different empirical results from the the current assumption about the bug was originated in the previous modifications of the lines involved in the fix bug. Thus, our idea is based on the thought that some modifications or additions into the code source don't introduce any bug in the software. Our results could lead to think that all the articles based on this assumption are not using the best data in their results.On the other hand, this could be very useful in future research deleting this previous commits from the cause of a bug in their studies and could help developers understanding the bug seeding process. \grex{reescribir este parrafo para que quede mas claro.}
 
 The remainder of this paper is structured as follows. Next, we present the current body of knowledge in section~\ref{sec:related}. Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was introduced in the source code, followed by the results obtained after applying our approach to a selection of OpenStack bug fixes in Section~\ref{sec:results}. Section~\ref{sec:discussion} answers the research questions and discusses potential applications and improvements of our approach. After reporting the limitations and threats to validity in Section~\ref{sec:threats}, we draw some conclusions and point out some potential future work in Section~\ref{sec:conclusions}.
 
@@ -323,7 +319,7 @@ The remainder of this paper is structured as follows. Next, we present the curre
 \section{Related Work}
 \label{sec:related}
 
-The first algorithm to identifying bug-introducing code changes automatically was proposed by Sliwersky et al.~ \cite{sliwerski2005changes}. Currently, it is a well-known algorithm called SZZ, which is based on text differences to discover modified, added and deleted lines between the bug-fix and its previous version. The SZZ algorightm uses the CVS \texttt{annotate} command\footnote{Other versioning systems provide similar functionality to CVS \texttt{anotate}; for instance, git offers \texttt{blame}.} to identify the last commit that touched these lines.
+The first algorithm to identifying bug-introducing code changes automatically was proposed by Sliwersky et al.~\cite{sliwerski2005changes}. Currently, it is a well-known algorithm called SZZ, which is based on text differences to discover modified, added and deleted lines between the bug-fix and its previous version. The SZZ algorightm uses the CVS \texttt{annotate} command\footnote{Other versioning systems provide similar functionality to CVS \texttt{anotate}; for instance, git offers \texttt{blame}.} to identify the last commit that touched these lines.
 
 An improvement to the SZZ algorithm is described by Kim et al.~\cite{kim2006automatic}. There the authors used annotation graphs instead of CVS annotation to locate, in the previous versions, the lines affected by modification and deletion. Also, they avoid some false positives by not considering blank spaces, changes in the format or changes in the comments.
 
@@ -336,16 +332,16 @@ The two approaches have some metodological patterns in common:
   \item They look back in the code revision history until they identify which version touched the lines affected in the bug-fix for the last time.
 \end{enumerate}
 
-\grex{This last paragraph should be clarified, and more on papers using the SZZ algorithm! Maybe we should state how many papers in total exist based or using SZZ in Google Scholar.}
-\gema{ He buscado en google schoolar las entradas que tiene SZZ algoritm y aparecen 1170 resultados desde 2006 que es cuando sacaron el articulo, pero alguna de las entradas solo contine algorithm y no SZZ algoritm}
+Williams et al. revisited the SZZ algorithm to track bug-inducing changes and identify types of changes~\cite{williams2008szz}. Yang et al. applied SZZ to find what kind of bug-inducing changes are likely to become a great threat after being mared as bug-fix changes~\cite{yangbug}.
+Finally, some bug prediction algorithms are based on SZZ; Kim et al. showed how to classify file changes as buggy or clean using change information features and source code terms~\cite{kim2008classifying}. \grex{Creo que deberiamos hablar de mas papers que hacen uso de SZZ y derivados}. 
 
-The SZZ algorithm (and its \emph{successors}) have been widely used in the researc community.
-Williams et al. revisited the SZZ algorithm to track bug-inducing changes and identify types of changes~\cite{williams2008szz}. Yang et al. applied SZZ to find what kind of bug-inducing changes are likely to become a great threat after being mared as bug-fix changes
-Finally, some bug prediction algorithms are based on SZZ; Kim et al. showed how to classify file changes as buggy or clean using change information features and sour code terms~\cite{kim2008classifying}.
+The SZZ algorithm (and its \emph{successors}) have had a considerable impact in the research community. Noteworthy is the fact that the paper with original the SZZ algorithm~\cite{sliwerski2005changes} has been cited, according to Google Scholar, 463 times as of January 
+2016. An enhanced version of the SZZ algorithm~\cite{kim2006automatic} counts with 123 citations.
 
-\grex{maybe talk about my paper with dmg and ahmed, where bugs could be found elsewhere~\cite{german2009change}. There the talk is precisely about those bugs whose origina are elsewhere. Title of the paper: \emph{Change impact graphs: Determining the impact of prior codechanges}}
+In the research literature, we can already find methods that consider other sources of information than the previous commit. In fact, German et al.~\cite{german2009change} 
+point out that software is in constant change, and that changes performed may have impact across the whole system and may lead to the manifestation of bugs in unchanged parts. In this case, a bug emerges in a different location from the source of the bug, which is a change to a function somewhere else in the source code base.
 
-\gema{Hay que incluir lo que nuestro articulo aporta al estado actual} \grex{Buena idea, pero eso es mejor ponerlo en la intro.}\gema{Ya esta puesto}
+
 %In addition some tools are based on SZZ too such as \cite{} 
 %Finally our idea.
 
@@ -375,7 +371,7 @@ During the identification of the issues, we have to take into account the next p
   \item The title of the issue report
   \item The description of the issue report
   \item The description of the fix commit
-  \item The changes to the source code, as sometimes neither the descriptions nor the comments by developers and reviewers in the Launchpad and Gerrit of each ticket, clarified the underlying ticket. \grex{what comments?}\gema{los comentarios de los reviewers que podemos ver en Luanchpad y Gerrit }
+  \item The changes to the source code, as sometimes neither the descriptions nor the comments by developers and reviewers in the Launchpad and Gerrit of each ticket, clarified the underlying ticket.
 \end{itemize}
 
 We can see a screenshot of the web interface of the tool in Figure~\ref{fig:screenshot}. The left side is used to display the information extracted from Launchpad and Gerrit, and the right part is the one in which the researchers can write and classify the ticket into one of the three groups. Additional meta-data, such as keywords, comments and the reviewer are included in the database.
@@ -401,7 +397,9 @@ From the experience of analysing a small number of tickets, we agreed on followi
     \item When the ticket title described the program as not working as expected, our criteria indicated that it was a bug report. 
     \item When the title described optimization, deletion of a dead code or the implementation of new characteristics, we agreed not to classify it as a bug report because there is no failure. 
     \item When the ticket title described that updates were required, the ticket is a bug report. We consider all tickets that require updating as bug reports, because updating a software hints to the software not operating as expected. 
-    \item When only test files are affected in a ticket, we classified it as not being a bug report. Test files in a ticket were not be analyzed, as we consider they are not a core part of the software and are used as a testing method to determine whether the code is fit for use. When the bug exclusively lies in a test file, the ticket was not considered as bug report because the software still works as expected, only test fails. \grex{no se repiten las frases?}\gema{Te refieres al inicio de cada frase o a lo que se describo en cada frase?}
+    \item When only test files are affected in a ticket, we classified it as not being a bug report. We consider bug errors in test files are a different type of bugs, as the software may still work as expected. \grex{no se si esto es lo que querias decir}
+    
+%    Test files in a ticket were not be analyzed, as we consider they are not a core part of the software and are used as a testing method to determine whether the code is fit for use. When the bug exclusively lies in a test file, the ticket was not considered as bug report because the software still works as expected, only test fails. \grex{no se repiten las frases?}\gema{Te refieres al inicio de cada frase o a lo que se describo en cada frase?}
 \end{enumerate}
 
 Sometimes we were unable to answer all the questions due to having insufficient data or because of the complexity of the issue. In this case, the ticket was classified into the \textit{Undecided} group.
@@ -409,7 +407,13 @@ Sometimes we were unable to answer all the questions due to having insufficient 
 \subsection{Second Stage: Who caused the Bug?}
 \label{sec:secondStage}
 
-The next part is focused on analyzing the previous commit exclusively in the \textit{Bug Report} group to identify which line contained the bug and why the software failed, keeping in mind the context of the project. For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added,inserted or modified in the previous commit. This way, we can be sure that we are looking the correct change, because some times although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, is a false positive where the previous commit didn't cause the bug. \grex{aclarar este parrafo!}
+The next part is focused on analyzing the previous commit exclusively in the \textit{Bug Report} group to identify which line contained the bug and why the software failed, keeping in mind the context of the project.
+
+\grex{Este parrafo deberia decir lo mismo que el anterior. Si es asi, borremos el anterior}
+In this second part, our work was focused on analyzing the previous commit exclusively for those tickets classified in the \textit{Bug Report} group. Therefore we had to locate the line that contained the bug, inquire the reason of the software failure, and gathering additional information on the context of the project.
+
+For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added,inserted or modified in the previous commit. This way, we can be sure that we are looking the correct change, because some times although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, is a false positive where the previous commit didn't cause the bug. \grex{Gema, puedes aclarar este parrafo? Que es el "parent" commit? Es lo mismo que el previous commit? Es la primera vez que hablamos de el. Quizas sea buena idea que lo reformules en castellano, porque ahora mismo es criptico}
+
 
 The analysis was done manually. We used \textit{git blame} to see the previous commit for each line of the involved file. Also, we used \textit{diff} to see the differences between the two files, in our case as the file is going to be the same, between the file in two different moments in the control version system.
 
@@ -472,24 +476,26 @@ A total of 459 different tickets from the Launchpad of the four main projects in
 \subsection{Fist Stage}
 \label{sec:resultsFS}
 
-We classify a total of 459 tickets using the tool, resulting in 918 reviews. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits.
+We classify a total of 459 tickets using the tool, resulting in 918 reviews\grex{Mirando la Tabla 2, veo que las revisiones suman 917, no 918!}. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits.
 
-\begin{table}
+\begin{table*}
 \centering
 %\begin{center} {\footnotesize
-\begin{tabular}{lrrrr}
+\begin{tabular}{l|rrr|r}
 \toprule[0.3mm]%{\smallskip}
   & Bug Report & Not Bug Report & Undecided & Total \\\hline
-R1  & (184) 55\% & (115) 34\% & (35) 11\% & 334 \\
-R2  & (188) 76\% & (54) 22\% & (7) 3\% & 249 \\
-R3 & (188) 56\% & (116) 35\% & (30) 9\% & 334 \\ \hline
-Agree & (209) 72\% & (74) 25\% & (9) 3\% & 292 \\
+R1  & (184) 55\% & (115) 34\% & (35) 11\% & 334 (100\%) \\
+R2  & (188) 76\% & (54) 22\% & (7) ~3\% & 249 (100\%) \\
+R3 & (188) 56\% & (116) 35\% & (30) ~9\% & 334 (100\%) \\ \hline
+Agree & (209) 72\% & (74) 25\% & (9) ~3\% & 292 (100\%) \\
 \bottomrule[0.3mm]
 \end{tabular} %}
-\caption{Statistics for each researcher as a result of the classification process. For each researcher R, the number of tickets (and percentages) classified into the three groups is given. The \emph{Agree} row gives the number of tickets (and percentages) were two researchers agreed.}
+\caption{Statistics for each researcher as a result of the classification process. For each researcher R, the number of tickets (and percentages) classified into the three groups is given. The \emph{Agree} row gives the number of tickets (and percentages) where two researchers agreed.}
 \label{tab:2}
 %\end{center}
-\end{table}
+\end{table*}
+
+%\grex{Tiene sentido añadir porcentajes, como he hecho a la columna de Total?}
 
 
 Table~\ref{tab:2} shows the classification percentages for each researcher after analyzing the tickets, and the number of tickets classified by two different researchers in the same group. %Obtaining that the researchers R1 and R2 had a similar data in their results, whereas research R2 got results significantly different with a higher number of tickets classified as Bug Report.
@@ -497,21 +503,22 @@ As a result, researchers identified 292 tickets in the same group, that is, thei
 
 We also measured the concordance in the classification of each developer according to the project analyzed (see table~\ref{tab:3}). Values obtained by the three researchers are very similar, in general around a 70\%. The concordance values were always above 60\%. 
 
-\begin{table}[htb]
+\begin{table*}[htb]
 \begin{center} {\footnotesize
-\begin{tabular}{lrrrrr}
+\begin{tabular}{l|rrrr|r}
 \toprule[0.3mm]%{\smallskip}
   & Nova & Cinder & Horizon & Neutron & Total\\\hline
-R1 -- R2   & (44) 70\% & (40) 77\%  & (37) 60\% & -        & 68\% \\
-R1 -- R3   &  -        & (46) 73\%  & (48) 76\% & (26) 62\% & 71\% \\
-R2 -- R3   & (41) 66\% & (10) 100\% & -         & -        &  71\% \\
+R1 -- R2   & (44) 70\% & (40) ~77\%  & (37) 60\% & -        & (121) 68\% \\
+R1 -- R3   &  -        & (46) ~73\%  & (48) 76\% & (26) 62\% & (120) 71\% \\
+R2 -- R3   & (41) 66\% & (10) 100\% & -         & -        &  (51) 71\% \\
 \bottomrule[0.3mm]
 \end{tabular} }
 \caption{Concordance among researchers for each repository.}
 \label{tab:3}
 \end{center}
-\end{table}
+\end{table*}
 
+\grex{Tiene sentido anadir numeros absolutos, como he hecho a la columna de Total en la Tabla 3?}
 
 \vspace{0.2cm}
 \fbox{\begin{minipage}{25em}
@@ -519,12 +526,13 @@ R2 -- R3   & (41) 66\% & (10) 100\% & -         & -        &  71\% \\
 \end{minipage}}
 \vspace{0.1cm}
 
+\grex{Molaria hablar de cuanto tiempo ha llevado realizar esta etapa de clasificacion por cada uno de los investigadores (o sea, sin contar el desarrollo de herramienta y conseguir y cargar los datos de bugs y demas en la base de datos)}
 
 \subsection{Second Stage}
 \label{sec:resultsSS}
 
-In this stage we analyzed the 189 tickets classified as bug reports and their previous commits.
-The possible outcome was one of the following three options:
+In this stage we analyzed the 189 tickets classified \grex{Pero no eran 209?} as bug reports and their previous commits.
+The possible outcome of the analysis was one of the following three options:
 
 \begin{itemize}
   \item Cause
@@ -532,14 +540,13 @@ The possible outcome was one of the following three options:
   \item Undecided
 \end{itemize}
 
-This analysis takes into account that the bug could have been inserted in many lines belong to many different previous commits, but in fact, not all of them could cause the bug. Sometimes happens that in the previous commit some lines had been copied from further previous commits, or comments may have been modified, or blank spaces/lines have been added. Thus, the cause could be found in a single previous commit, in many or even in none. \grex{repasar este parrafo} \gema{Que tal ahora? esta mas claro?}
+This analysis takes into account that the bug could have been inserted in many lines that belong to many different previous commits, but in fact, not all of them could cause the bug. It may happen that in the previous commit lines have been copied from further previous commits, comments may have been modified or blank spaces/lines have been introduced. Thus, the cause could be found in a single previous commit, in many or even in none. \grex{Todavia no esta del todo claro... yo creo que esto merece un ejemplo - incluso con codigo real, tal y como hemos hecho al principio del articulo. Ademas, nos lo podemos permitir; tenemos espacio.}
 
-We identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis, we analyzed the bug reports together with their previous commits discarting these cases where the previous commit was false positives such as blank lines, changes in comments or even a change in the version of the file., so in total we had analyzed 308 previous commit.
+We identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis. Then, we analyzed the bug reports together with their previous commits discarting the cases where the previous commit was a false positive (blank lines, changes in comments or even a change in the version of the file). So, in total we have analyzed 308 previous commit.
 
 
-As can be seen in Table~\ref{tab:responsability}, from the 308 previous commit, 152 of them have been considered the cause of the bug, whereas 114 were not the cause. We were unable to identify the cause of the bug in 42 cases, due to there was only added lines or our knowleadge about the code. 
-
-As can be seen in Table~\ref{tab:responsability}, in 152 cases the previous commits have been considered the cause of the bug, whereas 114 times they were not the cause. We were unable to identify the cause of the bug in 42 cases, and discarded 40 more because they ere false positives such as blank lines, changes in comments or even a change in the version of the file. \grex{explicar que es eso de noise!} \gema{Con Noise me referia a los falsos positivos que puede haber en los commits previos, las lineas copiadas de otros commits o lineas en blanco, comentarios ...}
+As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits, 152 have been considered to be the cause of the bug, whereas 114 were identified as not beign the cause. We were unable to decide in 42 cases, as only lines had been added or due to our limited knowleadge about the code. \grex{Gema, puedes poner un ejemplo de estas dos cosas? Uno de solo added lines y otro de limited knowledge. Si el ejemplo es verdadero, mejor.}
+We discarded 40 more because they were false positives (\emph{noise}) such as blank lines, changes in comments or even a change in the version of the file.
 
 \begin{table}[htb]
 \begin{center}
@@ -558,7 +565,11 @@ As can be seen in Table~\ref{tab:responsability}, in 152 cases the previous comm
 \end{table}
 
 
-If we attend to how many previous commits each of the 189 bug reports analyzed had, we see that 131 only had a previous commit, whereas 58 had more than one previous commit. As can be seen from Table~\ref{tab:secondStage}, from the 131 unique previous commits, 65 were the cause of the bug, and 30 not caused the failure. For the 58 bugs that had more than one previous commit, a total number of 179 previous commits were identified; of them 86 were the cause of the bug, while 82 were not.
+If we attend to how many previous commits each of the 189 bug reports analyzed had, we see that 131 only had a previous commit, whereas 58 had more than one previous commit. As can be seen from Table~\ref{tab:secondStage}, from the 131 unique previous commits, 65 were the cause of the bug, and 30 not caused the failure. For the 58 bugs that had more than one previous commit, a total number of 179 previous commits were identified; of them 86 were the cause of the bug, while 82 were not. \grex{Pon ejemplos, a ser posible reales, de esto, porfa.}
+
+\grex{No me queda claro que quieres decir con mas de un identificador previo}
+
+\grex{Para los 58 bugs que tenian mas de un identificador previo hay 179 commits. Bien. Dices que 86 causaron el bug, 82 no y en 11 no se ha podido determinar. Lo que no veo es por que no agruampos estos datos segun los 58 bugs}
 
 % Furthermore, focusing on how many previous commits presented each Bug Report, we obtained that 131 had one previous commit implicated, whereas 58 had more than one previous commit implicated in their file/s. According to Table \ref{tab:secondStage}, from the 131, we obtained that 65 of them inserted the bug, but 30 of them were not responsible in the failure of the system. And from the 58 which had more than one previous commits, we obtained in total 189 previous commit, where 86 of them were responsible and 82 were not responsible. %Probably, the bug was inserted in different lines of different commits, but not everyone has to be responsible for the commit, sometimes the previous commit copied lines from its previous commit or inserted comments and blank spaces. After the analysis the responsible can be only one of them, more than one or maybe none. 
 
@@ -568,22 +579,25 @@ If we attend to how many previous commits each of the 189 bug reports analyzed h
 \toprule[0.3mm]
   & \multicolumn{1}{c}{One previous } & \multicolumn{1}{c}{More than one previous} \\
   & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit} \\\hline
-\raisebox{1ex}{Cause}     & (65)50\% & (86)48\% \\[0ex]
-\raisebox{1ex}{Not cause} & (30)23\% & (82)46\% \\[0ex]
-\raisebox{1ex}{Undecided} & (36)27\% & (11)6\% \\[0ex]
+\raisebox{1ex}{Cause}     & (65) 50\% & (86) 48\% \\[0ex]
+\raisebox{1ex}{Not cause} & (30) 23\% & (82) 46\% \\[0ex]
+\raisebox{1ex}{Undecided} & (36) 27\% & (11) ~6\% \\[0ex]
 \bottomrule[0.3mm]
 \end{tabular} }
 \caption{Probability of the cause of the bug when the bug report present one previous commit or more than one previous commit.}
 \label{tab:secondStage}
 \end{center}
 \end{table}
-\gema{Los resultados que he obtenido y que queria plasmar en las tablas son:}
-\gema{- He analizado 189 bugs reports}\\
-\gema{- De los 189, 131 presentaban el mismo identificador de commit previo para todas las lineas que habian sido modificadas, mientras que 58 presentaban mas de un identificador de commit previo.}\\
-\gema{- Dentro de los bugs reports que tienen mas de un commit previo analizando el total de todos los commits para saber quien causo el bug, he encontrado que en total de los 179 comit previos 86 causaron el bug mientarsa que 82 no lo causaron y 11 no he podido decidir si eran causantes o no.}\\
-\gema{- Ademas he mirado como o porse distribuyen los commits en cada bug report dentro de cada proyecto analizado, y he visto que por ejemplo Neutron presentaba 11 bugs report con solo un ticket previo, 3 bugs report con dos identificadores diferentes para los commit previos, 2 bug reports que presentaban  3 commit previos... etc.}\\
-\gema{- Finalmente realice ora clasificacion en la que tenia en cuenta el numero de commits que fueron causantes del error para un mismo bug report. Al analizar los bug reports encontre que en aquellos que presenstaban mas de un commit previo no todos los commit eran causantes del error, y en ocasiones solamente habia un commit que causo el error y los otros no o por el contrario habia bugs report en los que ninguno de sus commits previos era responsable y otras ocasiones en las que todos los commits previos eran responsables. Por tanto la tabla 7 muestra cual es la responsabilidad (tods responsables, al menos uno ningun responsable y desconozco la responsabilidad) de los coommits previos presentes en un bug report. Por ejemplo, bugs reports que tenian dos commits previos, en 4 de ellos los dos commits previous eran responsables, mientras que en 9 bug report habia al menos un responsable y en otros 4 bug report ninguno de los dos commit previos eran responsables.}  
-We also studied the distribution of the number of previous commits for each Bug Report. As shown in Table~\ref{tab:secondStage2}, the number of commits that can be considered as previous is 1, followed by 2 commits.
+
+
+%\gema{Los resultados que he obtenido y que queria plasmar en las tablas son:}
+%\gema{- He analizado 189 bugs reports}\\
+%\gema{- De los 189, 131 presentaban el mismo identificador de commit previo para todas las lineas que habian sido modificadas, mientras que 58 presentaban mas de un identificador de commit previo.}\\
+%\gema{- Dentro de los bugs reports que tienen mas de un commit previo analizando el total de todos los commits para saber quien causo el bug, he encontrado que en total de los 179 comit previos 86 causaron el bug mientarsa que 82 no lo causaron y 11 no he podido decidir si eran causantes o no.}\\
+%\gema{- Ademas he mirado como se distribuyen los commits en cada bug report dentro de cada proyecto analizado, y he visto que por ejemplo Neutron presentaba 11 bugs report con solo un ticket previo, 3 bugs report con dos identificadores diferentes para los commit previos, 2 bug reports que presentaban  3 commit previos... etc.}\\
+%\gema{- Finalmente realice otra clasificacion en la que tenia en cuenta el numero de commits que fueron causantes del error para un mismo bug report. Al analizar los bug reports encontre que en aquellos que presenstaban mas de un commit previo no todos los commit eran causantes del error, y en ocasiones solamente habia un commit que causo el error y los otros no o por el contrario habia bugs report en los que ninguno de sus commits previos era responsable y otras ocasiones en las que todos los commits previos eran responsables. Por tanto la tabla 7 muestra cual es la responsabilidad (tods responsables, al menos uno ningun responsable y desconozco la responsabilidad) de los coommits previos presentes en un bug report. Por ejemplo, bugs reports que tenian dos commits previos, en 4 de ellos los dos commits previous eran responsables, mientras que en 9 bug report habia al menos un responsable y en otros 4 bug report ninguno de los dos commit previos eran responsables.}  
+
+We also studied the distribution of the number of previous commits for each bug. As shown in Table~\ref{tab:secondStage2}, the number of commits that can be considered as previous is 1, followed by 2 commits. \grex{the number of commits that can be considered as previous is 1, followed by 2 commits. No se que queremos decir} \grex{Tenemos que responder a estas dos preguntas todavia: Por que es interesante hacer lo que se comenta en este parrafo? Que utilidad tiene?}
 
 \begin{table*}[htb]
 \begin{center} {\footnotesize
@@ -603,7 +617,10 @@ We also studied the distribution of the number of previous commits for each Bug 
 \end{center}
 \end{table*}
 
-Finally, we were interested in analyzing, for those cases where more than one previous commit exist, how many of them inserted the bug in the code source. Results are given in Table~\ref{tab:secondStage3}; in 8 bug reports all the previous commits were identified as the cause, in 30 bug reports at least one of the previous commits caused the bug, and in 11 bug reports none of the previous commits introduced the bug.
+Finally, we were interested in analyzing, for those cases where more than one previous commit exist, how many of them introduced the bug in the code source. Even if several previous commits are involved, it may be the case that none, only one or all of them is the cause of the bug. \grex{Cuando hay 3 previous commits, no podria darse el caso de 2 de ellos responsables?}
+Results are given in Table~\ref{tab:secondStage3}; in 8 bug reports all the previous commits were identified as the cause, in 30 bug reports at least one of the previous commits caused the bug, and in 11 bug reports none of the previous commits introduced the bug. If we look at bugs that had two previous commits, in 4 cases both commits were the cause, in 9 cases only one of them was the cause and in another 4 cases non of them could be determined as the cause.
+
+\grex{Entiendo el resultado del parrafo anterior, pero me falta una explicacion de por que esto es interesante y para que puede servir.}
 
 \begin{table*}[htb]
 \begin{center} {\footnotesize
@@ -633,44 +650,58 @@ Finally, we were interested in analyzing, for those cases where more than one pr
 \section{Discussion}
 \label{sec:discussion}
 
+The experience gained in this study with exposure to several hundreds of bugs allows us to state that determining who (or what) introduced a bug is a non-trivial task.
 
-\gema{Deberia hablar sobre los siguientes puntos:} \grex{Puedes elaborar un poco mas cada punto, aunque sea en castellano?}
-\begin{enumerate}
- \item No todos los casos son tan claros como los mostrados en los ejemplos, hay ocasiones en las que solo se ha anadido codigo y no somos capaces de encontrar al responsable por que no existe ninguna manera de poder identificar al commit previo. 
- \item Hemos sido conservadores, en ocasiones cuando se han modificado lineas como if/else y se han anadido comprobacione que anteriormente no estaban, se puede pensar que el commit previo que toco la linea se olvido de realizar dichas comporbaciones, y en ese caso seria el causante del bug. Pero existen casos que la comprobacion que se necesita en el if ha aparecido porque se introdujo una nueva funcionalidad, por stanto en el momento original en el que se escribio la linea por primera vez no habia ningun error. Por tanto a menos que se descrisba esta ultima situacion en la descripcion del commit o del bug report, he considerado la idea treadicional, que el commit anterior provoco el error, porque realmente era dificil saberlo.
- \item Hemos utilizado la herramienta porque es un proceso complicado. Para la primera parte de decidir si es o no es un bug report hemos tenido que desarrollar la herramienta.
-\end{enumerate}
+Although at first, as shown in the Figure~\ref{fig:1} and Figure~\ref{fig:2}, one may think that this is an easy task, we have found many examples where we have been unable to determine the cause as no previous commit can be identified. This is, for instance, the case when only code has been added and there is no way to identify the previous commit. In this case, further research could find out if this is not really the addition of a new feature rather than a bug.
 
-\gema{Algunos de los problemas que nos hemos encontrado durante el analisis y que podrian ser resueltos de otra forma diferente a la nuestra y quizas puede que varie algo los resultados no lo se}
-Once we have all the tickets analyzed by diferents researchers who have used a double blind, how to proceed if there are discordances between them:
-
-\begin{enumerate}
-  \item Should they discuss after their analysis to reach a better classification?, Should the tool provide this?
-  \item Does the Bug report only the same ticket classified as Bug report for all the researchers?
-\end{enumerate}
-
-How to proceed if looking for the responsibility of a bug when only added lines are inserted? And we are talking about a bug report not a new feature, these kinds of cases use to be when a researcher forgot check some case inside a function.
+And we are talking about a bug report not a new feature, these kinds of cases use to be when a researcher forgot check some case inside a function.
 \begin{enumerate}
 \item Is responsible the function where these lines are content?
 \item Is responsible the last commit that modify something in the function?
 \end{enumerate}
-\gema{anadir ademas que los resultados optenidos presentan una oposicion a la idea actual de que el previo commit introdujo el error}
+
+\gema{Puedes elaborar un poco mas el parrafo anterior? Puede ser en castellano}
+
+There are other cases where it is difficult to determine if the change is the cause. For instance, when additional conditions are added to \emph{if}s or \emph{else}s, one might think that in the previous commit those were not included due to an error, so that the previous commit becomes the cause of the bug. However, situations exist where the additional conditions in an if appear because of the introduction of a new functionality, and thus the line in the previous commit was correct at the time it was introduced. In our analysis, if the latter situation is not explicity mentioned we have considered that the previous commit caused the error.
+
+But already the identification of an issue as a bug report is a process that is not as straightforward as one might think. Out of 459 tickets we were only capable to achieve a consensus for 292 cases (63.6\%), which hints to the complexity of the task. The amount of information, the number of fields and the requirement of human interaction made us invest time in the creation of a tool that assisted us in the process. 
+
+
+%\begin{enumerate}
+% \item No todos los casos son tan claros como los mostrados en los ejemplos, hay ocasiones en las que solo se ha anadido codigo y no somos capaces de encontrar al responsable por que no existe ninguna manera de poder identificar al commit previo. 
+% \item Hemos sido conservadores, en ocasiones cuando se han modificado lineas como if/else y se han anadido comprobacione que anteriormente no estaban, se puede pensar que el commit previo que toco la linea se olvido de realizar dichas comporbaciones, y en ese caso seria el causante del bug. Pero existen casos que la comprobacion que se necesita en el if ha aparecido porque se introdujo una nueva funcionalidad, por stanto en el momento original en el que se escribio la linea por primera vez no habia ningun error. Por tanto a menos que se descrisba esta ultima situacion en la descripcion del commit o del bug report, he considerado la idea treadicional, que el commit anterior provoco el error, porque realmente era dificil saberlo.
+% \item Hemos utilizado la herramienta porque es un proceso complicado. Para la primera parte de decidir si es o no es un bug report hemos tenido que desarrollar la herramienta.
+%\end{enumerate}
+
+%\gema{Algunos de los problemas que nos hemos encontrado durante el analisis y que podrian ser resueltos de otra forma diferente a la nuestra y quizas puede que varie algo los resultados no lo se}
+
+In any case, our research shows evidence that assuming that the previous commit is where the cause of a bug can be found does not hold for a not insignificant percentage of bugs. \grex{Tengo que elaborar mas esto, que es el punto fuerte del articulo.}
 
 
 \section{Threats to validity}
 \label{sec:threats}
-%The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
-The size of the tickets extracted form the Launchpad is medium, but doing the analysis manually we are sure that the results present in this paper are valid, being sure that the previous commits classified as not responsible, they are. 
 
-Although, we understand that the model presented has some threats, external and internal, that make our model not 100\% valid. The internal threats related to the researchers that have conducted the study are following:
+As any other empirical study, this one presents several threats to its validity, external and internal, that have to be considered and taken into account. In order to allow others to study it in detail, replicate it or even build on top of it, we have set up a replication package including data sources, intermediate data and scripts that can be obtained at the following URL: \gema{Incluir la URL en la que pondre todos los datos y scripts utilizados para los datos.}
+
+
+%The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
+The number of the tickets extracted form Launchpad is high, but probably not as high as to state that it can be representative of all free/open source systems, or the software industry. It has not to be forgotten that the analysis requires a lot of human effort, so that achieving large numbers of cases is difficult.
+
+
+The internal threats related to the researchers that have conducted the study are following:
 
 \begin{itemize}
-    \item We have not taken into account errors that have been classified into \textit{Undecided}, and probably we are lost some real bug reports belonging this group .
+  \item We have not considered those tickets where the two researchers showed discordance. 
+  \begin{enumerate}
+    \item Should they discuss after their analysis to reach a better classification?, Should the tool provide this?
+    \item Does the Bug report only the same ticket classified as Bug report for all the researchers?
+  \end{enumerate}
+    \item We have not taken into account errors that have been classified into \textit{Undecided}, and probably we have lost some \emph{actual} bug reports.
     \item There could be some lax criteria involving the subjective opinion of the researchers.
-    \item The researchers are not experts in OpenStack, and our inexperience may have influenced the results of the analysis.
-    \item We are only using part of the information that the ticket provides, like comments and text. There could be a recognized pattern in the data, unknown at first sight, that involves other parts of the information.
-    \item Although we use a random script to extract the tickets reported in during the last year, 2015, from the launchpad, in this year could be some bias unidentified.
-    \item In case of the researchers didn't find the information to know if the previous commit inserted the bug or in contrast, it was caused by the evolution of the software. They keep the traditionalist thought, classify these previous commits are responsible.
+    \item Although the researchers are experienced programmers, they are not experts in the  OpenStack project, and their inexperience may have influenced the results of the analysis.
+    \item We are only using part of the information that the tickets provide, like comments and text. There could be a recognized pattern in the data, unknown at first sight, that involves other parts of the information.
+    \item We have used a random script to extract the tickets from Launchpad that have been reported during 2015. There could be unintended bias of the data, because many reasons, as for instnace the phase of the project.
+    \item In some cases, researchers may have classified the previous commit as the cause of the bug, even if this may not be the case (see discussion on additional conditions in if statements).
 \end{itemize}
 
 The external threats, related to the case of the project, are following:
@@ -678,20 +709,20 @@ The external threats, related to the case of the project, are following:
 \begin{itemize}
     \item The word \textit{bug} is continuously mentioned in the description and commit of a ticket even when we found it is not an error. This could lead to the incorrect classification during the reviewing process.
     \item Some tickets are not explicitly described, which could increase the percentage of \textit{Undecided}. This is especially true if the reviewers are not from OpenStack.
-    \item OpenStack is a special project put down a constant evolution due to their active community of developers. Maybe, in other projects with less commits per year the statistics about the responsibility of previous commit change.
+    \item OpenStack is a special project with a constant evolution due to their active community of developers. Maybe, in other projects with less commits per year, results may be totally different.
 \end{itemize}
 
-\gema{Incluir un link con la web en la que pondre todos los datos y scripts utilizados para los datos.}
 
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
 
-The empirical experiment carried out in OpenStack, supported that the current premise assumed does not hold for a large fraction of the analyzed bugs, because around the 40\% of the previous commits were not responsible inserting the bug.
+The empirical experiment carried out in OpenStack supported that the current premise assumed does not hold for a large fraction of the analyzed bugs, because around the 40\% of the previous commits were not the cause of the bug.
+
 With our results we can identify which ones are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improving their methodology.
 %How to plan to apply the knowledge in a way that can benefit software engineers.
 %What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
 
-A final field in our future work concerns the full automation on the methodology could developer an automatic classifier base on the idea that not all the previous commit injected the bug. Another interesting investigation could perform the same empirical study in a project with a community less active, to can prove if our idea is fulfill in other projects.
+A final field in our future work concerns the full automation of the methodology could developer an automatic classifier base on the idea that not all the previous commit injected the bug. Another interesting investigation could perform the same empirical study in a project with a community less active, to can prove if our idea is fulfill in other projects.\grex{Puedes aclarar esto, porfa? En castellano si quieres}
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
