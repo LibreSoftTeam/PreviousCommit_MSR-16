@@ -180,7 +180,7 @@ Jes\'us M. Gonz\'alez-Barahona\\
 \begin{abstract}
 It is common practice that developers mark in the versioning system when they are fixing a software bug. At first glance, it could seem reasonable to assume that the fixed bug had been introduced in the previous modification of those same parts of the source code (i.e., in the previous commit). In fact, many studies on bug seeding start with this assumption. However, there is little empirical evidence supporting this assumption, and there are reasons to suppose that in some cases the bug may have been introduced by other actions, such as an older modification, or a change in the API that is being called.
 
-This paper tries to shed some light on this topic, by analyzing the relationship of bug fixes with their previous commits. To this end, we conducted an observational study on bug reports, their fixes, and their corresponding previous commits for the OpenStack project. Our results show that the assumption that bugs have been introduced in the previous commit does not hold for a large fraction of the bugs analyzed. \grex{maybe we could say something more here}. \gema{podriamos escribir algunos porcentajes de lo que hemos encontrado, algo asi como que un 37\% de los commits previos no son responsables de introducir niingun bug}
+This paper tries to shed some light on this topic, by analyzing the relationship of bug fixes with their previous commits. To this end, we conducted an observational study on bug reports, their fixes, and their corresponding previous commits for the OpenStack project. Our results show that the assumption that bugs have been introduced in the previous commit does not hold for a large fraction of the bugs analyzed. Concretlly, a 37\% of the previous commits analyzed are opposite to the current assumption and they didn't cause the bug.\grex{maybe we could say something more here}. \gema{podriamos escribir algunos porcentajes de lo que hemos encontrado, algo asi como que un 37\% de los commits previos no son responsables de introducir niingun bug}
 \end{abstract}
 
 
@@ -237,7 +237,7 @@ This paper tries to shed some light on this topic, by analyzing the relationship
 \section{Introduction}
 \label{sec:introduction}
 
-When a failure is found in the behavior of a software, the developers try to fix it locating and modifying the source code line(s) that are reponsible for the wrong behaviour in the source code. It seems reasonable to assume that the previous modification of this line or these lines are the cause of the bug; this previous modification is \textit{the previous commit}. But in fact, to find when and where a bug was introduced in the source code is not a trivial task. This has largely been ignored, mainly because the data related to the origin of a bug is embedded in the evolution of the software~\cite{sinha2010buginnings}. \grex{clarificar la frase anterior... no ha quedado muy claro.}
+When a failure is found in the behavior of a software, the developers try to fix it locating and modifying the source code line(s) that are reponsible for the wrong behaviour in the source code. It seems reasonable to assume that the previous modification of this line or these lines are the cause of the bug; this previous modification is \textit{the previous commit}. But in fact, to find when and where a bug was introduced in the source code is not a trivial task. This has largely been ignored, mainly because the data related to the origin of a bug is embedded in the evolution of the software, meaning that when someone fixes a bug they don't take into consideration the context and the history behind of the project~\cite{sinha2010buginnings}. \grex{clarificar la frase anterior... no ha quedado muy claro.}\gema{mejor ahora?}
 
 This is the reason why many studies in the area of mining software repositories start with this implicit assumption. So, for instance, we have found following reasonings in several areas of research, such as:
 
@@ -297,10 +297,8 @@ Based on anecdotal evidence like the one presented in Figures~\ref{fig:3} and Fi
 of the code may induce wrong behavior (bugs) in places that were correct in the past. This happens often in situations like changes to the API. In the moment the code ws written, it was correct and the woftware worked fine. Additions of new features or enhancements to the API had as a side effect that the formerly correct code presents a wrong behavior, making the software fail. But in such cases, the source of the error cannot be \grex{assigned} to a change performed in the previous commit, as in that moment it referred to a different API.
 
 \grex{poner el siguiente parrafo bien}
-
-The goal of this paper is to find if the cause of the bug can be \grex{assigned} to the previous commit, understanding that at the time when the previous commit is introduced
-
-not all times the code analyzed was so easy as the code showed in Figures~\ref{fig:1} and~\ref{fig:3}. So the principal aim of this paper to find the responsible of the bug is to know if the previous commits contained buggy code at the moment in which were added/modified or, another change in the software, related to the update of the software and its evolution, caused the bug.
+\gema{podemos eliminar el siguiente parrafo porque en realidad lo que qería decir aquí es la contribucion del paper y si la pongo luego puedo eliminar este parrafo}
+The goal of this paper is to find if the cause of the bug can be assigned to the previous commit, understanding that at the time when the previous commit is introduced not all times the code analyzed was so easy as the code showed in Figures~\ref{fig:1} and~\ref{fig:3}. So the principal aim of this paper to find the responsible of the bug is to know if the previous commits contained buggy code at the moment in which were added/modified or, another change in the software, related to the update of the software and its evolution, caused the bug.
 
 In detail, in this paper we attempt to address the following research question regarding who introduced the bug in the source code:
 
@@ -308,14 +306,14 @@ In detail, in this paper we attempt to address the following research question r
 
 \begin{itemize}
     %\item RQ1 : How can tickets which are bug reports be differentiated from those that are not?
-     \item RQ1:  How can we know that a change was done to fix a bug in the source code? How can we identify them?
-     \item \gema{RQ1: How we can identify a change done to fix a bug inserted in the code source? Que tal esta forma de plantear la RQ1? Esta pregunta se refiere a como podemos diferenciar los bug reports de los otros pero realizada desde el punto de vista del comit previo }
+     %\item RQ1:  How can we know that a change was done to fix a bug in the source code? How can we identify them?
+     \item RQ1: How we can identify a change done to fix a bug inserted in the code source? \gema{Que tal esta forma de plantear la RQ1? Esta pregunta se refiere a como podemos diferenciar los bug reports de los otros pero realizada desde el punto de vista del comit previo }
     %\item RQ2:  How often is the bug caused in the previous commit?
      \item RQ2:  When did the previous commit introduce the line containing the bug into the source code?
 \end{itemize}
 
 \grex{Aqui deberiamos poner la contribucion de nuestro articulo al estado del arte.}
-With this paper we try to shed some ligths on how and when the bug was inserted into the source code, showing different empirical results from the the current assumption about the bug was originated in the previous modifications of the lines involved in the fix bug. Thus, our idea is based on the thought that some modifications or additions into the code source don't introduce any bug in the software. Our results could lead to think that all the articles based on this assumption are not using the best data in their results.On the other hand, this could be very useful in future research deleting this previous commits from the cause of a bug in their studies and could help developers understanding the bug seeding process.
+The goal of this paper is to shed some ligths on how and when the bug was inserted into the source code, showing different empirical results from the the current assumption about the bug was originated in the previous modifications of the lines involved in the fix bug. Thus, our idea is based on the thought that some changes into the code source don't introduce any bug in the software, due to at the moment in which this lines were written, the code wasn't buggy. Finally, our results could lead to think that all the articles based on this assumption are not using the best data in their approach and as a result they can improve their results with our idea. On the other hand, this could be very useful in future researchs, could help developers understanding the bug seeding process.
 
 The remainder of this paper is structured as follows. Next, we present the current body of knowledge in section~\ref{sec:related}. Section~\ref{sec:methodology} describes the methodology used to identify the moment in which the bug was introduced in the source code, followed by the results obtained after applying our approach to a selection of OpenStack bug fixes in Section~\ref{sec:results}. Section~\ref{sec:discussion} answers the research questions and discusses potential applications and improvements of our approach. After reporting the limitations and threats to validity in Section~\ref{sec:threats}, we draw some conclusions and point out some potential future work in Section~\ref{sec:conclusions}.
 
@@ -327,7 +325,7 @@ The first algorithm to identifying bug-introducing code changes automatically wa
 
 An improvement to the SZZ algorithm is described by Kim et al.~\cite{kim2006automatic}. There the authors used annotation graphs instead of CVS annotation to locate, in the previous versions, the lines affected by modification and deletion. Also, they avoid some false positives by not considering blank spaces, changes in the format or changes in the comments.
 
-Sinha et al. present another technique to identify the origins of a bug in~\cite{sinha2010buginnings}. Their technique is not text-based technique, as the SZZ algorithm, as the authors analyze the effects of bug-fix changes on program dependencies. So, taking into account the semantics of the source code they achieved higher accuracy in identifying the origins of a bug.
+Sinha et al. present another technique to identify the origins of a bug in~\cite{sinha2010buginnings}. Their technique is not text-based technique, as the SZZ algorithm, the authors analyze the effects of bug-fix changes on program dependencies. So, taking into account the semantics of the source code they achieved higher accuracy in identifying the origins of a bug.
 
 The two approaches have some metodological patterns in common:
 
@@ -339,11 +337,11 @@ The two approaches have some metodological patterns in common:
 \grex{This last paragraph should be clarified, and more on papers using the SZZ algorithm! Maybe we should state how many papers in total exist based or using SZZ in Google Scholar.}
 \gema{ He buscado en google schoolar las entradas que tiene SZZ algoritm y aparecen 1170 resultados desde 2006 que es cuando sacaron el articulo, pero alguna de las entradas solo contine algorithm y no SZZ algoritm}
 
-The SZZ algorithm (and its \emph{successors}) have been widely used in the researc community.
+The SZZ algorithm (and its \emph{successors}) have been widely used in the research community.
 Williams et al. revisited the SZZ algorithm to track bug-inducing changes and identify types of changes~\cite{williams2008szz}. Yang et al. applied SZZ to find what kind of bug-inducing changes are likely to become a great threat after being mared as bug-fix changes
 Finally, some bug prediction algorithms are based on SZZ; Kim et al. showed how to classify file changes as buggy or clean using change information features and sour code terms~\cite{kim2008classifying}.
 
-\grex{maybe talk about my paper with dmg and ahmed, where bugs could be found elsewhere~\cite{german2009change}. There the talk is precisely about those bugs whose origina are elsewhere. Title of the paper: \emph{Change impact graphs: Determining the impact of prior codechanges}}
+\grex{maybe talk about my paper with dmg and ahmed, where bugs could be found elsewhere~\cite{german2009change}. There the talk is precisely about those bugs whose origina are elsewhere. Title of the paper: \emph{Change impact graphs: Determining the impact of prior codechanges}}\gema{me parece bien, no lo he leido pero nadie mejor que tu para resumirlo en esta seccion}
 
 \gema{Hay que incluir lo que nuestro articulo aporta al estado actual} \grex{Buena idea, pero eso es mejor ponerlo en la intro.}\gema{Ya esta puesto}
 %In addition some tools are based on SZZ too such as \cite{} 
@@ -396,12 +394,11 @@ Each ticket was then categorized into one of three following groups:
 \end{enumerate}
 
 From the experience of analysing a small number of tickets, we agreed on following four criteria: 
-
 \begin{enumerate}
-    \item When the ticket title described the program as not working as expected, our criteria indicated that it was a bug report. 
-    \item When the title described optimization, deletion of a dead code or the implementation of new characteristics, we agreed not to classify it as a bug report because there is no failure. 
-    \item When the ticket title described that updates were required, the ticket is a bug report. We consider all tickets that require updating as bug reports, because updating a software hints to the software not operating as expected. 
-    \item When only test files are affected in a ticket, we classified it as not being a bug report. Test files in a ticket were not be analyzed, as we consider they are not a core part of the software and are used as a testing method to determine whether the code is fit for use. When the bug exclusively lies in a test file, the ticket was not considered as bug report because the software still works as expected, only test fails. \grex{no se repiten las frases?}\gema{Te refieres al inicio de cada frase o a lo que se describo en cada frase?}
+    \item Each time that the title or the description of a ticket describes an unexpected behaviour in the program, our criteria indicated that it was considerated as a bug report. 
+    \item The description of the ticket presents an optimization, deletion of a dead code or the implementation of new characteristics, we agreed not to classify it as a bug report because there is no failure. 
+    \item When the ticket described that some updates were required, the ticket is a bug report. We consider all tickets that require updating as bug reports, because updating a software hints to the software not operating as expected. 
+    \item When only test files are affected in a ticket, we classified it as not being a bug report. Test files in a ticket were not be analyzed, as we consider they are not a core part of the software and are used as a testing method to determine whether the code is fit for use. When the bug exclusively lies in a test file, the ticket was not considered as bug report because the software still works as expected, only test fails. \grex{no se repiten las frases?}\gema{He cambiado el inico de las frases para que no sea tan repetitivo}
 \end{enumerate}
 
 Sometimes we were unable to answer all the questions due to having insufficient data or because of the complexity of the issue. In this case, the ticket was classified into the \textit{Undecided} group.
@@ -512,6 +509,7 @@ R2 -- R3   & (41) 66\% & (10) 100\% & -         & -        &  71\% \\
 \end{center}
 \end{table}
 
+After this, we can answer the first research question because at this moment we have all the data necessary and all the knowleadge to can distinguish bug reports from others reports.
 
 \vspace{0.2cm}
 \fbox{\begin{minipage}{25em}
