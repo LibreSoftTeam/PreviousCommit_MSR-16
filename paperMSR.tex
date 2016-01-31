@@ -247,7 +247,7 @@ This is the reason why many studies in the area of mining software repositories 
   \item and in tools that prevent for future bugs, e.g., \textit{``We assume that a change/commit is buggy if its modifications has been later altered by a bug-fix commit''}~\cite{fejzer2015supporting}. 
 \end{itemize}
 
-But although the assumption can be found frequently in the research literature, in our opinion there is not empirical evidence supporting it. That is the reason why we have conducted an observational study on fix-bugs, devoting a significant effort to locate the origin of a bug in the source code and understanding the possible causes. For this we had to take into account the moment in which the line was inserted and the general context of the project.
+But although the assumption can be found frequently in the research literature, in our opinion there is not empirical evidence supporting it. That is the reason why we have conducted an observational study on bug-fixs, devoting a significant effort to locate the origin of a bug in the source code and understanding the possible causes. For this we had to take into account the moment in which the line was inserted and the general context of the project.
 
 Figure~\ref{fig:1} shows a clear example of what we understand as the cause of the bug. Let's assume that we have three different versions of the same file in the history of the control version of the project.
 
@@ -427,13 +427,14 @@ In this second part, our work was focused on analyzing the previous commit exclu
 
 For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added, inserted or modified in the previous commit. We refer to \emph{parent} commit as the last commit that was edited to produce the subsequent state of the file. We do this process to be sure that we are looking the correct change, because some times although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, it is a false positive where the previous commit did not cause the bug. \grex{Gema, puedes aclarar este parrafo? Que es el "parent" commit? Es lo mismo que el previous commit? Es la primera vez que hablamos de el. Quizas sea buena idea que lo reformules en castellano, porque ahora mismo es criptico}\gema{el parent commit es el ultimo commit que se hizo en el fichero antes de que se realizase el que arreglo el error, por tanto lo que hago usar diff y blame en el commit parent y en el commit que arregla el error para saber que lineas se han cambiado y que commit las cambio), y despues hago lo mismo con el commit previo y el commit parent del previo para saber que en realidad en ese momento se produjo el cambio. En el gerrit nos dan esa info como se puede ver en la figura~\ref{fig:parent}}
 
-\grex{Sigue sin quedarme clara cual es la relacion entre el parent commit y el previous commit (mira que yo pensaba que eran lo mismo)... podriamos dar una definicion?}
+\grex{Sigue sin quedarme clara cual es la relacion entre el parent commit y el previous commit (mira que yo pensaba que eran lo mismo)... podriamos dar una definicion?}  
+\gema{EL parent commit es el ultimo commit que toco alguna linea del fichero antes de que se realizase el fix bug commit, pero las lineas que toco el commit parent no tienen porque contener ningun bug. Mientras que el commit previo es la ultima modificacion que se hizo en aquellas lineas que ha tocado el bug-fix.Estaría bien dar una definicion por si no se ve claro}
 
 \begin{figure}[ht]
 \centering
 \includegraphics[height=2cm]{parent.png}
 \label{fig:parent}       % Give a unique label
-\caption{Information in Gerrit.\grex{contar que se ve en la figura}}
+\caption{Information about the bug }
 \end{figure}
 
 The analysis was done manually. We used \textit{git blame} to see the previous commit for each line of the involved file. Also, we used \textit{diff} to see the differences between the two files, in our case as the file is going to be the same, between the file in two different moments in the control version system.
@@ -547,7 +548,7 @@ After this, we can answer the first research question because at this moment we 
 
 \vspace{0.2cm}
 \fbox{\begin{minipage}{25em}
-\textbf{RQ1: Using all the information available in the bug tracking system and code review systems related to a fix-bug, we have obtained that in at least 72\% of the tickets analyzed the fix-bugs were real bug reports.} 
+\textbf{RQ1: Using all the information available in the bug tracking system and code review systems related to a bug-fix, we have obtained that in at least 72\% of the tickets analyzed the bug-fixs were real bug reports.} 
 \end{minipage}}
 \vspace{0.1cm}
 
