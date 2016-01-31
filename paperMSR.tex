@@ -427,6 +427,8 @@ In this second part, our work was focused on analyzing the previous commit exclu
 
 For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added, inserted or modified in the previous commit. We refer to \emph{parent} commit as the last commit that was edited to produce the subsequent state of the file. We do this process to be sure that we are looking the correct change, because some times although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, it is a false positive where the previous commit did not cause the bug. \grex{Gema, puedes aclarar este parrafo? Que es el "parent" commit? Es lo mismo que el previous commit? Es la primera vez que hablamos de el. Quizas sea buena idea que lo reformules en castellano, porque ahora mismo es criptico}\gema{el parent commit es el ultimo commit que se hizo en el fichero antes de que se realizase el que arreglo el error, por tanto lo que hago usar diff y blame en el commit parent y en el commit que arregla el error para saber que lineas se han cambiado y que commit las cambio), y despues hago lo mismo con el commit previo y el commit parent del previo para saber que en realidad en ese momento se produjo el cambio. En el gerrit nos dan esa info como se puede ver en la figura~\ref{fig:parent}}
 
+\grex{Sigue sin quedarme clara cual es la relacion entre el parent commit y el previous commit (mira que yo pensaba que eran lo mismo)... podriamos dar una definicion?}
+
 \begin{figure}[ht]
 \centering
 \includegraphics[height=2cm]{parent.png}
@@ -495,7 +497,10 @@ A total of 459 different tickets from the Launchpad of the four main projects in
 \subsection{Fist Stage}
 \label{sec:resultsFS}
 
-We classify a total of 459 tickets using the tool, resulting in 917 reviews\grex{Mirando la Tabla 2, veo que las revisiones suman 917, no 918!} \gema{Es cierto, son 917}. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits.
+We classify a total of 459 tickets using the tool, resulting in 917 reviews\grex{Mirando la Tabla 2, veo que las revisiones suman 917, no 918!} \gema{Es cierto, son 917}. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits. This process requires manual inspection by researchers. In the mean classifying a ticket takes \gema{between 5 and 10 minutes per ticket}, although the amount of time decreases with experience as could be expected. 
+
+\gema{[...] se podria medir en github en tiempo que les ha llevado a cada uno entre ticket y ticket, en aquellos casos que se puedan medir y hacer una media, Que te parece?} \grex{No es muy importante, pero quedaria bien}
+
 
 \begin{table*}
 \centering
@@ -546,13 +551,11 @@ After this, we can answer the first research question because at this moment we 
 \end{minipage}}
 \vspace{0.1cm}
 
-\grex{Molaria hablar de cuanto tiempo ha llevado realizar esta etapa de clasificacion por cada uno de los investigadores (o sea, sin contar el desarrollo de herramienta y conseguir y cargar los datos de bugs y demas en la base de datos)}
-\gema{El problema es que no hemos medido el tiempo, he hablado con ellos y me dicen que de media de 5 a 10 minutos por ticket, a mi me llevo unos 5 minutos de media, por que ya estaba mas acostumbrada, pero de todas formas se podria medir en github en tiempo que les ha llevado a cada uno entre ticket y ticket, en aquellos casos que se puedan medir y hacer una media, Que te parece?}
 
 \subsection{Second Stage}
 \label{sec:resultsSS}
 
-In this stage we analyzed the 189 tickets classified \grex{Pero no eran 209?} \gema{deberian ser 209 pero me han quedado 20 bugs report por analizar, si tengo tiempo cuando llegue a casa lo hago y anado los numeros} as bug reports and their previous commits.
+In this stage we analyzed the 189 tickets classified \grex{Pero no eran 209?} \gema{deberian ser 209 pero me han quedado 20 bugs report por analizar, si tengo tiempo cuando llegue a casa lo hago y anado los numeros} \grex{no se si hace falta, a ver que dice jesus} as bug reports and their previous commits.
 The possible outcome of the analysis was one of the following three options:
 
 \begin{itemize}
@@ -640,12 +643,13 @@ We also studied the distribution of the number of previous commits for each bug.
 \raisebox{1ex}{Total} & 131 & 25 & 13 & 10 & 10\\[0ex]
 \bottomrule[0.3mm]
 \end{tabular} }
-\caption{ Distribution of number of previous commit per Bug Report in each project}
+\caption{ Distribution of the number of previous commits per bug report for each project.}
 \label{tab:secondStage2}
 \end{center}
 \end{table*}
 
-Finally, we were interested in analyzing, for those cases where more than one previous commit exist, how many of them introduced the bug in the code source. Even if several previous commits are involved, it may be the case that none, only one or all of them is the cause of the bug. \grex{Cuando hay 3 previous commits, no podria darse el caso de 2 de ellos responsables?}\gema{si, eso sucede y eso casos se encuentran dentro de al menos un responsable, (at least one responsible)}
+Finally, we were interested in analyzing, for those cases where more than one previous commit exist, how many of them introduced the bug in the code source. Even if several previous commits are involved, it may be the case that none, at least one of them or all of them is the cause of the bug.
+
 Results are given in Table~\ref{tab:secondStage3}; in 8 bug reports all the previous commits were identified as the cause, in 30 bug reports at least one of the previous commits caused the bug, and in 11 bug reports none of the previous commits introduced the bug. If we look at bugs that had two previous commits, in 4 cases both commits were the cause, in 9 cases only one of them was the cause and in another 4 cases non of them could be determined as the cause.
 
 \grex{Entiendo el resultado del parrafo anterior, pero me falta una explicacion de por que esto es interesante y para que puede servir.}\gema{Para entender como de complejo es el problema, porque no es lo mismo que dos commits anteriores sean responsables a que lo sean 5, entendiendo que si son cambios independientes es muy raro que sean causantes de un mismo error. y para saber si algun patron se repite y nos ayuda a entender algo, pero las tablas no llegan a ser muy concluyentes y los numeros son bajos, podemos introducirlo como un poco de discusion sobre que podria ser interesante analizar mas y ver si con mas poblacion se repite algun patron y decir exactamente cuantos comits son los responsables en un bug report.}
@@ -656,13 +660,13 @@ Results are given in Table~\ref{tab:secondStage3}; in 8 bug reports all the prev
 \toprule[0.3mm]
    & \multicolumn{1}{c}{two previous} & \multicolumn{1}{c}{three previous} & \multicolumn{1}{c}{four previous} & \multicolumn{1}{c}{+five previous} & \multicolumn{1}{c}{Total}\\
   & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit}& \multicolumn{1}{c}{commit}& \multicolumn{1}{c}{commit}\\\hline
-\raisebox{1ex}{All Responsible}          & 4 & 3 & 0 & 1 & 8\\[0ex]
-\raisebox{1ex}{At least one responsible} & 9 & 7 & 5 & 9 & 30\\[0ex]
-\raisebox{1ex}{None Responsible}         & 4 & 2 & 4 & 1 & 11\\[0ex]
+\raisebox{1ex}{All are the cuase}          & 4 & 3 & 0 & 1 & 8\\[0ex]
+\raisebox{1ex}{At least one is the cause} & 9 & 7 & 5 & 9 & 30\\[0ex]
+\raisebox{1ex}{None is the cause}         & 4 & 2 & 4 & 1 & 11\\[0ex]
 \raisebox{1ex}{Undecided}                & 1 & 0 & 1 & 0 & 2\\[0ex]
 \bottomrule[0.3mm]
 \end{tabular} }
-\caption{ Number of previous commit responsibles per bug report}
+\caption{Number of previous commits identified as the cause of a bug per bug report}
 \label{tab:secondStage3}
 \end{center}
 \end{table*}
@@ -688,7 +692,7 @@ And we are talking about a bug report not a new feature, these kinds of cases us
 \item Is responsible the last commit that modify something in the function?
 \end{enumerate}
 
-\gema{Puedes elaborar un poco mas el parrafo anterior? Puede ser en castellano}
+\grex{Gema, puedes elaborar un poco mas el parrafo anterior? Puede ser en castellano}
 
 There are other cases where it is difficult to determine if the change is the cause. For instance, when additional conditions are added to \emph{if}s or \emph{else}s, one might think that in the previous commit those were not included due to an error, so that the previous commit becomes the cause of the bug. However, situations exist where the additional conditions in an if appear because of the introduction of a new functionality, and thus the line in the previous commit was correct at the time it was introduced. In our analysis, if the latter situation is not explicity mentioned we have considered that the previous commit caused the error.
 
