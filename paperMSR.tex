@@ -321,11 +321,30 @@ The remainder of this paper is structured as follows. Next, we present the curre
 \section{Related Work}
 \label{sec:related}
 
-The first algorithm to identifying bug-introducing code changes automatically was proposed by Sliwerski et al.~\cite{sliwerski2005changes}. Currently, it is a well-known algorithm called SZZ, which is based on text differences to discover modified, added and deleted lines between the bug-fix and its previous version. The SZZ algorithm uses the CVS \texttt{annotate} command\footnote{Other versioning systems provide similar functionality to CVS \texttt{annotate}; for instance, git offers \texttt{blame}.} to identify the last commit that touched these lines.
+Bug-introducing code changes has been a \emph{hot} topic in the mining software repositories research community for over a decade. The most used algorithm to identify bug-introducing code changes automatically was proposed by Sliwerski et al.~\cite{sliwerski2005changes}, which is an improvement to previous approaches~\cite{vcubranic2003hipikat,fischer2003analyzing,fischer2003populating}. Currently, it is a well-known algorithm called SZZ, which is based on text differences to discover modified, added and deleted lines between the bug-fix and its previous version. The SZZ algorithm uses the CVS \texttt{annotate} command\footnote{Other versioning systems provide similar functionality to CVS \texttt{annotate}; for instance, git offers \texttt{blame}.} to identify the last commit that touched these lines.
 
-An improvement to the SZZ algorithm is described by Kim et al.~\cite{kim2006automatic}. There the authors used annotation graphs instead of CVS annotation to locate, in the previous versions, the lines affected by modification and deletion. Also, they avoid some false positives by not considering blank spaces, changes in the format or changes in the comments.
+There are several research articles that propose improvements to the SZZ algorithm. Kim et al.~\cite{kim2006automatic} use annotation graphs instead of CVS annotation to locate, in the previous versions, the lines affected by modification and deletion. Also, they avoid some false positives by not considering blank spaces, changes in the format or changes in the comments. Williams et al. revisited the SZZ algorithm to track bug-inducing changes and identify types of changes~\cite{williams2008szz}. 
 
-Sinha et al. present another technique to identify the origins of a bug in~\cite{sinha2010buginnings}. Their technique is not text-based technique, as the SZZ algorithm, the authors analyze the effects of bug-fix changes on program dependencies. So, taking into account the semantics of the source code they achieved higher accuracy in identifying the origins of a bug.
+
+The SZZ algorithm (and its \emph{successors}) have had a considerable impact in the research community. Noteworthy is the fact that the paper with original the SZZ algorithm~\cite{sliwerski2005changes} has been cited, according to Google Scholar, 463 times as of January 
+2016. An enhanced version of the SZZ algorithm~\cite{kim2006automatic} counts with 123 citations. Hence, there is a myriad of articles that propose its use for a large number of uses. For instance, Yang et al. applied SZZ to find what kind of bug-inducing changes are likely to become a great threat after being marked as bug-fix changes~\cite{yangbug}. Kim et al. showed how to classify file changes as buggy or clean using change information features and source code terms~\cite{kim2008classifying}. Eyolfson use it to study if time of the day and developer experience affect the probability of a commit to introduce a bug~\cite{eyolfson2011time}. Izquierdo et al. use the SZZ algorithm to see if developers are fixing their own bugs~\cite{izquierdo2011developers}. Yin et al. use it to find out how many fixes to bugs introduce new bugs~\cite{yin2011fixes}. Fejzer et al. us it to support code review~\cite{fejzer2015supporting}. Asaduzzaman et al. apply the SZZ algorithm on Android to study maintenance implications~\cite{asaduzzaman2012bug}.
+
+%Bachmann et al. on the missing link between comments in change logs and bug fixes ~\cite{bachmann2010missing}
+%Wu et al. propose a tool solution~\cite{wu2011relink}
+
+
+
+The question of whether a bug report is really a bug or not has been widely studied in the 
+mining software repositories research literature in the last years. So, Pan et al. classify the different types of bug-fix patterns that most commonly exist~\cite{pan2009toward}. Antoniol et al. have use a text-based approach to classify bug reports into corrective maintenance and other kinds of activities~\cite{antoniol2008bug}. Herzig et al. have done a manual examination of thousands of bug reports and have found that around a third of them are misclassified, in the sens that they were not a bug report but a feature request, internal refactoring or update to documentation~\cite{herzig2013s}. They show that almost 40\% of the files marked as defective did not have a bug, and suggest that this missclassification introduces bias in bug prediction models and tools. 
+
+
+%\grex{maybe talk about my paper with dmg and ahmed, where bugs could be found elsewhere~\cite{german2009change}. There the talk is precisely about those bugs whose origina are elsewhere. Title of the paper: \emph{Change impact graphs: Determining the impact of prior codechanges}}\gema{me parece bien, no lo he leido pero nadie mejor que tu para resumirlo en esta seccion}
+
+
+Prechelt and Pepper offer a good overview of what they call defect-insertion circumstance analysis. They point out that one of the obstacles in the way of a reliable analysis are the ``additional changes between defect insertion time and defect correction time that happen to happen at subsequently defect-corrected locations''~\cite{prechelt2014software}. Some methods that consider sources of information other than the previous commit already exist. So, German et al.~\cite{german2009change} 
+point out that software is in constant change, and that changes performed may have impact across the whole system and may lead to the manifestation of bugs in unchanged parts. In this case, a bug emerges in a different location from the source of the bug, which is a change to a function somewhere else in the source code base. 
+
+Sinha et al. present another technique to identify the origins of a bug in~\cite{sinha2010buginnings}. Their technique is not text-based technique, as the SZZ algorithm, as the authors analyze the effects of bug-fix changes on program dependencies. So, taking into account the semantics of the source code they achieved higher accuracy in identifying the origins of a bug.
 
 The two approaches have some methodological patterns in common:
 
@@ -334,21 +353,8 @@ The two approaches have some methodological patterns in common:
   \item They look back in the code revision history until they identify which version touched the lines affected in the bug-fix for the last time.
 \end{enumerate}
 
-Williams et al. revisited the SZZ algorithm to track bug-inducing changes and identify types of changes~\cite{williams2008szz}. Yang et al. applied SZZ to find what kind of bug-inducing changes are likely to become a great threat after being marked as bug-fix changes~\cite{yangbug}.
-Finally, some bug prediction algorithms are based on SZZ; Kim et al. showed how to classify file changes as buggy or clean using change information features and source code terms~\cite{kim2008classifying}. \grex{Creo que deberiamos hablar de mas papers que hacen uso de SZZ y derivados}. 
 
-The SZZ algorithm (and its \emph{successors}) have had a considerable impact in the research community. Noteworthy is the fact that the paper with original the SZZ algorithm~\cite{sliwerski2005changes} has been cited, according to Google Scholar, 463 times as of January 
-2016. An enhanced version of the SZZ algorithm~\cite{kim2006automatic} counts with 123 citations.
-
-
-The SZZ algorithm (and its \emph{successors}) have been widely used in the research community.
-Williams et al. revisited the SZZ algorithm to track bug-inducing changes and identify types of changes~\cite{williams2008szz}. Yang et al. applied SZZ to find what kind of bug-inducing changes are likely to become a great threat after being marked as bug-fix changes
-Finally, some bug prediction algorithms are based on SZZ; Kim et al. showed how to classify file changes as buggy or clean using change information features and sour code terms~\cite{kim2008classifying}.
-
-%\grex{maybe talk about my paper with dmg and ahmed, where bugs could be found elsewhere~\cite{german2009change}. There the talk is precisely about those bugs whose origina are elsewhere. Title of the paper: \emph{Change impact graphs: Determining the impact of prior codechanges}}\gema{me parece bien, no lo he leido pero nadie mejor que tu para resumirlo en esta seccion}
-
-In the research literature, we can already find methods that consider other sources of information than the previous commit. In fact, German et al.~\cite{german2009change} 
-point out that software is in constant change, and that changes performed may have impact across the whole system and may lead to the manifestation of bugs in unchanged parts. In this case, a bug emerges in a different location from the source of the bug, which is a change to a function somewhere else in the source code base. \grex{Quizas mirar si hay mas articulos en esta linea. No es muy importante esto.}
+%\grex{Quizas mirar si hay mas articulos en esta linea. No es muy importante esto.}
 
 
 %In addition some tools are based on SZZ too such as \cite{} 
@@ -358,7 +364,7 @@ point out that software is in constant change, and that changes performed may ha
 \label{sec:methodology}
 %We present our approach to identify how and where a bug was inserted into the source code, causing a later fix. 
 
-All data needed to analyze when the bug was introduced can be obtained from the issue tracking systems and the code review systems used generally by free/open source software (FOSS) projects. In our analysis, we have focused on Launchpad\footnote{\url{https://launchpad.net/}} as issue tracking system, and Gerrit\footnote{\url{https://www.gerritcodereview.com/}} as code review supporting tool, as they are widely used by FOSS projects nowadays, but our methodology should be generalizable to any such tool.
+All data needed to analyze when the bug was introduced can be obtained from the issue tracking systems and the code review systems used generally by free/open source software (FOSS) projects. In our analysis, we have focused on Launchpad\footnote{\url{https://launchpad.net/}} as issue tracking system, and Gerrit\footnote{\url{https://www.gerritcodereview.com/}} as code review supporting tool, as they are widely used by FOSS projects nowadays, but our methodology should be adaptable to any such tool.
 
 The Launchpad of each project works with issue reports called tickets, which describe bug reports, feature requests, maintenance tickets, and even design discussions. In our study, however, we are only interested in those tickets that have following properties:
 
@@ -500,9 +506,9 @@ A total of 459 different tickets from the Launchpad of the four main projects in
 \subsection{Fist Stage}
 \label{sec:resultsFS}
 
-We classify a total of 459 tickets using the tool, resulting in 917 reviews. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits. This process requires manual inspection by researchers. In the mean classifying a ticket takes between 5 and 10 minutes per ticket, although the amount of time decreases with experience as could be expected. 
+We classify a total of 459 tickets using the tool, resulting in 917 reviews\footnote{One review was discarded as it was left empty.}. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits. This process requires manual inspection by researchers. In the mean classifying a ticket takes between 5 and 10 minutes per ticket, although the amount of time decreases with experience as could be expected. 
 
-\gema{[...] se podria medir en github en tiempo que les ha llevado a cada uno entre ticket y ticket, en aquellos casos que se puedan medir y hacer una media, Que te parece?} \grex{No es muy importante, pero quedaria bien}
+%\gema{[...] se podria medir en github en tiempo que les ha llevado a cada uno entre ticket y ticket, en aquellos casos que se puedan medir y hacer una media, Que te parece?} \grex{No es muy importante, pero quedaria bien}
 
 
 \begin{table*}
@@ -572,6 +578,7 @@ Figure~\ref{fig:manyprevious} contains a real example of a previous commit where
 
 \grex{No estan mal las descripciones superiores en la figura~\ref{fig:manyprevious} que dice ``After Fix Bug'' y ``Fix-inducing (Before fix bug)''?}
 \gema{creo que no, la de la izquierda es despues de que se arreglara el error, y la de la derecha es en el momento en que se introdujo el error}
+
 \begin{figure}[ht]
 \centering
 \includegraphics[height=2.5cm]{manyprevious.png}
@@ -584,11 +591,13 @@ We identified a total of 348 previous commits which could be the cause of the 18
 
 As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits, 152 have been considered to be the cause of the bug, whereas 114 were identified as not beign the cause. We were unable to decide in 42 cases or due to our limited knowleadge about the code. The figure~\ref{fig:added} shows the change done in the fix bug commit, on the left the lines before the fix commit and on the right the file after the fix commit with only additions lines. In this case, we cannot be able to know which previous commit could be the one that forgot added this lines, this is the reason why we classifyed as \textit{Undecied}.\gema{Me faltaria el ejemplo de limited knowledge, cuando encuentre uno bueno lo anado}
 We discarded 40 more because they were false positives (\emph{noise}) such as blank lines, changes in comments or even a change in the version of the file.
+
 \begin{figure}[ht]
 \centering
 \includegraphics[height=2.5cm]{addedlines.png}
 \label{fig:added}       % Give a unique label
-\caption{Example of added lines where we are unable to decide which previous commit caused the bug}
+\caption{Example of scenario where the bug fix is composed only of lines added. The fix bug commit with lines added in green can be seen on the left (subfigure (1)), and the file as it was before the fix bug commit on the right (subfigure (2)).}
+%52919
 \end{figure}
 
 %\begin{figure}[ht]
@@ -716,7 +725,7 @@ Although at first, as shown in the Figure~\ref{fig:1} and Figure~\ref{fig:2}, on
 
 %\gema{Otro caso puede ser lo if/else, en estos casos hay que ser cuidadosos y saber diferenciar si el causante fue el comit previo porque se olvido de comporbar una condicion, o si el commit previo no fue el causante del error porque la condicion que se introduce en el commit que arregla el error se debe a que han anadido una nueva funcionalidad despues de haber anadido el if/else y necesitan comprobarla ahora, por tanto seria debido a la evolucion del projecto. En este ultimo caso, si no tenemos toda la descripcion de lo que realmente esta pasando, para poder decidir en que situacion estamos, hemos sido conservadores y hemos inducado que el commit anterior fue el responsable}
 
-There are other cases where it is difficult to determine if the change is the cause. For instance, when additional conditions are added to \emph{if}s or \emph{else}s, one might think that in the previous commit those were not included due to an error, so that the previous commit becomes the cause of the bug. However, situations exist where the additional conditions in an if appear because of the introduction of a new functionality, and thus the line in the previous commit was correct at the time it was introduced. In our analysis, if the latter situation is not explicity mentioned we have considered that the previous commit caused the error.
+There are other cases where it is difficult to determine if the change is the cause. For instance, when additional conditions are added to \emph{if}s or \emph{else}s, one might think that in the previous commit those were not included due to an error, so that the previous commit becomes the cause of the bug. However, situations exist where the additional conditions in an if appear because of the introduction of a new functionality, and thus the line in the previous commit was correct at the time it was introduced. In our analysis, if the latter situation is not explicitly mentioned we have considered that the previous commit caused the error.
 
 But already the identification of an issue as a bug report is a process that is not as straightforward as one might think. Out of 459 tickets we were only capable to achieve a consensus for 292 cases (63.6\%), which hints to the complexity of the task. The amount of information, the number of fields and the requirement of human interaction made us invest time in the creation of a tool that assisted us in the process. 
 
@@ -739,7 +748,7 @@ As any other empirical study, this one presents several threats to its validity,
 
 
 %The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
-The number of the tickets extracted form Launchpad is relatively high, but probably not as high as to state that it can be representative of all free/open source systems, or the software industry. It has not to be forgotten that the analysis requires a lot of human effort, so that achieving large numbers of cases is difficult.
+The number of the tickets extracted form Launchpad is relatively high, but probably not as high as to state that it can be representative of all free/open source systems, or the software industry. It has not to be forgotten that the analysis requires a lot of human effort, so that achieving large numbers of cases is difficult. However, it should be noted that the amount of tickets in in the order of magnitude of similar studies found in the research literature, for instance Hindle's et al. article on large commits, where 100~\cite{hindle2008large}.
 
 The internal threats related to the researchers that have conducted the study are following:
 
@@ -787,7 +796,7 @@ Another interesting investigation could perform the same empirical study on a pr
 We thank Dorealda Dalipaj and Nelson Sekitoleko, two PhD students in our research team, that participated in the process of classifying bug reports. We also want to express our gratitude to Bitergia\footnote{\url{http://bitergia.com/}} for the OpenStack database and the support they have provided when questions have arisen. 
 Finally, we would like to acknowledge the Spanish Government because all authors are funded in part by it, through project TIN2014-59400-R.
 
-\nocite{*}
+%\nocite{*}
 %
 % The following two commands are all you need in the
 % initial runs of your .tex file to
