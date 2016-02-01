@@ -439,7 +439,7 @@ We do this process to be sure that we are looking the correct change, because so
 
 \begin{figure}[ht]
 \centering
-\includegraphics[height=2cm]{parent.png}
+\includegraphics[height=1.9cm]{parent.png}
 \caption{Information about the bug as displayed by Gerrit.}
 \label{fig:parentgerrit}       % Give a unique label
 \end{figure}
@@ -576,15 +576,16 @@ This analysis takes into account that the bug could span many lines that may bel
 
 Figure~\ref{fig:manyprevious} contains a real example of a previous commit where more than one commit has been identified. In this case, we have two possible commits: \textit{e7be0a988} and \textit{e5296c1da}. Previous commit \textit{e7be0a988} did not cause the bug, because the modification affects only the version number of the software. It is previous commit \textit{e5296c1da} the one that caused the bug, because it introduced an incorrect \texttt{break} line. %\grex{Todavia no esta del todo claro... yo creo que esto merece un ejemplo - incluso con codigo real, tal y como hemos hecho al principio del articulo. Ademas, nos lo podemos permitir; tenemos espacio.}\gema{perfecto, ahora busco un ejemplo y lo anado abajo}
 
-\grex{No estan mal las descripciones superiores en la figura~\ref{fig:manyprevious} que dice ``After Fix Bug'' y ``Fix-inducing (Before fix bug)''?}
-\gema{creo que no, la de la izquierda es despues de que se arreglara el error, y la de la derecha es en el momento en que se introdujo el error}
+%\grex{No estan mal las descripciones superiores en la figura~\ref{fig:manyprevious} que dice ``After Fix Bug'' y ``Fix-inducing (Before fix bug)''?}
+%\gema{creo que no, la de la izquierda es despues de que se arreglara el error, y la de la derecha es en el momento en que se introdujo el error}
 
-\begin{figure}[ht]
+\begin{figure*}[ht]
 \centering
-\includegraphics[height=2cm]{manyprevious.png}
-\caption{Previous commits (right): \textit{e7be0a988} (line 218) and \textit{e5296c1da} (line 2422).}
+\includegraphics[height=4cm]{manyprevious.png}
+\caption{Example of previous commit where more than one commit has been identified. On the left, the file after the bug-fixing commit. Previous commit \textit{e5296c1da} (middle) is the cause of the bug in line 2422 with the presence of an incorrect \texttt{break} statement. 
+Previous commits \textit{e7be0a988} (right) has also been identified; however, as it just changes the version number (line 218), it can be classified as not causing the bug.}
 \label{fig:manyprevious}       % Give a unique label
-\end{figure}
+\end{figure*}
 
 
 We identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis. Then, we analyzed the bug reports together with their previous commits discarding the cases where the previous commit was a false positive (blank lines, changes in comments or even a change in the version of the file). So, in total we have analyzed 308 previous commit.
@@ -592,13 +593,13 @@ We identified a total of 348 previous commits which could be the cause of the 18
 As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits, 152 have been considered to be the cause of the bug, whereas 114 were identified as not beign the cause. We were unable to decide in 42 cases or due to our limited knowleadge about the code. The figure~\ref{fig:added} shows the change done in the fix bug commit, on the left the lines before the fix commit and on the right the file after the fix commit with only additions lines. In this case, we cannot be able to know which previous commit could be the one that forgot added this lines, this is the reason why we classifyed as \textit{Undecied}.The figure ~\ref{fig:unknow} shows an example of limited knowleadge about which line could inserted the bug.
 We discarded 40 more because they were false positives (\emph{noise}) such as blank lines, changes in comments or even a change in the version of the file.
 
-\begin{figure}[ht]
+\begin{figure*}[ht]
 \centering
-\includegraphics[height=2.5cm]{addedlines.png}
+\includegraphics[height=3.6cm]{addedlines.png}
 \label{fig:added}       % Give a unique label
 \caption{Example of scenario where the bug fix is composed only of lines added. The fix bug commit with lines added in green can be seen on the left (subfigure (1)), and the file as it was before the fix bug commit on the right (subfigure (2)).}
 %52919
-\end{figure}
+\end{figure*}
 
 \begin{figure}[ht]
 \centering
@@ -744,7 +745,7 @@ In any case, our research shows evidence that assuming that the previous commit 
 \section{Threats to validity}
 \label{sec:threats}
 
-As any other empirical study, this one presents several threats to its validity, external and internal, that have to be considered and taken into account. In order to allow others to study it in detail, replicate it or even build on top of it, we have set up a replication package\footnote{\url{http://gsyc.urjc.es/~grex/repro/2016-msr-prevcommit}}\gema{he creado esta pagina en github para el paquete de reproducibilidad http://gemarodri.github.io/2016-msr-prevcommit/} including data sources, intermediate data and scripts that can be obtained.
+As any other empirical study, this one presents several threats to its validity, external and internal, that have to be considered and taken into account. In order to allow others to study it in detail, replicate it or even build on top of it, we have set up a replication package\footnote{\url{http://gemarodri.github.io/2016-msr-prevcommit/}} including data sources, intermediate data and scripts that can be obtained.
 
 
 %The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
