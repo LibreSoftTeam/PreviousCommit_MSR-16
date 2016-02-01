@@ -426,7 +426,7 @@ Sometimes we were unable to answer all the questions due to having insufficient 
 In this second part, our work was focused on analyzing the previous commit exclusively for those tickets classified in the \textit{Bug Report} group. Therefore we had to locate the line that contained the bug, inquire the reason of the software failure, and gathering additional information on the context of the project.
 
 For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added, inserted or modified in the previous commit. We refer to \emph{parent} commit as the commit that modified any line of code in the file before the fix-bug commit, in contrast to the \emph{previous} commit where the modified lines were the same than in the fix-bug commit. It should be noted that those lines modified in the parent commit do not have to be the ones that have been modified in the bug-fix.
-Figure~\ref{fig:parent} contains a snapshot of the information provided by Gerrit, where the link to the parent commit(s) can be found.
+Figure~\ref{fig:parentgerrit} contains a snapshot of the information provided by Gerrit, where the link to the parent commit(s) can be found.
 
 We do this process to be sure that we are looking the correct change, because sometimes although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, it is a false positive where the previous commit did not cause the bug. 
 
@@ -438,8 +438,8 @@ We do this process to be sure that we are looking the correct change, because so
 \begin{figure}[ht]
 \centering
 \includegraphics[height=2cm]{parent.png}
-\label{fig:parent}       % Give a unique label
 \caption{Information about the bug offered by Gerrit.}
+\label{fig:parentgerrit}       % Give a unique label
 \end{figure}
 
 The analysis was done manually. We used \textit{git blame} to see the previous commit for each line of the involved file. Also, we used \textit{diff} to see the differences between the two files, in our case as the file is going to be the same, between the file in two different moments in the control version system.
@@ -634,7 +634,9 @@ If we attend to how many previous commits each of the 189 bug reports analyzed h
 %\gema{- Ademas he mirado como se distribuyen los commits en cada bug report dentro de cada proyecto analizado, y he visto que por ejemplo Neutron presentaba 11 bugs report con solo un ticket previo, 3 bugs report con dos identificadores diferentes para los commit previos, 2 bug reports que presentaban  3 commit previos... etc.}\\
 %\gema{- Finalmente realice otra clasificacion en la que tenia en cuenta el numero de commits que fueron causantes del error para un mismo bug report. Al analizar los bug reports encontre que en aquellos que presenstaban mas de un commit previo no todos los commit eran causantes del error, y en ocasiones solamente habia un commit que causo el error y los otros no o por el contrario habia bugs report en los que ninguno de sus commits previos era responsable y otras ocasiones en las que todos los commits previos eran responsables. Por tanto la tabla 7 muestra cual es la responsabilidad (tods responsables, al menos uno ningun responsable y desconozco la responsabilidad) de los coommits previos presentes en un bug report. Por ejemplo, bugs reports que tenian dos commits previos, en 4 de ellos los dos commits previous eran responsables, mientras que en 9 bug report habia al menos un responsable y en otros 4 bug report ninguno de los dos commit previos eran responsables.}  
 
-We also studied the distribution of the number of previous commits for each bug. As shown in Table~\ref{tab:secondStage2}, the number of commits that can be considered as previous is 1, followed by 2 commits. \grex{the number of commits that can be considered as previous is 1, followed by 2 commits. No se que queremos decir} \grex{Tenemos que responder a estas dos preguntas todavia: Por que es interesante hacer lo que se comenta en este parrafo? Que utilidad tiene?}\gema{Creo que era interesante saber como se distribuyen los causantes de los bugs en cada projecto y cuantos commits previos presentan los bugs report en cada projecto analizado, ademas cuantos mas commits previos, en ocasiones, es muy dificil saber quien es el responsable por tanto pense que podria haber algun patron en relacion con el numero de commits previos y cuantos de ellos son responsables, pero parece que esto no ocurre con la muestra que hemos analizado.}
+We also studied the distribution of the number of previous commits for each bug. This result will provide further insight into the bug-seeding nature; it offers as well an idea of the complexity of identifying the cause of a bug, as the more commits involved, the harder it is to identify the cause and understand it. As shown in Table~\ref{tab:secondStage2}, usually the number of commits that can be considered as previous is 1 (over 69\% of the cases), followed by 2 commits (13\%). In around 10\% of the cases, 3 or more commits are involved.
+
+% the number of commits that can be considered as previous is 1, followed by 2 commits. \grex{the number of commits that can be considered as previous is 1, followed by 2 commits. No se que queremos decir} \grex{Tenemos que responder a estas dos preguntas todavia: Por que es interesante hacer lo que se comenta en este parrafo? Que utilidad tiene?}\gema{Creo que era interesante saber como se distribuyen los causantes de los bugs en cada projecto y cuantos commits previos presentan los bugs report en cada projecto analizado, ademas cuantos mas commits previos, en ocasiones, es muy dificil saber quien es el responsable por tanto pense que podria haber algun patron en relacion con el numero de commits previos y cuantos de ellos son responsables, pero parece que esto no ocurre con la muestra que hemos analizado.}
 
 \begin{table*}[htb]
 \begin{center} {\footnotesize
@@ -649,7 +651,7 @@ We also studied the distribution of the number of previous commits for each bug.
 \raisebox{1ex}{Total} & 131 & 25 & 13 & 10 & 10\\[0ex]
 \bottomrule[0.3mm]
 \end{tabular} }
-\caption{ Distribution of the number of previous commits per bug report for each project.}
+\caption{ Distribution of the number of commits that can be considered as the previous commit per bug report for each project.}
 \label{tab:secondStage2}
 \end{center}
 \end{table*}
@@ -720,7 +722,7 @@ In any case, our research shows evidence that assuming that the previous commit 
 \section{Threats to validity}
 \label{sec:threats}
 
-As any other empirical study, this one presents several threats to its validity, external and internal, that have to be considered and taken into account. In order to allow others to study it in detail, replicate it or even build on top of it, we have set up a replication package including data sources, intermediate data and scripts that can be obtained at the following URL: \gema{Incluir la URL en la que pondre todos los datos y scripts utilizados para los datos.}
+As any other empirical study, this one presents several threats to its validity, external and internal, that have to be considered and taken into account. In order to allow others to study it in detail, replicate it or even build on top of it, we have set up a replication package\footnote{\url{http://gsyc.urjc.es/~grex/repro/2016-msr-prevcommit}} including data sources, intermediate data and scripts that can be obtained.
 
 
 %The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
