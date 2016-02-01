@@ -419,16 +419,25 @@ Sometimes we were unable to answer all the questions due to having insufficient 
 
 In this second part, our work was focused on analyzing the previous commit exclusively for those tickets classified in the \textit{Bug Report} group. Therefore we had to locate the line that contained the bug, inquire the reason of the software failure, and gathering additional information on the context of the project.
 
-For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added, inserted or modified in the previous commit. We refer to \emph{parent} commit as the last commit that was edited to produce the subsequent state of the file. We do this process to be sure that we are looking the correct change, because some times although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, it is a false positive where the previous commit did not cause the bug. \grex{Gema, puedes aclarar este parrafo? Que es el "parent" commit? Es lo mismo que el previous commit? Es la primera vez que hablamos de el. Quizas sea buena idea que lo reformules en castellano, porque ahora mismo es criptico}\gema{el parent commit es el ultimo commit que se hizo en el fichero antes de que se realizase el que arreglo el error, por tanto lo que hago usar diff y blame en el commit parent y en el commit que arregla el error para saber que lineas se han cambiado y que commit las cambio), y despues hago lo mismo con el commit previo y el commit parent del previo para saber que en realidad en ese momento se produjo el cambio. En el gerrit nos dan esa info como se puede ver en la figura~\ref{fig:parent}}
+For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added, inserted or modified in the previous commit. We refer to \emph{parent} commit as the commit that modified any line of code in the file before the fix-bug commit, in contrast to the \emph{previous} commit where the modified lines were the same than in the fix-bug commit. It should be noted that those lines modified in the parent commit do not have to be the ones that have been modified in the bug-fix.
+Figure~\ref{fig:parentgerrit} contains a snapshot of the information provided by Gerrit, where the link to the parent commit(s) can be found, that corresponds to the bug-fix shown in~\ref{fig:1}. As can be seen, the previous commit (\textit{31f08423}) in Figure~\ref{fig:1} is different from the parent commit displayed in Figure~\ref{fig:parentgerrit} (\textit{db7fc59ebc}).
 
-\grex{Sigue sin quedarme clara cual es la relacion entre el parent commit y el previous commit (mira que yo pensaba que eran lo mismo)... podriamos dar una definicion?}
+
+We do this process to be sure that we are looking the correct change, because sometimes although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, it is a false positive where the previous commit did not cause the bug. 
+
+
+%\grex{Gema, puedes aclarar este parrafo? Que es el "parent" commit? Es lo mismo que el previous commit? Es la primera vez que hablamos de el. Quizas sea buena idea que lo reformules en castellano, porque ahora mismo es criptico}\gema{el parent commit es el ultimo commit que se hizo en el fichero antes de que se realizase el que arreglo el error, por tanto lo que hago usar diff y blame en el commit parent y en el commit que arregla el error para saber que lineas se han cambiado y que commit las cambio), y despues hago lo mismo con el commit previo y el commit parent del previo para saber que en realidad en ese momento se produjo el cambio. En el gerrit nos dan esa info como se puede ver en la figura}
+
+%\grex{Sigue sin quedarme clara cual es la relacion entre el parent commit y el previous commit (mira que yo pensaba que eran lo mismo)... podriamos dar una definicion?}  
+%\gema{EL parent commit es el ultimo commit que toco alguna linea del fichero antes de que se realizase el fix bug commit, pero las lineas que toco el commit parent no tienen porque contener ningun bug. Mientras que el commit previo es la ultima modificacion que se hizo en aquellas lineas que ha tocado el bug-fix.Estaría bien dar una definicion por si no se ve claro}
 
 \begin{figure}[ht]
 \centering
 \includegraphics[height=2cm]{parent.png}
-\label{fig:parent}       % Give a unique label
-\caption{Information in Gerrit.\grex{contar que se ve en la figura}}
+\caption{Information about the bug as displayed by Gerrit.}
+\label{fig:parentgerrit}       % Give a unique label
 \end{figure}
+
 
 The analysis was done manually. We used \textit{git blame} to see the previous commit for each line of the involved file. Also, we used \textit{diff} to see the differences between the two files, in our case as the file is going to be the same, between the file in two different moments in the control version system.
 
@@ -541,7 +550,7 @@ After this, we can answer the first research question because at this moment we 
 
 \vspace{0.2cm}
 \fbox{\begin{minipage}{25em}
-\textbf{RQ1: Using all the information available in the bug tracking system and code review systems related to a fix-bug, we have obtained that in at least 72\% of the tickets analyzed the fix-bugs were real bug reports.} 
+\textbf{RQ1: Using all the information available in the bug tracking system and code review systems related to a bug-fix, we have obtained that in at least 72\% of the tickets analyzed the bug-fixs were real bug reports.} 
 \end{minipage}}
 \vspace{0.1cm}
 
@@ -622,7 +631,9 @@ If we attend to how many previous commits each of the 189 bug reports analyzed h
 %\gema{- Ademas he mirado como se distribuyen los commits en cada bug report dentro de cada proyecto analizado, y he visto que por ejemplo Neutron presentaba 11 bugs report con solo un ticket previo, 3 bugs report con dos identificadores diferentes para los commit previos, 2 bug reports que presentaban  3 commit previos... etc.}\\
 %\gema{- Finalmente realice otra clasificacion en la que tenia en cuenta el numero de commits que fueron causantes del error para un mismo bug report. Al analizar los bug reports encontre que en aquellos que presenstaban mas de un commit previo no todos los commit eran causantes del error, y en ocasiones solamente habia un commit que causo el error y los otros no o por el contrario habia bugs report en los que ninguno de sus commits previos era responsable y otras ocasiones en las que todos los commits previos eran responsables. Por tanto la tabla 7 muestra cual es la responsabilidad (tods responsables, al menos uno ningun responsable y desconozco la responsabilidad) de los coommits previos presentes en un bug report. Por ejemplo, bugs reports que tenian dos commits previos, en 4 de ellos los dos commits previous eran responsables, mientras que en 9 bug report habia al menos un responsable y en otros 4 bug report ninguno de los dos commit previos eran responsables.}  
 
-We also studied the distribution of the number of previous commits for each bug. As shown in Table~\ref{tab:secondStage2}, the number of commits that can be considered as previous is 1, followed by 2 commits. \grex{the number of commits that can be considered as previous is 1, followed by 2 commits. No se que queremos decir} \grex{Tenemos que responder a estas dos preguntas todavia: Por que es interesante hacer lo que se comenta en este parrafo? Que utilidad tiene?}\gema{Creo que era interesante saber como se distribuyen los causantes de los bugs en cada projecto y cuantos commits previos presentan los bugs report en cada projecto analizado, ademas cuantos mas commits previos, en ocasiones, es muy dificil saber quien es el responsable por tanto pense que podria haber algun patron en relacion con el numero de commits previos y cuantos de ellos son responsables, pero parece que esto no ocurre con la muestra que hemos analizado.}
+We also studied the distribution of the number of previous commits for each bug. This result will provide further insight into the bug-seeding nature; it offers as well an idea of the complexity of identifying the cause of a bug, as the more commits involved, the harder it is to identify the cause and understand it. As shown in Table~\ref{tab:secondStage2}, usually the number of commits that can be considered as previous is 1 (over 69\% of the cases), followed by 2 commits (13\%). In around 10\% of the cases, 3 or more commits are involved.
+
+% the number of commits that can be considered as previous is 1, followed by 2 commits. \grex{the number of commits that can be considered as previous is 1, followed by 2 commits. No se que queremos decir} \grex{Tenemos que responder a estas dos preguntas todavia: Por que es interesante hacer lo que se comenta en este parrafo? Que utilidad tiene?}\gema{Creo que era interesante saber como se distribuyen los causantes de los bugs en cada projecto y cuantos commits previos presentan los bugs report en cada projecto analizado, ademas cuantos mas commits previos, en ocasiones, es muy dificil saber quien es el responsable por tanto pense que podria haber algun patron en relacion con el numero de commits previos y cuantos de ellos son responsables, pero parece que esto no ocurre con la muestra que hemos analizado.}
 
 \begin{table*}[htb]
 \begin{center} {\footnotesize
@@ -637,7 +648,7 @@ We also studied the distribution of the number of previous commits for each bug.
 \raisebox{1ex}{Total} & 131 & 25 & 13 & 10 & 10\\[0ex]
 \bottomrule[0.3mm]
 \end{tabular} }
-\caption{ Distribution of the number of previous commits per bug report for each project.}
+\caption{ Distribution of the number of commits that can be considered as the previous commit per bug report for each project.}
 \label{tab:secondStage2}
 \end{center}
 \end{table*}
@@ -702,13 +713,13 @@ But already the identification of an issue as a bug report is a process that is 
 
 %\gema{Algunos de los problemas que nos hemos encontrado durante el analisis y que podrian ser resueltos de otra forma diferente a la nuestra y quizas puede que varie algo los resultados no lo se}
 
-In any case, our research shows evidence that assuming that the previous commit is where the cause of a bug can be found does not hold for a not insignificant percentage of bugs. \grex{Tengo que elaborar mas esto, que es el punto fuerte del articulo.}
+In any case, our research shows evidence that assuming that the previous commit is where the cause of a bug can be found does not hold for a not insignificant percentage of bugs. \grex{Tengo que elaborar mas esto, que es el punto mas impactante del articulo.}
 
 
 \section{Threats to validity}
 \label{sec:threats}
 
-As any other empirical study, this one presents several threats to its validity, external and internal, that have to be considered and taken into account. In order to allow others to study it in detail, replicate it or even build on top of it, we have set up a replication package including data sources, intermediate data and scripts that can be obtained at the following URL: \gema{Incluir la URL en la que pondre todos los datos y scripts utilizados para los datos.}
+As any other empirical study, this one presents several threats to its validity, external and internal, that have to be considered and taken into account. In order to allow others to study it in detail, replicate it or even build on top of it, we have set up a replication package\footnote{\url{http://gsyc.urjc.es/~grex/repro/2016-msr-prevcommit}} including data sources, intermediate data and scripts that can be obtained.
 
 
 %The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
@@ -719,10 +730,10 @@ The internal threats related to the researchers that have conducted the study ar
 
 \begin{itemize}
   \item We have not considered those tickets where the two researchers showed discordance. 
-  \begin{enumerate}
-    \item Should they discuss after their analysis to reach a better classification?, Should the tool provide this?
-    \item Does the Bug report only the same ticket classified as Bug report for all the researchers?
-  \end{enumerate}
+%  \begin{enumerate}
+%    \item Should they discuss after their analysis to reach a better classification?, Should the tool provide this?
+%    \item Does the Bug report only the same ticket classified as Bug report for all the researchers?
+%  \end{enumerate}
     \item We have not taken into account errors that have been classified into \textit{Undecided}, and probably we have lost some \emph{actual} bug reports.
     \item There could be some lax criteria involving the subjective opinion of the researchers.
     \item Although the researchers are experienced programmers, they are not experts in the  OpenStack project, and their inexperience may have influenced the results of the analysis.
@@ -745,12 +756,15 @@ The external threats, related to the case of the project, are following:
 
 The empirical experiment carried out in OpenStack supported that the current premise assumed does not hold for a large fraction of the analyzed bugs, because around the 40\% of the previous commits were not the cause of the bug.
 
-With our results we can identify which ones are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improving their methodology.
+With our methodology we have identifie which are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improving their methodology.
 %How to plan to apply the knowledge in a way that can benefit software engineers.
 %What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
 
-A final field in our future work concerns the full automation of the methodology could developer an automatic classifier base on the idea that not all the previous commit injected the bug. Another interesting investigation could perform the same empirical study in a project with a community less active, to can prove if our idea is fulfill in other projects.\grex{Puedes aclarar esto, porfa? En castellano si quieres}
-\gema{Si, la idea es realizar el mismo estudio pero con otro projecto que no sea OpenStack, porque en realidad OpenStack esta evolucionando continuamente. Y para poder demostrar que en realidad la idea se cumple en todos los projectos, deberiamos analizar un projecto que sea mas 'estable' y en el que la API no se este cambiando continuamente }
+
+A final field of future work could be concerned with the full automation of the methodology, developing  an automatic classifier based on the idea that not all the previous commits inject the bug. \grex{mejorar este parrafo.}
+
+Another interesting investigation could perform the same empirical study on a project with a less active community, to prove if our idea is fulfill in other projects. So, for projects that do not evolve as rapidly as OpenStack, e.g., those with a more stable API, could offer completely different results even if applying the same analysis methodology used in this paper.
+
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
