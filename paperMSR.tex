@@ -255,7 +255,7 @@ Figure~\ref{fig:1} shows a clear example of what we understand as the cause of t
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[height=2in, width=7in]{responsible.png}
+\includegraphics[height=2in,width=7.2in]{responsible.png}
 \caption{Example of a change in which the bug was introduced in the previous commit. More recent versions of the code are on the left.}
 \label{fig:1}       % Give a unique label
 \end{figure*}
@@ -282,7 +282,7 @@ On the other hand, Figure~\ref{fig:3} shows a clear example of a case where the 
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[height=2in, width=7in]{noResponsible.png}
+\includegraphics[height=2in,width=7.2in]{noResponsible.png}
 \caption{Example of a change where the previous commit, 0dc91bed, did not insert the bug. More recent versions of the code are on the left.}
 \label{fig:3}       % Give a unique label
 \end{figure*}
@@ -321,27 +321,22 @@ The remainder of this paper is structured as follows. Next, we present the curre
 \section{Related Work}
 \label{sec:related}
 
-Bug-introducing code changes has been a \emph{hot} topic in the mining software repositories research community for over a decade. The most used algorithm to identify bug-introducing code changes automatically was proposed by Sliwerski et al.~\cite{sliwerski2005changes}, which is an improvement to previous approaches~\cite{vcubranic2003hipikat,fischer2003analyzing,fischer2003populating}. Currently, it is a well-known algorithm called SZZ, which is based on text differences to discover modified, added and deleted lines between the bug-fix and its previous version. The SZZ algorithm uses the CVS \texttt{annotate} command\footnote{Other versioning systems provide similar functionality to CVS \texttt{annotate}; for instance, git offers \texttt{blame}.} to identify the last commit that touched these lines.
+Bug-introducing code changes has been a \emph{hot} topic in the mining software repositories research community for over a decade. The most used algorithm to automatically identify bug-introducing code changes has been proposed by Sliwerski et al.~\cite{sliwerski2005changes}, which is an improvement to previous approaches~\cite{vcubranic2003hipikat,fischer2003analyzing,fischer2003populating}. Currently, it is a well-known algorithm, called SZZ, based on text differences to discover modified, added and deleted lines between the bug-fix and its previous version. The SZZ algorithm uses the CVS \texttt{annotate} command\footnote{Other versioning systems provide similar functionality to CVS \texttt{annotate}; for instance, git offers \texttt{blame}.} to identify the last commit that touched these lines.
 
-There are several research articles that propose improvements to the SZZ algorithm. Kim et al.~\cite{kim2006automatic} use annotation graphs instead of CVS annotation to locate, in the previous versions, the lines affected by modification and deletion. Also, they avoid some false positives by not considering blank spaces, changes in the format or changes in the comments. Williams et al. revisited the SZZ algorithm to track bug-inducing changes and identify types of changes~\cite{williams2008szz}. 
+There are several research articles that suggest improvements to the SZZ algorithm. Kim et al.~\cite{kim2006automatic} use annotation graphs instead of CVS annotation to locate, in the previous versions, the lines affected by modification and deletion. Also, they avoid some false positives by not considering blank spaces, changes in the format or changes in the comments. Williams et al. have revisited the SZZ algorithm to track bug-inducing changes and identify types of changes~\cite{williams2008szz}. 
 
 
 The SZZ algorithm (and its \emph{successors}) have had a considerable impact in the research community. Noteworthy is the fact that the paper with original the SZZ algorithm~\cite{sliwerski2005changes} has been cited, according to Google Scholar, 463 times as of January 
-2016. An enhanced version of the SZZ algorithm~\cite{kim2006automatic} counts with 123 citations. Hence, there is a myriad of articles that use SZZ on an ample number of scenarios. Without trying to be exhaustive, we offer several examples. So, Yang et al. applied SZZ to find what kind of bug-inducing changes are likely to become a great threat after being marked as bug-fix changes~\cite{yangbug}. Zimmermann et al. use it for predicting bugs in large software systems~\cite{zimmermann2007predicting}. Kim et al. showed how to classify file changes as buggy or clean using change information features and source code terms~\cite{kim2008classifying}. Kamei et al. apply it to validate effort-aware bug-prediction models~\cite{kamei2010revisiting}. Eyolfson use it to study if time of the day and developer experience affect the probability of a commit to introduce a bug~\cite{eyolfson2011time}. Izquierdo et al. use the SZZ algorithm to see if developers are fixing their own bugs~\cite{izquierdo2011developers}. Yin et al. use it to find out how many fixes to bugs introduce new bugs~\cite{yin2011fixes}. Tantithamthavorn et al. employ it to quickly identify the location of a bug~\cite{tantithamthavorn2013mining}. Fejzer et al. us it to support code review~\cite{fejzer2015supporting}. Asaduzzaman et al. apply the SZZ algorithm on Android to study maintenance implications~\cite{asaduzzaman2012bug}.
+2016. An enhanced version of the SZZ algorithm~\cite{kim2006automatic} counts with 123 citations. Hence, there is a myriad of articles that use SZZ on an ample number of scenarios. Without trying to be exhaustive, we offer several examples. So, Yang et al. apply SZZ to find what kind of bug-inducing changes are likely to become a great threat after being marked as bug-fix changes~\cite{yangbug}. Zimmermann et al. use it for predicting bugs in large software systems~\cite{zimmermann2007predicting}. Kim et al. show how to classify file changes as buggy or clean using change information features and source code terms~\cite{kim2008classifying}. Kamei et al. apply it to validate effort-aware bug-prediction models~\cite{kamei2010revisiting}. Eyolfson use it to study if time of the day and developer experience affect the probability of a commit to introduce a bug~\cite{eyolfson2011time}. Izquierdo et al. use the SZZ algorithm to see if developers are fixing their own bugs~\cite{izquierdo2011developers}. Yin et al. use SZZ to find how many fixes to bugs introduce new bugs~\cite{yin2011fixes}. Tantithamthavorn et al. employ it to quickly identify the location of a bug~\cite{tantithamthavorn2013mining}. Fejzer et al. use it to support code review~\cite{fejzer2015supporting}. Asaduzzaman et al. apply the SZZ algorithm on Android to study its maintainability~\cite{asaduzzaman2012bug}.
 
 %Bachmann et al. on the missing link between comments in change logs and bug fixes ~\cite{bachmann2010missing}
 %Wu et al. propose a tool solution~\cite{wu2011relink}
 
 
-
-The question of whether a bug report is really a bug or not has been widely studied in the 
-mining software repositories research literature in the last years. So, Pan et al. classify the different types of bug-fix patterns that most commonly exist~\cite{pan2009toward}. Antoniol et al. have use a text-based approach to classify bug reports into corrective maintenance and other kinds of activities~\cite{antoniol2008bug}. Herzig et al. have done a manual examination of thousands of bug reports and have found that around a third of them are misclassified, in the sens that they were not a bug report but a feature request, internal refactoring or update to documentation~\cite{herzig2013s}. They show that almost 40\% of the files marked as defective did not have a bug, and suggest that this missclassification introduces bias in bug prediction models and tools. 
-
-
 %\grex{maybe talk about my paper with dmg and ahmed, where bugs could be found elsewhere~\cite{german2009change}. There the talk is precisely about those bugs whose origina are elsewhere. Title of the paper: \emph{Change impact graphs: Determining the impact of prior codechanges}}\gema{me parece bien, no lo he leido pero nadie mejor que tu para resumirlo en esta seccion}
 
 
-Prechelt and Pepper offer a good overview of what they call defect-insertion circumstance analysis. They point out that one of the obstacles in the way of a reliable analysis are the ``additional changes between defect insertion time and defect correction time that happen to happen at subsequently defect-corrected locations''~\cite{prechelt2014software}. Some methods that consider sources of information other than the previous commit already exist. So, German et al.~\cite{german2009change} 
+Prechelt and Pepper offer a good overview of the limitations of bug-introducing code changes when adopted by practitioners. They point out that one of the obstacles in the way of a reliable analysis are the ``additional changes between defect insertion time and defect correction time that happen to happen at subsequently defect-corrected locations''~\cite{prechelt2014software}. Some methods that consider sources of information other than the previous commit already exist. So, German et al.~\cite{german2009change} 
 point out that software is in constant change, and that changes performed may have impact across the whole system and may lead to the manifestation of bugs in unchanged parts. In this case, a bug emerges in a different location from the source of the bug, which is a change to a function somewhere else in the source code base. 
 
 Sinha et al. present another technique to identify the origins of a bug in~\cite{sinha2010buginnings}. Their technique is not text-based technique, as the SZZ algorithm, as the authors analyze the effects of bug-fix changes on program dependencies. So, taking into account the semantics of the source code they achieved higher accuracy in identifying the origins of a bug.
@@ -352,6 +347,10 @@ The two approaches have some methodological patterns in common:
   \item They find the differences between the bug-fix version and the previous version of the file to recognize those changes done by the bug-fix commit. 
   \item They look back in the code revision history until they identify which version touched the lines affected in the bug-fix for the last time.
 \end{enumerate}
+
+
+On the other hand, the question of whether a bug report is really a bug or not has been widely studied in the 
+mining software repositories research literature in the last years. So, Pan et al. classify the different types of bug-fix patterns that most commonly exist~\cite{pan2009toward}. Antoniol et al. have use a text-based approach to classify bug reports into corrective maintenance and other kinds of activities~\cite{antoniol2008bug}. Herzig et al. have done a manual examination of thousands of bug reports and have found that around a third of them are misclassified, in the sense that they were not a bug report but a feature request, an internal refactoring or an update to documentation~\cite{herzig2013s}. They show that almost 40\% of the files marked as defective did not have a bug, and suggest that this missclassification introduces bias in bug prediction models and tools. 
 
 
 %\grex{Quizas mirar si hay mas articulos en esta linea. No es muy importante esto.}
@@ -469,9 +468,9 @@ Finally we had to discard some \emph{noise} present in our results. This happene
 \section{Evaluation}
 \label{sec:evaluation}
 
-We have validated our methodology analyzing tickets from OpenStack. OpenStack is a cloud computing platform with a huge developing community (more than 5,000 developers) and significant industrial support from several major companies such as Red Hat, Intel, IBM, HP, etc. OpenStack was particularly of interest because of its continuously evolving due to its very active community. Currently it has more than 233,000 commits with more than 2 million lines of code\footnote{\url{http://activity.openstack.org/dash/browser/}}. All its history is saved and available in a version control system, as well as its issue tracking system (Launchpad\footnote{\url{https://launchpad.net/openstack}}) and the source code review system (Gerrit\footnote{\url{https://review.openstack.org/}}).
+We have validated our methodology analyzing tickets from OpenStack. OpenStack is a cloud computing platform with a huge developing community (more than 5,000 developers) and significant industrial support from several major companies such as Red Hat, Intel, IBM, HP, etc. OpenStack was particularly of interest because it is continuously evolving due to its very active community. Currently it has more than 233,000 commits with more than 2 million lines of code\footnote{\url{http://activity.openstack.org/dash/browser/}}. All its history is saved and available in a version control system\footnote{\url{https://wiki.openstack.org/wiki/Getting_The_Code}}, as well as its issue tracking system (Launchpad\footnote{\url{https://launchpad.net/openstack}}) and the source code review system (Gerrit\footnote{\url{https://review.openstack.org/}}).
 
-OpenStack is composed by 9 projects, but we only focused on the main four of them: Nova, Cinder, Neutron and Horizon. As can be seen from Table~\ref{tab:OpenStack}, these projects have been very active during their entire history, and in the last year.
+OpenStack is composed of 9 projects, but we only focused on the main four: Nova, Cinder, Neutron and Horizon. As can be seen in Table~\ref{tab:OpenStack}, these projects have been very active during their entire history, and in the last year.
 
 \begin{table}[htb]
 \centering
@@ -506,7 +505,7 @@ A total of 459 different tickets from the Launchpad of the four main projects in
 \subsection{Fist Stage}
 \label{sec:resultsFS}
 
-We classify a total of 459 tickets using the tool, resulting in 917 reviews\footnote{One review was discarded as it was left empty.}. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits. This process requires manual inspection by researchers. In the mean classifying a ticket takes between 5 and 10 minutes per ticket, although the amount of time decreases with experience as could be expected. 
+We classify a total of 459 tickets using the tool, resulting in 917 reviews\footnote{One review was discarded as it was left empty.}. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits. This process requires manual inspection by researchers. In the mean, classifying a ticket takes between 5 and 10 minutes, although the amount of time decreases with experience as could be expected. 
 
 %\gema{[...] se podria medir en github en tiempo que les ha llevado a cada uno entre ticket y ticket, en aquellos casos que se puedan medir y hacer una media, Que te parece?} \grex{No es muy importante, pero quedaria bien}
 
@@ -531,8 +530,8 @@ Agree & (209) 72\% & (74) 25\% & (9) ~3\% & 292 (100\%) \\
 %\grex{Tiene sentido añadir porcentajes, como he hecho a la columna de Total?}
 %26-56 hours
 
-Table~\ref{tab:2} shows the classification percentages for each researcher after analyzing the tickets, and the number of tickets classified by two different researchers in the same group. %Obtaining that the researchers R1 and R2 had a similar data in their results, whereas research R2 got results significantly different with a higher number of tickets classified as Bug Report.
-As a result, researchers identified 292 tickets in the same group, that is, their results matched in over 70\% of the cases. Of those, 209 tickets had been classified in the \emph{Bug report} group, 74 in the \emph{Not Bug Report} group and 9 tickets classified in the \emph{Undecided} group.
+Table~\ref{tab:2} shows the classification percentages of the analized tickets for each researcher, and the number of tickets classified into the same group by two different researchers. %Obtaining that the researchers R1 and R2 had a similar data in their results, whereas research R2 got results significantly different with a higher number of tickets classified as Bug Report.
+As a result, researchers identified 292 tickets in the same group, that is, their results matched in over 70\% of the cases. Of those, 209 tickets had been classified in the \emph{Bug report} group, 74 in the \emph{Not Bug Report} group, and 9 tickets classified in the \emph{Undecided} group.
 
 We also measured the concordance in the classification of each developer according to the project analyzed (see table~\ref{tab:3}). Values obtained by the three researchers are very similar, in general around a 70\%. The concordance values were always above 60\%. 
 
@@ -552,7 +551,7 @@ R2 -- R3   & (41) 66\% & (10) 100\% & -         & -        &  (51) 71\% \\
 \end{table*}
 
 
-After this, we can answer the first research question because at this moment we have all the data necessary and all the knowledge to can distinguish bug reports from others reports.
+%After this, we can answer the first research question because at this moment we have all the data necessary and all the knowledge to can distinguish bug reports from others reports.
 
 \vspace{0.2cm}
 \fbox{\begin{minipage}{25em}
@@ -564,7 +563,7 @@ After this, we can answer the first research question because at this moment we 
 \subsection{Second Stage}
 \label{sec:resultsSS}
 
-In this stage we analyzed the 189 tickets of the classified as \textit{Bug Reports}, the possible outcome of the analysis was one of the following three options:
+In this stage we have analyzed the 189 tickets\footnote{20 tickets have not been analyzed due to time constraints.} of the classified as \textit{Bug Reports}, the possible outcome of the analysis was one of the following three options:
 
 \begin{itemize}
   \item Cause
@@ -572,7 +571,7 @@ In this stage we analyzed the 189 tickets of the classified as \textit{Bug Repor
   \item Undecided
 \end{itemize}
 
-This analysis takes into account that the bug could span many lines that may belong to several previous commits, but in fact, not all of them could had caused the bug. It may happen that in the previous commit, lines have been copied from further previous commits, comments may have been modified or blank spaces/lines have been introduced. Hence, the cause could be found in a single previous commit, in many or even in none. 
+This analysis takes into account that the bug could span many lines that may belong to several previous commits, but in fact, not all of them may have caused the bug. It may happen that in the previous commit lines may have been copied from further previous commits, comments may have been modified, or blank spaces/lines may have been introduced. Hence, the cause could be found in a single previous commit, in many or even in none. 
 
 Figure~\ref{fig:manyprevious} contains a real example of a previous commit where more than one commit has been identified. In this case, we have two possible commits: \textit{e7be0a988} and \textit{e5296c1da}. Previous commit \textit{e7be0a988} did not cause the bug, because the modification affects only the version number of the software. It is previous commit \textit{e5296c1da} the one that caused the bug, because it introduced an incorrect \texttt{break} line. %\grex{Todavia no esta del todo claro... yo creo que esto merece un ejemplo - incluso con codigo real, tal y como hemos hecho al principio del articulo. Ademas, nos lo podemos permitir; tenemos espacio.}\gema{perfecto, ahora busco un ejemplo y lo anado abajo}
 
@@ -581,20 +580,23 @@ Figure~\ref{fig:manyprevious} contains a real example of a previous commit where
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[height=4.1cm]{manyprevious.png}
-\caption{Example of previous commit where more than one commit has been identified. On the left, the file after the bug-fixing commit. Previous commit \textit{e5296c1da} (middle) is the cause of the bug in line 2422 with the presence of an incorrect \texttt{break} statement. 
-Previous commits \textit{e7be0a988} (right) has also been identified; however, as it just changes the version number (line 218), it can be classified as not causing the bug.}
+\includegraphics[height=4.9cm,width=7.2in]{manyprevious.png}
+\caption{Example of previous commit where more than one commit has been identified. On the left in subfigure (1), the file after the bug-fixing commit. Previous commit \textit{e5296c1da} (subfigure (2)) is the cause of the bug in line 2422 with the presence of an incorrect \texttt{break} statement. 
+Previous commits \textit{e7be0a988} (subfigure (3)) has also been identified; however, as it just changes the version number (line 218), it can be classified as not causing the bug.}
 \label{fig:manyprevious}       % Give a unique label
 \end{figure*}
 
+We have identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis. Then, we analyzed the bug reports together with their previous commits discarding the cases where the previous commit was a false positive (\emph{noise}) such as blank lines, changes in comments or even a change in the version of the file. So, in total we have analyzed 308 previous commits.
 
-We identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis. Then, we analyzed the bug reports together with their previous commits discarding the cases where the previous commit was a false positive (blank lines, changes in comments or even a change in the version of the file). So, in total we have analyzed 308 previous commits.
+As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits, 152 have been considered to be the cause of the bug, whereas 114 have been identified as not being the cause.
 
-As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits, 152 have been considered to be the cause of the bug, whereas 114 were identified as not being the cause. We were unable to decide in 42 cases or due to our limited knowledge about the code. The figure~\ref{fig:added} shows the change done in the fix bug commit, on the left the lines before the fix commit and on the right the file after the fix commit with only addition of lines. In this case, we have not been able to know which previous commit could be the one that forgot to add those lines, so we classified it as \textit{Undecided}. Figure~\ref{fig:unknow} offers an example of a different situation, where the researchers could not classify the bug due to not having sufficient knowledge of the change, the context and the project. We discarded 40 more because they were false positives (\emph{noise}) such as blank lines, changes in comments or even a change in the version of the file.
+We have been unable to decide in 42 cases. Figure~8 %\ref{fig:added}
+ provides an example of such a situation; the file content after the bug fix can be seen on the left in subfigure (1) and the file before the fix commit on the right in subfigure (2); as it can be observed, the only difference is lines that have been added. Figure~9 %\ref{fig:unknow}
+ offers an example of a different situation, where the researchers have not been able to classify the bug due to not having sufficient knowledge of the change, the context and the project. In both cases, we have not been able to know which previous commit could be the cause of the bug, so we classified them as \textit{Undecided}.
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[height=3.8cm]{addedlines.png}
+\includegraphics[height=4.7cm, width=13cm]{addedlines.png}
 \label{fig:added}       % Give a unique label
 \caption{Example of scenario where the bug fix is composed only of lines added. The fix bug commit with lines added in green can be seen on the left (subfigure (1)), and the file as it was before the fix bug commit on the right (subfigure (2)).}
 %52919
@@ -602,7 +604,7 @@ As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits,
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[height=7.3cm]{unknowleadge.png}
+\includegraphics[height=7.8cm]{unknowleadge.png}
 \label{fig:unknow}       % Give a unique label
 \caption{Example of previous commit where we have been unable to decide which line contains the bug. The left code snippet contains the code after the bug fix; the right code snippet shows the code before the bug fix.}
 \end{figure*}
@@ -625,7 +627,7 @@ As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits,
 \end{table}
 
 
-If we attend to how many previous commits each of the 189 bug reports analyzed had, we see that 131 only had a previous commit as the example \ref{fig:3}, whereas 58 had more than one previous commit as the one in the example ~\ref{fig:manyprevious}. In Table~\ref{tab:secondStage}, from the 131 unique previous commits, 65 were the cause of the bug, and 30 not caused the failure. For the 58 bugs that had more than one previous commit, a total number of 179 previous commits were identified; of them 86 were the cause of the bug, while 82 were not. 
+If we attend to how many previous commits each of the 189 bug reports analyzed had, we see that 131 only had a previous commit as in Figure~\ref{fig:3}, whereas 58 had more than one previous commit as the one in Figure~\ref{fig:manyprevious}. In Table~\ref{tab:secondStage}, from the 131 unique previous commits, 65 were the cause of the bug, while 30 did not cause the failure. For the 58 bugs that had more than one previous commit, a total number of 179 previous commits were identified; of them 86 were the cause of the bug, while 82 were not. 
 %\grex{No me queda claro que quieres decir con mas de un identificador previo}\gema{supongo que despues de ver el ejemplo se entienda mejor, identificador previo se refiere a que  al arreglar el error se shan tocado varias lineas que han sido anadidas o modificadas en commit diferentes, por tanto tenemos mas de un commit diferente, aqui use identificador en vez de commit y puede ser un error}
 
 %\grex{Para los 58 bugs que tenian mas de un identificador previo hay 179 commits. Bien. Dices que 86 causaron el bug, 82 no y en 11 no se ha podido determinar. Lo que no veo es por que no agruampos estos datos segun los 58 bugs}\gema{Esos datos estan agrupados en la tabla 7, el fin de esta tabla era mostrar que cuando hay un solo comit previo el numero de no causantes del error es menor que cuando hay mas de un commit previo}
@@ -665,7 +667,7 @@ We also studied the distribution of the number of previous commits for each bug.
 \begin{tabular}{lccccc}
 \toprule[0.3mm]
   & \multicolumn{1}{c}{One previous} & \multicolumn{1}{c}{two previous} & \multicolumn{1}{c}{three previous} & \multicolumn{1}{c}{four previous} & \multicolumn{1}{c}{+five previous}\\
-  & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit}& \multicolumn{1}{c}{commit}& \multicolumn{1}{c}{commit}\\\hline
+  & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commits} & \multicolumn{1}{c}{commits}& \multicolumn{1}{c}{commits}& \multicolumn{1}{c}{commits}\\\hline
 \raisebox{1ex}{Neutron} & 11 & 3 & 2 & 2 & 0 \\[0ex]
 \raisebox{1ex}{Horizon} & 39 & 8 & 3 & 2 & 4 \\[0ex]
 \raisebox{1ex}{Nova} & 44 & 5 & 2 & 4 & 4 \\[0ex]
@@ -689,7 +691,7 @@ Results are given in Table~\ref{tab:secondStage3}; in 8 bug reports all the prev
 \begin{tabular}{lccccc}
 \toprule[0.3mm]
    & \multicolumn{1}{c}{two previous} & \multicolumn{1}{c}{three previous} & \multicolumn{1}{c}{four previous} & \multicolumn{1}{c}{+five previous} & \multicolumn{1}{c}{Total}\\
-  & \multicolumn{1}{c}{commit} & \multicolumn{1}{c}{commit}& \multicolumn{1}{c}{commit}& \multicolumn{1}{c}{commit}\\\hline
+  & \multicolumn{1}{c}{commits} & \multicolumn{1}{c}{commits}& \multicolumn{1}{c}{commits}& \multicolumn{1}{c}{commits}\\\hline
 \raisebox{1ex}{All are the cause}          & 4 & 3 & 0 & 1 & 8\\[0ex]
 \raisebox{1ex}{At least one is the cause} & 9 & 7 & 5 & 9 & 30\\[0ex]
 \raisebox{1ex}{None is the cause}         & 4 & 2 & 4 & 1 & 11\\[0ex]
