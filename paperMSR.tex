@@ -573,13 +573,17 @@ The possible outcome of the analysis was one of the following three options:
   \item Undecided
 \end{itemize}
 
-This analysis takes into account that the bug could have been inserted in many lines that belong to many different previous commits, but in fact, not all of them could cause the bug. It may happen that in the previous commit, lines have been copied from further previous commits, comments may have been modified or blank spaces/lines have been introduced. Thus, the cause could be found in a single previous commit, in many or even in none. In the \ref{fig:previous} we see that the previous commits are more than one, in this case two \textit{e7be0a988} and \textit{e5296c1da}. The previous commit \textit{e7be0a988} didn't cause the bug because it's a line to know the version of the file. The previous commit \textit{e5296c1da} caused the bug because it inserted a incorrect \textit{break} line. \grex{Todavia no esta del todo claro... yo creo que esto merece un ejemplo - incluso con codigo real, tal y como hemos hecho al principio del articulo. Ademas, nos lo podemos permitir; tenemos espacio.}\gema{perfecto, ahora busco un ejemplo y lo anado abajo}
+This analysis takes into account that the bug could span many lines that may belong to several previous commits, but in fact, not all of them could had caused the bug. It may happen that in the previous commit, lines have been copied from further previous commits, comments may have been modified or blank spaces/lines have been introduced. Hence, the cause could be found in a single previous commit, in many or even in none. 
+
+Figure~\ref{fig:manyprevious} contains a real example of a previous commit where more than one commit has been identified. In this case, we have two possible commits: \textit{e7be0a988} and \textit{e5296c1da}. Previous commit \textit{e7be0a988} did not cause the bug, because the modification affects only the version number of the software. It is previous commit \textit{e5296c1da} the one that caused the bug, because it introduced an incorrect \texttt{break} line. %\grex{Todavia no esta del todo claro... yo creo que esto merece un ejemplo - incluso con codigo real, tal y como hemos hecho al principio del articulo. Ademas, nos lo podemos permitir; tenemos espacio.}\gema{perfecto, ahora busco un ejemplo y lo anado abajo}
+
+\grex{No estan mal las descripciones superiores en la figura~\ref{fig:manyprevious} que dice ``After Fix Bug'' y ``Fix-inducing (Before fix bug)''?}
 
 \begin{figure}[ht]
 \centering
 \includegraphics[height=2.5cm]{manyprevious.png}
-\caption{Previous commits: \textit{e7be0a988}, \textit{e5296c1da} }
-\label{fig:previous}       % Give a unique label
+\caption{Previous commits: \textit{e7be0a988} (left) and \textit{e5296c1da} (right).}
+\label{fig:manyprevious}       % Give a unique label
 \end{figure}
 
 
