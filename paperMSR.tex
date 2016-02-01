@@ -327,7 +327,7 @@ There are several research articles that propose improvements to the SZZ algorit
 
 
 The SZZ algorithm (and its \emph{successors}) have had a considerable impact in the research community. Noteworthy is the fact that the paper with original the SZZ algorithm~\cite{sliwerski2005changes} has been cited, according to Google Scholar, 463 times as of January 
-2016. An enhanced version of the SZZ algorithm~\cite{kim2006automatic} counts with 123 citations. Hence, there is a myriad of articles that propose its use for a large number of uses. For instance, Yang et al. applied SZZ to find what kind of bug-inducing changes are likely to become a great threat after being marked as bug-fix changes~\cite{yangbug}. Kim et al. showed how to classify file changes as buggy or clean using change information features and source code terms~\cite{kim2008classifying}. Eyolfson use it to study if time of the day and developer experience affect the probability of a commit to introduce a bug~\cite{eyolfson2011time}. Izquierdo et al. use the SZZ algorithm to see if developers are fixing their own bugs~\cite{izquierdo2011developers}. Yin et al. use it to find out how many fixes to bugs introduce new bugs~\cite{yin2011fixes}. Fejzer et al. us it to support code review~\cite{fejzer2015supporting}. Asaduzzaman et al. apply the SZZ algorithm on Android to study maintenance implications~\cite{asaduzzaman2012bug}.
+2016. An enhanced version of the SZZ algorithm~\cite{kim2006automatic} counts with 123 citations. Hence, there is a myriad of articles that use SZZ on an ample number of scenarios. Without trying to be exhaustive, we offer several examples. So, Yang et al. applied SZZ to find what kind of bug-inducing changes are likely to become a great threat after being marked as bug-fix changes~\cite{yangbug}. Zimmermann et al. use it for predicting bugs in large software systems~\cite{zimmermann2007predicting}. Kim et al. showed how to classify file changes as buggy or clean using change information features and source code terms~\cite{kim2008classifying}. Kamei et al. apply it to validate effort-aware bug-prediction models~\cite{kamei2010revisiting}. Eyolfson use it to study if time of the day and developer experience affect the probability of a commit to introduce a bug~\cite{eyolfson2011time}. Izquierdo et al. use the SZZ algorithm to see if developers are fixing their own bugs~\cite{izquierdo2011developers}. Yin et al. use it to find out how many fixes to bugs introduce new bugs~\cite{yin2011fixes}. Tantithamthavorn et al. employ it to quickly identify the location of a bug~\cite{tantithamthavorn2013mining}. Fejzer et al. us it to support code review~\cite{fejzer2015supporting}. Asaduzzaman et al. apply the SZZ algorithm on Android to study maintenance implications~\cite{asaduzzaman2012bug}.
 
 %Bachmann et al. on the missing link between comments in change logs and bug fixes ~\cite{bachmann2010missing}
 %Wu et al. propose a tool solution~\cite{wu2011relink}
@@ -738,7 +738,7 @@ But already the identification of an issue as a bug report is a process that is 
 
 %\gema{Algunos de los problemas que nos hemos encontrado durante el analisis y que podrian ser resueltos de otra forma diferente a la nuestra y quizas puede que varie algo los resultados no lo se}
 
-In any case, our research shows evidence that assuming that the previous commit is where the cause of a bug can be found does not hold for a not insignificant percentage of bugs. \grex{Tengo que elaborar mas esto, que es el punto mas impactante del articulo.}
+In any case, our research shows evidence that assuming that the previous commit is where the cause of a bug can be found does not hold for a not insignificant percentage of bugs. 
 
 
 \section{Threats to validity}
@@ -785,8 +785,7 @@ With our methodology we have identified which are real changes that introduced t
 %What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
 
 
-A final field of future work could be concerned with the full automation of the methodology, developing  an automatic classifier based on the idea that not all the previous commits inject the bug. \grex{mejorar este parrafo.}
-
+A final field of future work could be concerned with the full automation of the methodology presented in this paper, developing an automatic classifier. %\grex{mejorar este parrafo.}
 Another interesting investigation could perform the same empirical study on a project with a less active community, to prove if our idea is fulfill in other projects. So, for projects that do not evolve as rapidly as OpenStack, e.g., those with a more stable API, could offer completely different results even if applying the same analysis methodology used in this paper.
 
 
