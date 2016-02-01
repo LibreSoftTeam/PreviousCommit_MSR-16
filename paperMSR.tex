@@ -425,16 +425,21 @@ Sometimes we were unable to answer all the questions due to having insufficient 
 
 In this second part, our work was focused on analyzing the previous commit exclusively for those tickets classified in the \textit{Bug Report} group. Therefore we had to locate the line that contained the bug, inquire the reason of the software failure, and gathering additional information on the context of the project.
 
-For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added, inserted or modified in the previous commit. We refer to \emph{parent} commit as the last commit that was edited to produce the subsequent state of the file. We do this process to be sure that we are looking the correct change, because some times although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, it is a false positive where the previous commit did not cause the bug. \grex{Gema, puedes aclarar este parrafo? Que es el "parent" commit? Es lo mismo que el previous commit? Es la primera vez que hablamos de el. Quizas sea buena idea que lo reformules en castellano, porque ahora mismo es criptico}\gema{el parent commit es el ultimo commit que se hizo en el fichero antes de que se realizase el que arreglo el error, por tanto lo que hago usar diff y blame en el commit parent y en el commit que arregla el error para saber que lineas se han cambiado y que commit las cambio), y despues hago lo mismo con el commit previo y el commit parent del previo para saber que en realidad en ese momento se produjo el cambio. En el gerrit nos dan esa info como se puede ver en la figura~\ref{fig:parent}}
+For that, we had to analyze the lines involved in the bug fix and in the \emph{parent} commit of the bug fix commit, being sure that the lines were added, inserted or modified in the previous commit. We refer to \emph{parent} commit as the commit that modified any line of code in the file before the fix-bug commit, in contrast to the \emph{previous} commit where the modified lines were the same than in the fix-bug commit. It should be noted that those lines modified in the parent commit do not have to be the ones that have been modified in the bug-fix.
+Figure~\ref{fig:parent} contains a snapshot of the information provided by Gerrit, where the link to the parent commit(s) can be found.
 
-\grex{Sigue sin quedarme clara cual es la relacion entre el parent commit y el previous commit (mira que yo pensaba que eran lo mismo)... podriamos dar una definicion?}  
-\gema{EL parent commit es el ultimo commit que toco alguna linea del fichero antes de que se realizase el fix bug commit, pero las lineas que toco el commit parent no tienen porque contener ningun bug. Mientras que el commit previo es la ultima modificacion que se hizo en aquellas lineas que ha tocado el bug-fix.Estaría bien dar una definicion por si no se ve claro}
+We do this process to be sure that we are looking the correct change, because sometimes although the commit added many lines, if you look the code before the commit you can check that some of the lines added was there, and in that case, it is a false positive where the previous commit did not cause the bug. 
+
+%\grex{Gema, puedes aclarar este parrafo? Que es el "parent" commit? Es lo mismo que el previous commit? Es la primera vez que hablamos de el. Quizas sea buena idea que lo reformules en castellano, porque ahora mismo es criptico}\gema{el parent commit es el ultimo commit que se hizo en el fichero antes de que se realizase el que arreglo el error, por tanto lo que hago usar diff y blame en el commit parent y en el commit que arregla el error para saber que lineas se han cambiado y que commit las cambio), y despues hago lo mismo con el commit previo y el commit parent del previo para saber que en realidad en ese momento se produjo el cambio. En el gerrit nos dan esa info como se puede ver en la figura}
+
+%\grex{Sigue sin quedarme clara cual es la relacion entre el parent commit y el previous commit (mira que yo pensaba que eran lo mismo)... podriamos dar una definicion?}  
+%\gema{EL parent commit es el ultimo commit que toco alguna linea del fichero antes de que se realizase el fix bug commit, pero las lineas que toco el commit parent no tienen porque contener ningun bug. Mientras que el commit previo es la ultima modificacion que se hizo en aquellas lineas que ha tocado el bug-fix.Estaría bien dar una definicion por si no se ve claro}
 
 \begin{figure}[ht]
 \centering
 \includegraphics[height=2cm]{parent.png}
 \label{fig:parent}       % Give a unique label
-\caption{Information about the bug }
+\caption{Information about the bug offered by Gerrit.}
 \end{figure}
 
 The analysis was done manually. We used \textit{git blame} to see the previous commit for each line of the involved file. Also, we used \textit{diff} to see the differences between the two files, in our case as the file is going to be the same, between the file in two different moments in the control version system.
@@ -726,10 +731,10 @@ The internal threats related to the researchers that have conducted the study ar
 
 \begin{itemize}
   \item We have not considered those tickets where the two researchers showed discordance. 
-  \begin{enumerate}
-    \item Should they discuss after their analysis to reach a better classification?, Should the tool provide this?
-    \item Does the Bug report only the same ticket classified as Bug report for all the researchers?
-  \end{enumerate}
+%  \begin{enumerate}
+%    \item Should they discuss after their analysis to reach a better classification?, Should the tool provide this?
+%    \item Does the Bug report only the same ticket classified as Bug report for all the researchers?
+%  \end{enumerate}
     \item We have not taken into account errors that have been classified into \textit{Undecided}, and probably we have lost some \emph{actual} bug reports.
     \item There could be some lax criteria involving the subjective opinion of the researchers.
     \item Although the researchers are experienced programmers, they are not experts in the  OpenStack project, and their inexperience may have influenced the results of the analysis.
@@ -752,7 +757,7 @@ The external threats, related to the case of the project, are following:
 
 The empirical experiment carried out in OpenStack supported that the current premise assumed does not hold for a large fraction of the analyzed bugs, because around the 40\% of the previous commits were not the cause of the bug.
 
-With our results we can identify which ones are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improving their methodology.
+With our methodology we have identifie which are real changes that introduced the bug, and this could be useful to improve the accuracy of those tools developed to prevent bugs. Also, the software developers stand to benefit from identifying where the bug was inserted, improving their methodology.
 %How to plan to apply the knowledge in a way that can benefit software engineers.
 %What are the anticipated contributions of the work?  How will you evaluate them to demonstrate usefulness?
 
