@@ -144,7 +144,7 @@
 %
 % 1st. author
 \alignauthor
-Gema Rodr\'iguez\\
+Gema Rodr\'iguez-P\'erez\\
        \affaddr{GSyC/LibreSoft \\ Universidad Rey Juan Carlos}\\
        %\affaddr{1932 Wallamaloo Lane}\\
        \affaddr{Madrid, Spain}\\
@@ -500,7 +500,7 @@ A total of 459 different tickets from the Launchpad of the four main projects in
 \subsection{Fist Stage}
 \label{sec:resultsFS}
 
-We classify a total of 459 tickets using the tool, resulting in 917 reviews. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits. This process requires manual inspection by researchers. In the mean classifying a ticket takes \gema{between 5 and 10 minutes per ticket}, although the amount of time decreases with experience as could be expected. 
+We classify a total of 459 tickets using the tool, resulting in 917 reviews. Only those tickets classified as bug reports by both researchers were considered in the next stage, which analyzes if the cause of the bug was introduced in their previous commits. This process requires manual inspection by researchers. In the mean classifying a ticket takes between 5 and 10 minutes per ticket, although the amount of time decreases with experience as could be expected. 
 
 \gema{[...] se podria medir en github en tiempo que les ha llevado a cada uno entre ticket y ticket, en aquellos casos que se puedan medir y hacer una media, Que te parece?} \grex{No es muy importante, pero quedaria bien}
 
@@ -558,8 +558,7 @@ After this, we can answer the first research question because at this moment we 
 \subsection{Second Stage}
 \label{sec:resultsSS}
 
-In this stage we analyzed the 189 tickets classified \grex{Pero no eran 209?} \gema{deberian ser 209 pero me han quedado 20 bugs report por analizar, si tengo tiempo cuando llegue a casa lo hago y anado los numeros} \grex{no se si hace falta, a ver que dice jesus}\gema{Jesus me dijo que no era muy importante a estas alturas} as bug reports and their previous commits.
-The possible outcome of the analysis was one of the following three options:
+In this stage we analyzed the 189 tickets of the classified as \textit{Bug Reports}, the possible outcome of the analysis was one of the following three options:
 
 \begin{itemize}
   \item Cause
@@ -576,19 +575,19 @@ Figure~\ref{fig:manyprevious} contains a real example of a previous commit where
 \begin{figure}[ht]
 \centering
 \includegraphics[height=2.5cm]{manyprevious.png}
-\caption{Previous commits: \textit{e7be0a988} (line 218) and \textit{e5296c1da} (line 2422).}
+\caption{Previous commits (right): \textit{e7be0a988} (line 218) and \textit{e5296c1da} (line 2422).}
 \label{fig:manyprevious}       % Give a unique label
 \end{figure}
 
 
 We identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis. Then, we analyzed the bug reports together with their previous commits discarting the cases where the previous commit was a false positive (blank lines, changes in comments or even a change in the version of the file). So, in total we have analyzed 308 previous commit.
 
-As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits, 152 have been considered to be the cause of the bug, whereas 114 were identified as not beign the cause. We were unable to decide in 42 cases, as only lines had been added \ref{fig:8} and we cannot be able to know which previous commit could be the one that forgot added this lines, or due to our limited knowleadge about the code \ref{fig:9}. \grex{Gema, puedes poner un ejemplo de estas dos cosas? Uno de solo added lines y otro de limited knowledge. Si el ejemplo es verdadero, mejor.}\gema{Me faltaria el ejempli de limited knowledge, cuando encuentre uno bueno lo anado}
+As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits, 152 have been considered to be the cause of the bug, whereas 114 were identified as not beign the cause. We were unable to decide in 42 cases or due to our limited knowleadge about the code. The figure \ref{fig:add} shows the change done in the fix bug commit, on the left the lines before the fix commit and on the right the file after the fix commit with only additions lines. In this case, we cannot be able to know which previous commit could be the one that forgot added this lines, this is the reason why we classifyed as \textit{Undecied},\grex{Gema, puedes poner un ejemplo de estas dos cosas? Uno de solo added lines y otro de limited knowledge. Si el ejemplo es verdadero, mejor.}\gema{Me faltaria el ejemplo de limited knowledge, cuando encuentre uno bueno lo anado}
 We discarded 40 more because they were false positives (\emph{noise}) such as blank lines, changes in comments or even a change in the version of the file.
 \begin{figure}[ht]
 \centering
 \includegraphics[height=1cm]{addedlines.png}
-\label{fig:8}       % Give a unique label
+\label{fig:added}       % Give a unique label
 \caption{Example of added lines where we are unable to decide which previous commit caused the bug}
 %52919
 \end{figure}
@@ -616,7 +615,7 @@ We discarded 40 more because they were false positives (\emph{noise}) such as bl
 \end{table}
 
 
-If we attend to how many previous commits each of the 189 bug reports analyzed had, we see that 131 only had a previous commit, whereas 58 had more than one previous commit. As can be seen from Table~\ref{tab:secondStage}, from the 131 unique previous commits, 65 were the cause of the bug, and 30 not caused the failure. For the 58 bugs that had more than one previous commit, a total number of 179 previous commits were identified; of them 86 were the cause of the bug, while 82 were not. \grex{Pon ejemplos, a ser posible reales, de esto, porfa.}\gema{perfecto, ahora busco un ejemplo y lo anado abajo}
+If we attend to how many previous commits each of the 189 bug reports analyzed had, we see that 131 only had a previous commit as the example \ref{fig:3}, whereas 58 had more than one previous commit as the one shows in ~\ref{fig:manyprevious}. In Table~\ref{tab:secondStage}, from the 131 unique previous commits, 65 were the cause of the bug, and 30 not caused the failure. For the 58 bugs that had more than one previous commit, a total number of 179 previous commits were identified; of them 86 were the cause of the bug, while 82 were not. \grex{Pon ejemplos, a ser posible reales, de esto, porfa.}\gema{perfecto, ahora busco un ejemplo y lo anado abajo}
 
 \grex{No me queda claro que quieres decir con mas de un identificador previo}\gema{supongo que despues de ver el ejemplo se entienda mejor, identificador previo se refiere a que  al arreglar el error se shan tocado varias lineas que han sido anadidas o modificadas en commit diferentes, por tanto tenemos mas de un commit diferente, aqui use identificador en vez de commit y puede ser un error}
 
