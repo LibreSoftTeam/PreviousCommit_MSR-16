@@ -634,7 +634,7 @@ If we attend to how many previous commits each of the 189 bug reports analyzed h
 \raisebox{1ex}{Undecided} & (36) 27\% & (11) ~6\% \\[0ex]
 \bottomrule[0.3mm]
 \end{tabular} }
-\caption{Probability of the cause of the bug when the bug report present one previous commit or more than one previous commit.}
+\caption{Probability of being the cause of a bug depending on if just one previous commit or more than one previous commits are identified.}
 \label{tab:secondStage}
 \end{center}
 \end{table}
@@ -707,20 +707,18 @@ The experience gained in this study with exposure to several hundreds of bugs al
 
 Although at first, as shown in the Figure~\ref{fig:1} and Figure~\ref{fig:2}, one may think that this is an easy task, we have found many examples where we have been unable to determine the cause as no previous commit can be identified. This is, for instance, the case when only code has been added and there is no way to identify the previous commit. In this case, further research could find out if this is not really the addition of a new feature rather than a bug.
 
-And we are talking about a bug report not a new feature, these kinds of cases use to be when a researcher forgot check some case inside a function.
-\begin{enumerate}
-\item Is responsible the function where these lines are content?
-\item Is responsible the last commit that modify something in the function?
-\end{enumerate}
+%And we are talking about a bug report not a new feature, these kinds of cases use to be when a researcher forgot check some case inside a function.
+%\begin{enumerate}
+%\item Is responsible the function where these lines are content?
+%\item Is responsible the last commit that modify something in the function?
+%\end{enumerate}
 
-\grex{Puedes elaborar un poco mas el parrafo (y los puntos) anterior(es)? Puede ser en castellano.}
-\gema{En casos de que el error se arregle solamente anadiendo lineas, al intentar saber quien es el causante, podemos pensar en que el responsable podria ser el primero que introduce la funcion que olvido tener en cuenta ese caso, o si la funcion en la que se anade el codigo ha sido modificada varias veces pordriamos pensar que el ultimo que modifico la funcion puede ser el causante porue no se dio cuenta que fataba por anadir ese codigo.}
+%\grex{Puedes elaborar un poco mas el parrafo (y los puntos) anterior(es)? Puede ser en castellano.}
+%\gema{En casos de que el error se arregle solamente anadiendo lineas, al intentar saber quien es el causante, podemos pensar en que el responsable podria ser el primero que introduce la funcion que olvido tener en cuenta ese caso, o si la funcion en la que se anade el codigo ha sido modificada varias veces pordriamos pensar que el ultimo que modifico la funcion puede ser el causante porue no se dio cuenta que fataba por anadir ese codigo.}
 
 %\gema{Otro caso puede ser lo if/else, en estos casos hay que ser cuidadosos y saber diferenciar si el causante fue el comit previo porque se olvido de comporbar una condicion, o si el commit previo no fue el causante del error porque la condicion que se introduce en el commit que arregla el error se debe a que han anadido una nueva funcionalidad despues de haber anadido el if/else y necesitan comprobarla ahora, por tanto seria debido a la evolucion del projecto. En este ultimo caso, si no tenemos toda la descripcion de lo que realmente esta pasando, para poder decidir en que situacion estamos, hemos sido conservadores y hemos inducado que el commit anterior fue el responsable}
 
 There are other cases where it is difficult to determine if the change is the cause. For instance, when additional conditions are added to \emph{if}s or \emph{else}s, one might think that in the previous commit those were not included due to an error, so that the previous commit becomes the cause of the bug. However, situations exist where the additional conditions in an if appear because of the introduction of a new functionality, and thus the line in the previous commit was correct at the time it was introduced. In our analysis, if the latter situation is not explicity mentioned we have considered that the previous commit caused the error.
-
-\gema{ con respecto a los previous commits que son varios: las tablas no llegan a ser muy concluyentes y los numeros son bajos; podemos introducir un poco de discusion sobre que podria ser interesante analizar mas y ver si con mas poblacion se repite algun patron y decir exactamente cuantos comits son los responsables en un bug report.}
 
 But already the identification of an issue as a bug report is a process that is not as straightforward as one might think. Out of 459 tickets we were only capable to achieve a consensus for 292 cases (63.6\%), which hints to the complexity of the task. The amount of information, the number of fields and the requirement of human interaction made us invest time in the creation of a tool that assisted us in the process. 
 
@@ -743,8 +741,7 @@ As any other empirical study, this one presents several threats to its validity,
 
 
 %The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
-The number of the tickets extracted form Launchpad is high, but probably not as high as to state that it can be representative of all free/open source systems, or the software industry. It has not to be forgotten that the analysis requires a lot of human effort, so that achieving large numbers of cases is difficult.
-
+The number of the tickets extracted form Launchpad is relatively high, but probably not as high as to state that it can be representative of all free/open source systems, or the software industry. It has not to be forgotten that the analysis requires a lot of human effort, so that achieving large numbers of cases is difficult.
 
 The internal threats related to the researchers that have conducted the study are following:
 
