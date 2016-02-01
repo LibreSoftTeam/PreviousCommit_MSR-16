@@ -581,17 +581,16 @@ Figure~\ref{fig:manyprevious} contains a real example of a previous commit where
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[height=4.2cm]{manyprevious.png}
+\includegraphics[height=4.1cm]{manyprevious.png}
 \caption{Example of previous commit where more than one commit has been identified. On the left, the file after the bug-fixing commit. Previous commit \textit{e5296c1da} (middle) is the cause of the bug in line 2422 with the presence of an incorrect \texttt{break} statement. 
 Previous commits \textit{e7be0a988} (right) has also been identified; however, as it just changes the version number (line 218), it can be classified as not causing the bug.}
 \label{fig:manyprevious}       % Give a unique label
 \end{figure*}
 
 
-We identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis. Then, we analyzed the bug reports together with their previous commits discarding the cases where the previous commit was a false positive (blank lines, changes in comments or even a change in the version of the file). So, in total we have analyzed 308 previous commit.
+We identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis. Then, we analyzed the bug reports together with their previous commits discarding the cases where the previous commit was a false positive (blank lines, changes in comments or even a change in the version of the file). So, in total we have analyzed 308 previous commits.
 
-As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits, 152 have been considered to be the cause of the bug, whereas 114 were identified as not beign the cause. We were unable to decide in 42 cases or due to our limited knowleadge about the code. The figure~\ref{fig:added} shows the change done in the fix bug commit, on the left the lines before the fix commit and on the right the file after the fix commit with only additions lines. In this case, we cannot be able to know which previous commit could be the one that forgot added this lines, this is the reason why we classifyed as \textit{Undecied}.The figure ~\ref{fig:unknow} shows an example of limited knowleadge about which line could inserted the bug.
-We discarded 40 more because they were false positives (\emph{noise}) such as blank lines, changes in comments or even a change in the version of the file.
+As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits, 152 have been considered to be the cause of the bug, whereas 114 were identified as not being the cause. We were unable to decide in 42 cases or due to our limited knowledge about the code. The figure~\ref{fig:added} shows the change done in the fix bug commit, on the left the lines before the fix commit and on the right the file after the fix commit with only addition of lines. In this case, we have not been able to know which previous commit could be the one that forgot to add those lines, so we classified it as \textit{Undecided}. Figure~\ref{fig:unknow} offers an example of a different situation, where the researchers could not classify the bug due to not having sufficient knowledge of the change, the context and the project. We discarded 40 more because they were false positives (\emph{noise}) such as blank lines, changes in comments or even a change in the version of the file.
 
 \begin{figure*}[ht]
 \centering
@@ -601,12 +600,14 @@ We discarded 40 more because they were false positives (\emph{noise}) such as bl
 %52919
 \end{figure*}
 
-\begin{figure}[ht]
+\begin{figure*}[ht]
 \centering
-\includegraphics[height=3.5cm]{unknowleadge.png}
+\includegraphics[height=7.3cm]{unknowleadge.png}
 \label{fig:unknow}       % Give a unique label
-\caption{Example of unknowleadge where we are unable to decide which line contains the bug }
-\end{figure}
+\caption{Example of previous commit where we have been unable to decide which line contains the bug. The left code snippet contains the code after the bug fix; the right code snippet shows the code before the bug fix.}
+\end{figure*}
+
+
 \begin{table}[htb]
 \begin{center}
 \begin{tabular}{lrr}
