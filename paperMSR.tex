@@ -47,7 +47,7 @@
 
 \newif\ifdraft
 \drafttrue
-%\draftfalse
+\draftfalse
 
 
 \documentclass{sig-alternate-05-2015}
@@ -581,7 +581,7 @@ Figure~\ref{fig:manyprevious} contains a real example of a previous commit where
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[height=4cm]{manyprevious.png}
+\includegraphics[height=4.2cm]{manyprevious.png}
 \caption{Example of previous commit where more than one commit has been identified. On the left, the file after the bug-fixing commit. Previous commit \textit{e5296c1da} (middle) is the cause of the bug in line 2422 with the presence of an incorrect \texttt{break} statement. 
 Previous commits \textit{e7be0a988} (right) has also been identified; however, as it just changes the version number (line 218), it can be classified as not causing the bug.}
 \label{fig:manyprevious}       % Give a unique label
@@ -595,7 +595,7 @@ We discarded 40 more because they were false positives (\emph{noise}) such as bl
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[height=3.6cm]{addedlines.png}
+\includegraphics[height=3.8cm]{addedlines.png}
 \label{fig:added}       % Give a unique label
 \caption{Example of scenario where the bug fix is composed only of lines added. The fix bug commit with lines added in green can be seen on the left (subfigure (1)), and the file as it was before the fix bug commit on the right (subfigure (2)).}
 %52919
