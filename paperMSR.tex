@@ -582,14 +582,13 @@ Figure~\ref{fig:manyprevious} contains a real example of a previous commit where
 
 We identified a total of 348 previous commits which could be the cause of the 189 bug reports under analysis. Then, we analyzed the bug reports together with their previous commits discarding the cases where the previous commit was a false positive (blank lines, changes in comments or even a change in the version of the file). So, in total we have analyzed 308 previous commit.
 
-As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits, 152 have been considered to be the cause of the bug, whereas 114 were identified as not beign the cause. We were unable to decide in 42 cases or due to our limited knowleadge about the code. The figure \ref{fig:add} shows the change done in the fix bug commit, on the left the lines before the fix commit and on the right the file after the fix commit with only additions lines. In this case, we cannot be able to know which previous commit could be the one that forgot added this lines, this is the reason why we classifyed as \textit{Undecied}.\grex{Gema, puedes poner un ejemplo de estas dos cosas? Uno de solo added lines y otro de limited knowledge. Si el ejemplo es verdadero, mejor.}\gema{Me faltaria el ejemplo de limited knowledge, cuando encuentre uno bueno lo anado}
+As can be seen in Table~\ref{tab:responsability}, from the 308 previous commits, 152 have been considered to be the cause of the bug, whereas 114 were identified as not beign the cause. We were unable to decide in 42 cases or due to our limited knowleadge about the code. The figure~\ref{fig:added} shows the change done in the fix bug commit, on the left the lines before the fix commit and on the right the file after the fix commit with only additions lines. In this case, we cannot be able to know which previous commit could be the one that forgot added this lines, this is the reason why we classifyed as \textit{Undecied}.\gema{Me faltaria el ejemplo de limited knowledge, cuando encuentre uno bueno lo anado}
 We discarded 40 more because they were false positives (\emph{noise}) such as blank lines, changes in comments or even a change in the version of the file.
 \begin{figure}[ht]
 \centering
 \includegraphics[height=2.5cm]{addedlines.png}
 \label{fig:added}       % Give a unique label
 \caption{Example of added lines where we are unable to decide which previous commit caused the bug}
-%52919
 \end{figure}
 
 %\begin{figure}[ht]
@@ -615,8 +614,7 @@ We discarded 40 more because they were false positives (\emph{noise}) such as bl
 \end{table}
 
 
-If we attend to how many previous commits each of the 189 bug reports analyzed had, we see that 131 only had a previous commit as the example \ref{fig:3}, whereas 58 had more than one previous commit as the one in ~\ref{fig:manyprevious}. In Table~\ref{tab:secondStage}, from the 131 unique previous commits, 65 were the cause of the bug, and 30 not caused the failure. For the 58 bugs that had more than one previous commit, a total number of 179 previous commits were identified; of them 86 were the cause of the bug, while 82 were not. \grex{Pon ejemplos, a ser posible reales, de esto, porfa.}\gema{perfecto, ahora busco un ejemplo y lo anado abajo}
-
+If we attend to how many previous commits each of the 189 bug reports analyzed had, we see that 131 only had a previous commit as the example \ref{fig:3}, whereas 58 had more than one previous commit as the one in the example ~\ref{fig:manyprevious}. In Table~\ref{tab:secondStage}, from the 131 unique previous commits, 65 were the cause of the bug, and 30 not caused the failure. For the 58 bugs that had more than one previous commit, a total number of 179 previous commits were identified; of them 86 were the cause of the bug, while 82 were not. 
 %\grex{No me queda claro que quieres decir con mas de un identificador previo}\gema{supongo que despues de ver el ejemplo se entienda mejor, identificador previo se refiere a que  al arreglar el error se shan tocado varias lineas que han sido anadidas o modificadas en commit diferentes, por tanto tenemos mas de un commit diferente, aqui use identificador en vez de commit y puede ser un error}
 
 %\grex{Para los 58 bugs que tenian mas de un identificador previo hay 179 commits. Bien. Dices que 86 causaron el bug, 82 no y en 11 no se ha podido determinar. Lo que no veo es por que no agruampos estos datos segun los 58 bugs}\gema{Esos datos estan agrupados en la tabla 7, el fin de esta tabla era mostrar que cuando hay un solo comit previo el numero de no causantes del error es menor que cuando hay mas de un commit previo}
@@ -737,7 +735,7 @@ In any case, our research shows evidence that assuming that the previous commit 
 \section{Threats to validity}
 \label{sec:threats}
 
-As any other empirical study, this one presents several threats to its validity, external and internal, that have to be considered and taken into account. In order to allow others to study it in detail, replicate it or even build on top of it, we have set up a replication package\footnote{\url{http://gsyc.urjc.es/~grex/repro/2016-msr-prevcommit}} including data sources, intermediate data and scripts that can be obtained.
+As any other empirical study, this one presents several threats to its validity, external and internal, that have to be considered and taken into account. In order to allow others to study it in detail, replicate it or even build on top of it, we have set up a replication package\footnote{\url{http://gsyc.urjc.es/~grex/repro/2016-msr-prevcommit}}\gema{he creado esta pagina en github para el paquete de reproducibilidad http://gemarodri.github.io/2016-msr-prevcommit/} including data sources, intermediate data and scripts that can be obtained.
 
 
 %The limited sample size of tickets used in this research is the major threat to its validity. %It may happen, that only with 100 seemingly random tickets, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
