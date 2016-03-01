@@ -1,0 +1,98 @@
+----------------------- REVIEW 1 ---------------------
+PAPER: 109
+TITLE: Who introduced this bug? It may not have been caused by the previous commit!
+AUTHORS: Gema Rodriguez, Jesus M. Gonzalez-Barahona and Gregorio Robles
+
+
+----------- REVIEW -----------
++ This paper analyzes data from the four most active repositories to validate the claim that bugs are can be traced (are introduced) in the previous commit that touched the lines where the bug is. This assumption is an important basis for the SZZ algorithm, which the authors show has been highly referenced and improved.
+
++ The authors looked at several issues from the projects to first classify them to be able to filter and focus only on the issues that refer to actual bugs instead of other types of tickets that are common in issue tracking systems like new features, optimizations, and such. The approach is clear as to how the classification was carried out (the rules for classifying) and both stages (classification and finding the cause) allowed for an 'undecided' category to prevent a classification to be forced when there was doubt. 
+
+- It is unclear if the first stage (classifying the tickets) was done by two or three researchers. In Section 4 it is said to be two, as in Section 5.1 (they analyzed 459 tickets, so 917 reviews in total). However, Table 2 shows results for three researchers. In that case (3 researchers), it is unclear how issues were handled when they were two researchers in agreement and one in disagreement. Even if it is a subjective task, having the first stage (classification) with more than one researcher and the concordances help. While the numbers of Table 2 suggest that 3 different researchers worked on the task but each issue was evaluated by only two of the three developers, this is never mentioned on the paper.
+
+- Nonetheless, having more than one researcher to prevent misclassification or implicit bias was not done for the second stage (finding the cause of the bug). Determining whether the changes from the previous commit effectively fix the bug or not still has some subjectivity. This is even more of an issue if the researcher doing this stage is not familiar with the projects.
+
+
+Small details:
+
+* Figure 3 is after Figure 4 (on page 3). This is somewhat confusing.
+* Similarly, Table numbers are all around (Table 1 are 4 are first; but 2, 3, and 5 are on the next page)
+* Move Table 7 before the references
+* Title for 3.1. should be "First"
+
+* It may help to put together the Figures showing the different cases of changes to help the reader compare them without having to jump from different parts of the paper when these figures are referenced.
+
+
+----------------------- REVIEW 2 ---------------------
+PAPER: 109
+TITLE: Who introduced this bug? It may not have been caused by the previous commit!
+AUTHORS: Gema Rodriguez, Jesus M. Gonzalez-Barahona and Gregorio Robles
+
+
+----------- REVIEW -----------
+The paper describes an attempt to look inside the SZZ box to see how often it is mistakenly blaming the previous version of lines for introducing bugs. The paper argues that in at least 37% of the analyzed cases, the previous lines are certainly not responsible for introducing the bugs that they are blamed for introducing by SZZ. Although it is left unmentioned, these results appear to cast a shadow on past results that are built upon SZZ.
+
+While I admire the direction that this paper is moving us towards, the work is just not quite ready for MSR for several reasons:
+
+1) The rationale for the ticket classification rules on page 5 is unclear. The ticket classification rules are central to the study. If these rules are flawed, the tickets labeled as bug fixes will be incorrect. Despite their importance for the study, the rules is not sufficiently explained and their rationale is not supported by evidence. For instance, #3 states that "When the ticket described that some updates were required, the ticket is a bug report." First, the rule is unclear for me. Do you mean an update to the ticket? The code? The review? Second, the rationale is unclear and unsupported. Why would such an update indicate that a bug was present?
+
+2) Bug reporting date filter is missing. According to Śliwerski et al. [18], "In particular, we say that such a pair (ra , rb) is a suspect if ra was committed after the latest reported bug linked with the revision rb." This filter will remove potentially implicated changes if the bug in question is reported after it. To ensure that this type of noise is handled, this paper should also remove these potentially bug introducing commits before conducting the analysis. 
+
+3) The analysis is incomplete. The verbiage of the paper itself hints that this study was a rush job, mentioning that elements of the analysis were left out due to "time constraints."
+
+4) Kim et al. [14] and Williams et al. [20] also manually analyze samples of SZZ data. However, they report much higher percentages of correct SZZ results. Potential reasons for the discrepancies should be discussed.
+
+Again, I really hope that the authors continue with this work. I believe, in the end, the work could have a large impact on pushing SZZ forward, but this version of the paper really doesn't do justice to the aim of the study.
+
+Other thoughts:
+
+The implications of the paper are unclear. It is well known that SZZ is imperfect. It is a heuristic, and as such, is expected to be noisy. While reporting the extent to which noise is impacting the results of SZZ is a contribution, it is unclear how the community can move forward from here? Since abandoning SZZ altogether is unreasonable (without proposing an alternative), can you offer advice based on findings that would help to improve SZZ? For example, an analysis of the bug fixes that mistakenly blame the previous version of those lines would likely shed some light onto how SZZ could be improved.
+
+Other small things:
+
+a) The paper could really use some careful proofreading. There are numerous typos and grammatical mistakes (again suggesting the rushed nature of this work). Some repeated examples:
+ - "fist" being used instead of "first"
+ - "where" being used instead of "were"
+ - "So," is likely too informal to open a sentence in a research paper.
+ - "original the SZZ"
+ - "control version system"
+ - "in 3.1"
+ - "analized"
+I'm sure that a careful proofreading will weed out more of these issues.
+
+b) There are at least a few more related papers that should be discussed:
+
+Kamei et al., "A Large-Scale Empirical Study of Just-in-Time Quality Assurance," TSE 2013
+Tan et al., "Online Defect Prediction for Imbalanced Data," ICSE SEIP 2015
+Tantithamthavorn et al., "The Impact of Mislabelling on the Performance and Interpretation of Defect Prediction Models," ICSE 2015
+
+
+----------------------- REVIEW 3 ---------------------
+PAPER: 109
+TITLE: Who introduced this bug? It may not have been caused by the previous commit!
+AUTHORS: Gema Rodriguez, Jesus M. Gonzalez-Barahona and Gregorio Robles
+
+
+----------- REVIEW -----------
+The submission presents a manual study on how often a previous commit to a bug-fixing commit caused the bug.  Previous work assumed that this situation would be true in most of the cases, however, the study showed that this is not true in 63% of the cases.
+
+The paper is well written and makes an important contribution which probably invalidates a list of previous published approaches and their results. I applaud the authors for their effort in doing a manual study to validate assumed behaviour!
+
+
+Reading the introduction that the assumption that the previous commit introduced the bug is reasonable was kind of a surprise for me as I would never assume that this is a reasonable decision. It is good that the authors presented evidence for the attitude.
+
+A discussion is missing on bugs caused by missing functionality.  Most of the examples are belonging into the category - a (changed) requirement has not been fully implemented.  The category of such bugs are causing problems all over the (de)bugging literature, e.g. fault localisation (where is the missing code to be located?), slicing/dicing (the code /should/ have been executed is not in the slice/dice), etc.
+
+The is a small concern in how the 'previous' commit is found by looking at all the lines of the file in which the change is located. This approach is different to SZZ and it would have been nice to use the SZZ results for comparison purposes.
+
+Shouldn't 1(2) be named 'Bug-inducing' instead of 'Fix-inducing'?
+
+
+-------------------------  METAREVIEW  ------------------------
+PAPER: 109
+TITLE: Who introduced this bug? It may not have been caused by the previous commit!
+
+All three reviewers agree that the paper is very interesting and important for the community, especially since SSZ has been the state of the art and being used by many researchers. However, there are serious concerns about the methodology, especially regarding how the classification was performed. Important information about the “classification rules” is missing and the number of researchers and the process followed by them is also not clear, all of which can affect the results of the study. The method followed by the researchers might adding to the noise, as noted by the second reviewer.
+
+Further analysis or reasoning about which types of bugs were mischaracterized by SZZ and why that happened is also missing from the paper, because of which the implications of the study is not clear.
